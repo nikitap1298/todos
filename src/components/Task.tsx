@@ -1,12 +1,16 @@
 import React from "react"
+import { Form } from "react-bootstrap"
 
-const Task = () => {
+const Task = (task) => {
   return (
-    <div>
-      <h1>Some text</h1>
-      <form action="">
-        <input type="checkbox" />
-      </form>
+    <div className="task-div">
+      <div className="task-child-div">
+        <h1>{task.text}</h1>
+        <Form>
+          <Form.Check type="checkbox" label="" />
+        </Form>
+      </div>
+      <hr></hr>
     </div>
   )
 }

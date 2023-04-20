@@ -4,11 +4,19 @@ import Task from "./Task"
 import CreateNewTask from "./CreateNewTask"
 
 const App = () => {
+  const appStyle: {
+    width: string
+  } = {
+    width: "45%",
+  }
+
   return (
     <div className="app-div">
-      <Header />
-      {/* <Task /> */}
-      <CreateNewTask />
+      <div style={appStyle}>
+        <Header />
+        <Task text="Some text" />
+        <CreateNewTask />
+      </div>
     </div>
   )
 }
