@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 import Task from "./Task"
+import AlertComponent from "./AlertComponent"
 
 const CreateNewTask: React.FC = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [message, setMessage] = useState("")
+  const [showAlert, setShowAlert] = useState(false)
 
   const handleChange = (event) => {
     setMessage(event.target.value)
@@ -17,6 +19,9 @@ const CreateNewTask: React.FC = () => {
     // User can't add the same task
     if (!tasksArray.includes(capitalizeMessage)) {
       setTasksArray((oldArray) => [...oldArray, capitalizeMessage])
+      setShowAlert(false)
+    } else {
+      setShowAlert(true)
     }
 
     // Delete text from input
@@ -44,6 +49,7 @@ const CreateNewTask: React.FC = () => {
   return (
     <>
       {renderTaskComponent}
+      {showAlert ? <AlertComponent /> : null}
       <div className="create-new-task-div">
         <Form className="create-new-task-form">
           <Form.Control
