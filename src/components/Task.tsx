@@ -5,7 +5,7 @@ const Task = (task) => {
   return (
     <div className="task-div">
       <div className="task-child-div">
-        <h1>{task.text}</h1>
+        <h1>{task.content}</h1>
         <Form>
           <Form.Check type="checkbox" label="" />
         </Form>

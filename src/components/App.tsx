@@ -1,6 +1,5 @@
 import React from "react"
 import Header from "./Header"
-import Task from "./Task"
 import CreateNewTask from "./CreateNewTask"
 
 const App = () => {
@@ -14,7 +13,6 @@ const App = () => {
     <div className="app-div">
       <div style={appStyle}>
         <Header />
-        <Task text="Some text" />
         <CreateNewTask />
       </div>
     </div>
