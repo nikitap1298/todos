@@ -13,7 +13,11 @@ const CreateNewTask: React.FC = () => {
 
   const didPressAddButton = () => {
     const capitalizeMessage = message.charAt(0).toUpperCase() + message.slice(1)
-    setTasksArray((oldArray) => [...oldArray, capitalizeMessage])
+
+    // User can't add the same task
+    if (!tasksArray.includes(capitalizeMessage)) {
+      setTasksArray((oldArray) => [...oldArray, capitalizeMessage])
+    }
 
     // Delete text from input
     setMessage("")
