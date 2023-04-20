@@ -19,8 +19,22 @@ const CreateNewTask: React.FC = () => {
     setMessage("")
   }
 
+  const didPressCheckbox = (index) => {
+    // console.log(`index: ${index}`)
+    // console.log(`tasksArray: ${tasksArray}`)
+
+    const newTasksArray = [...tasksArray]
+    newTasksArray.splice(index, 1)
+    setTasksArray(newTasksArray)
+  }
+
   const renderTaskComponent = tasksArray.map((task) => (
-    <Task key={tasksArray.indexOf(task)} content={task} />
+    <Task
+      key={task}
+      arrayIndex={tasksArray.indexOf(task)}
+      content={task}
+      onDelete={didPressCheckbox}
+    />
   ))
 
   return (
