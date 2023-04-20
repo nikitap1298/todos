@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div className="app-div">
       <Header />
-      <Task />
+      {/* <Task /> */}
       <CreateNewTask />
     </div>
   )

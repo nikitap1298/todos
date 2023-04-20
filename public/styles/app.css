@@ -1,5 +1,6 @@
 .app-div {
-    margin-top: 100px;
+    height: 100vh;
+    background-color: #FFF8EB;
     display: flex;
     flex-direction: column;
     justify-content: center;

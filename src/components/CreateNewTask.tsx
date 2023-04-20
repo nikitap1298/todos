@@ -1,11 +1,14 @@
 import React from "react"
+import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 
 const CreateNewTask: React.FC = () => {
   return (
     <div className="create-new-task-div">
-      <input type="text" placeholder="Add some task" />
-      <Button variant="primary">Primary</Button>{" "}
+      <Form.Control type="text" placeholder="Add some task" readOnly />
+      <Button variant="secondary" size="sm">
+        Add
+      </Button>{" "}
     </div>
   )
 }
