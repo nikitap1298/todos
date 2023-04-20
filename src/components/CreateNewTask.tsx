@@ -17,10 +17,10 @@ const CreateNewTask: React.FC = () => {
     const capitalizeMessage = message.charAt(0).toUpperCase() + message.slice(1)
 
     // User can't add the same task
-    if (!tasksArray.includes(capitalizeMessage)) {
+    if (!tasksArray.includes(capitalizeMessage) && capitalizeMessage !== "") {
       setTasksArray((oldArray) => [...oldArray, capitalizeMessage])
       setShowAlert(false)
-    } else {
+    } else if (tasksArray.includes(capitalizeMessage)) {
       setShowAlert(true)
     }
 
