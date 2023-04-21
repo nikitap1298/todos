@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap"
 import Task from "./Task"
 import AlertComponent from "./AlertComponent"
 
-const CreateNewTask: React.FC = () => {
+const CreateNewTask = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [message, setMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
