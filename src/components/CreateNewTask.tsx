@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 import Task from "./Task"
@@ -13,7 +13,10 @@ const CreateNewTask: React.FC = () => {
     setMessage(event.target.value)
   }
 
-  const didPressAddButton = () => {
+  const didPressAddButton = (event) => {
+    // Turn off the refresh of the page after user click 'enter' in form
+    event.preventDefault()
+    
     const capitalizeMessage = message.charAt(0).toUpperCase() + message.slice(1)
 
     // User can't add the same task
@@ -51,7 +54,7 @@ const CreateNewTask: React.FC = () => {
       {renderTaskComponent}
       {showAlert ? <AlertComponent /> : null}
       <div className="create-new-task-div">
-        <Form className="create-new-task-form">
+        <Form className="create-new-task-form" onSubmit={didPressAddButton}>
           <Form.Control
             type="text"
             placeholder="Add some task"
