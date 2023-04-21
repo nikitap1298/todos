@@ -16,7 +16,7 @@ const CreateNewTask: React.FC = () => {
   const didPressAddButton = (event) => {
     // Turn off the refresh of the page after user click 'enter' in form
     event.preventDefault()
-    
+
     const capitalizeMessage = message.charAt(0).toUpperCase() + message.slice(1)
 
     // User can't add the same task
@@ -52,7 +52,12 @@ const CreateNewTask: React.FC = () => {
   return (
     <>
       {renderTaskComponent}
-      {showAlert ? <AlertComponent /> : null}
+      {showAlert ? (
+        <AlertComponent
+          title="This task already exists!"
+          message="Please, add something else."
+        />
+      ) : null}
       <div className="create-new-task-div">
         <Form className="create-new-task-form" onSubmit={didPressAddButton}>
           <Form.Control
