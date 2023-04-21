@@ -8,6 +8,7 @@ const CreateNewTask = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [newTaskName, setNewTaskName] = useState("")
   const [showAlert, setShowAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
 
   const handleNewTaskInputChange = (event) => {
     setNewTaskName(event.target.value)
@@ -17,14 +18,15 @@ const CreateNewTask = () => {
     // Turn off the refresh of the page after user click 'enter' in form
     event.preventDefault()
 
-    const capitalizeMessage =
+    const capitalizedMessage =
       newTaskName.charAt(0).toUpperCase() + newTaskName.slice(1)
 
     // User can't add the same task
-    if (!tasksArray.includes(capitalizeMessage) && capitalizeMessage !== "") {
-      setTasksArray((oldArray) => [...oldArray, capitalizeMessage])
+    if (!tasksArray.includes(capitalizedMessage) && capitalizedMessage !== "") {
+      setTasksArray((oldArray) => [...oldArray, capitalizedMessage])
       setShowAlert(false)
-    } else if (tasksArray.includes(capitalizeMessage)) {
+    } else if (tasksArray.includes(capitalizedMessage)) {
+      setAlertMessage(capitalizedMessage)
       setShowAlert(true)
     }
 
@@ -52,8 +54,8 @@ const CreateNewTask = () => {
       {renderTaskComponent}
       {showAlert ? (
         <AlertComponent
-          title="This task already exists!"
-          message="Please, add something else."
+          title="This task already exists:"
+          message={alertMessage}
         />
       ) : null}
       <div className="create-new-task-div">
