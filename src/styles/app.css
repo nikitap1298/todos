@@ -1,8 +1,9 @@
-.app-div {
-    height: 100vh;
-    background-color: #FFF8EB;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* Apply CSS only for div with class-name "app" */
+div.app-div {
+  height: 100vh;
+  background-color: #fff8eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

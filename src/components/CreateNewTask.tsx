@@ -6,18 +6,19 @@ import AlertComponent from "./AlertComponent"
 
 const CreateNewTask = () => {
   const [tasksArray, setTasksArray] = useState([])
-  const [message, setMessage] = useState("")
+  const [newTaskName, setNewTaskName] = useState("")
   const [showAlert, setShowAlert] = useState(false)
 
-  const handleChange = (event) => {
-    setMessage(event.target.value)
+  const handleNewTaskInputChange = (event) => {
+    setNewTaskName(event.target.value)
   }
 
-  const didPressAddButton = (event) => {
+  const addNewTask = (event) => {
     // Turn off the refresh of the page after user click 'enter' in form
     event.preventDefault()
 
-    const capitalizeMessage = message.charAt(0).toUpperCase() + message.slice(1)
+    const capitalizeMessage =
+      newTaskName.charAt(0).toUpperCase() + newTaskName.slice(1)
 
     // User can't add the same task
     if (!tasksArray.includes(capitalizeMessage) && capitalizeMessage !== "") {
@@ -28,13 +29,10 @@ const CreateNewTask = () => {
     }
 
     // Delete text from input
-    setMessage("")
+    setNewTaskName("")
   }
 
-  const didPressCheckbox = (index) => {
-    // console.log(`index: ${index}`)
-    // console.log(`tasksArray: ${tasksArray}`)
-
+  const deleteTask = (index) => {
     const newTasksArray = [...tasksArray]
     newTasksArray.splice(index, 1)
     setTasksArray(newTasksArray)
@@ -44,8 +42,8 @@ const CreateNewTask = () => {
     <Task
       key={task}
       arrayIndex={tasksArray.indexOf(task)}
-      content={task}
-      onDelete={didPressCheckbox}
+      task={task}
+      onDelete={deleteTask}
     />
   ))
 
@@ -59,17 +57,17 @@ const CreateNewTask = () => {
         />
       ) : null}
       <div className="create-new-task-div">
-        <Form className="create-new-task-form" onSubmit={didPressAddButton}>
+        <Form className="create-new-task-form" onSubmit={addNewTask}>
           <Form.Control
             type="text"
             placeholder="Add some task"
             size="lg"
-            value={message}
-            onChange={handleChange}
+            value={newTaskName}
+            onChange={handleNewTaskInputChange}
           />
-          <Button variant="secondary" size="lg" onClick={didPressAddButton}>
+          <Button variant="secondary" size="lg" onClick={addNewTask}>
             Add
-          </Button>{" "}
+          </Button>
         </Form>
       </div>
     </>

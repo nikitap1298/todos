@@ -1,7 +1,8 @@
 .create-new-task-form {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
+
 .create-new-task-div button {
   margin-left: 25px;
   text-align: center;

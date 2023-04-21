@@ -3,15 +3,9 @@ import Header from "./Header"
 import CreateNewTask from "./CreateNewTask"
 
 const App = () => {
-  const appStyle: {
-    width: string
-  } = {
-    width: "45%",
-  }
-
   return (
     <div className="app-div">
-      <div style={appStyle}>
+      <div style={{ width: "45%" }}>
         <Header />
         <CreateNewTask />
       </div>
