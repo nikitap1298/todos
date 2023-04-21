@@ -1,15 +1,15 @@
 import React from "react"
 import { Form } from "react-bootstrap"
 
-const Task = (task) => {
+const Task = (props) => {
   const handleClick = () => {
-    task.onDelete(task.arrayIndex)
+    props.onDelete(props.arrayIndex)
   }
 
   return (
     <div className="task-div">
       <div className="task-child-div">
-        <h1>{task.content}</h1>
+        <h1>{props.content}</h1>
         <Form>
           <Form.Check type="checkbox" label="" onChange={handleClick} />
         </Form>
