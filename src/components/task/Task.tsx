@@ -3,8 +3,8 @@ import { Form } from "react-bootstrap"
 
 const Task = ({ task, onDelete, arrayIndex }) => {
   return (
-    <div className="task-div">
-      <div className="task-child-div">
+    <div className="task">
+      <div>
         <h1>{task}</h1>
         <Form>
           <Form.Check

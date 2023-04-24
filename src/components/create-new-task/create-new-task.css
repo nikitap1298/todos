@@ -1,16 +1,16 @@
-.create-new-task-form {
+.create-new-task form {
   display: flex;
   flex-direction: row;
 }
-
-.create-new-task-div button {
+.create-new-task button {
   margin-left: 25px;
   text-align: center;
   border-radius: 6px;
   width: 100px;
   background-color: #0078bc;
 }
-
-.create-new-task-div button:hover {
+.create-new-task button:hover {
   background-color: #0078bc;
 }
+
+/*# sourceMappingURL=create-new-task.css.map */

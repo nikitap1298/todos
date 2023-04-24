@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
-import Task from "./Task"
-import AlertComponent from "./AlertComponent"
-import { tasksArrayKey } from "../constants/constants"
+import Task from "../task/Task"
+import AlertComponent from "../alert/AlertComponent"
+import { tasksArrayKey } from "../../constants/constants"
 
 const CreateNewTask = () => {
   const [tasksArray, setTasksArray] = useState([])
@@ -74,8 +74,8 @@ const CreateNewTask = () => {
           message={alertMessage}
         />
       ) : null}
-      <div className="create-new-task-div">
-        <Form className="create-new-task-form" onSubmit={addNewTask}>
+      <div className="create-new-task">
+        <Form onSubmit={addNewTask}>
           <Form.Control
             type="text"
             placeholder="Add some task"

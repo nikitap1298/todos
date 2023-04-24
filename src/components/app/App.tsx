@@ -1,6 +1,6 @@
 import React from "react"
 import Header from "../header/Header"
-import CreateNewTask from "../CreateNewTask"
+import CreateNewTask from "../create-new-task/CreateNewTask"
 
 const App = () => {
   return (
