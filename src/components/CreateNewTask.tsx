@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 import Task from "./Task"
@@ -48,6 +48,12 @@ const CreateNewTask = () => {
       onDelete={deleteTask}
     />
   ))
+
+  useEffect(() => {
+    localStorage.setItem("dataKey", JSON.stringify(tasksArray))
+    const localStorageElement = JSON.parse(localStorage.getItem("dataKey"))
+    console.log(localStorageElement)
+  }, [tasksArray])
 
   return (
     <>
