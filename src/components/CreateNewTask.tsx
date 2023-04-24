@@ -1,14 +1,25 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 import Task from "./Task"
 import AlertComponent from "./AlertComponent"
+import { tasksArrayKey } from "../constants/constants"
 
 const CreateNewTask = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [newTaskName, setNewTaskName] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
+
+  // Load tasksArray from localStorage
+  useEffect(() => {
+    const tasksArrayLocalStorage = JSON.parse(
+      localStorage.getItem(tasksArrayKey)
+    )
+    if (tasksArrayLocalStorage) {
+      setTasksArray(tasksArrayLocalStorage)
+    }
+  }, [])
 
   const handleNewTaskInputChange = (event) => {
     setNewTaskName(event.target.value)
@@ -25,6 +36,10 @@ const CreateNewTask = () => {
     if (!tasksArray.includes(capitalizedMessage) && capitalizedMessage !== "") {
       setTasksArray((oldArray) => [...oldArray, capitalizedMessage])
       setShowAlert(false)
+      localStorage.setItem(
+        tasksArrayKey,
+        JSON.stringify([...tasksArray, capitalizedMessage])
+      )
     } else if (tasksArray.includes(capitalizedMessage)) {
       setAlertMessage(capitalizedMessage)
       setShowAlert(true)
@@ -38,6 +53,7 @@ const CreateNewTask = () => {
     const newTasksArray = [...tasksArray]
     newTasksArray.splice(index, 1)
     setTasksArray(newTasksArray)
+    localStorage.setItem(tasksArrayKey, JSON.stringify([...newTasksArray]))
   }
 
   const renderTaskComponent = tasksArray.map((task) => (
