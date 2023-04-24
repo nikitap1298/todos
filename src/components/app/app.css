@@ -1,0 +1,10 @@
+.app {
+  height: 100vh;
+  background-color: #fff8eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/*# sourceMappingURL=app.css.map */
