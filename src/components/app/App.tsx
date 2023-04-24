@@ -21,8 +21,6 @@ const App = () => {
   }, [])
 
   const addNewTask = (newTaskName) => {
-    console.log(newTaskName)
-
     const capitalizedMessage =
       newTaskName.charAt(0).toUpperCase() + newTaskName.slice(1)
 
