@@ -11,14 +11,13 @@ const CreateNewTask = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
 
+  // Load tasksArray from localStorage
   useEffect(() => {
     const tasksArrayLocalStorage = JSON.parse(
       localStorage.getItem(tasksArrayKey)
     )
-    console.log(`tasksArrayLocalStorage: ${tasksArrayLocalStorage}`)
     if (tasksArrayLocalStorage) {
       setTasksArray(tasksArrayLocalStorage)
-      console.log(tasksArrayLocalStorage)
     }
   }, [])
 
