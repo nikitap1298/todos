@@ -6,6 +6,9 @@ import CreateNewTask from "../create-new-task/CreateNewTask"
 import { tasksArrayKey } from "../../constants/constants"
 
 const AlertContext = React.createContext({ title: "", message: "" })
+const CreateNewTaskContext = React.createContext({
+  addNewTask: (_newTask: any) => {},
+})
 
 const App = () => {
   const [tasksArray, setTasksArray] = useState([])
@@ -71,10 +74,12 @@ const App = () => {
             <AlertComponent />
           </AlertContext.Provider>
         ) : null}
-        <CreateNewTask addNewTask={addNewTask} />
+        <CreateNewTaskContext.Provider value={{ addNewTask }}>
+          <CreateNewTask />
+        </CreateNewTaskContext.Provider>
       </div>
     </div>
   )
 }
 
-export { App, AlertContext }
+export { App, AlertContext, CreateNewTaskContext }
