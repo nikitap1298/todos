@@ -1,7 +1,12 @@
 import React from "react"
 import { Form } from "react-bootstrap"
+import { TaskContext } from "../app/App"
 
-const Task = ({ task, onDelete, arrayIndex }) => {
+const Task = () => {
+  const task = React.useContext(TaskContext).task
+  const onDelete = React.useContext(TaskContext).onDelete
+  const arrayIndex = React.useContext(TaskContext).arrayIndex
+
   return (
     <div className="task">
       <div>

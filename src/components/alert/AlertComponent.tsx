@@ -5,6 +5,7 @@ import { AlertContext } from "../app/App"
 function AlertComponent() {
   const title = React.useContext(AlertContext).title
   const message = React.useContext(AlertContext).message
+
   return (
     <Alert className="alert" variant="danger" dismissible>
       <Alert.Heading>{title}</Alert.Heading>
