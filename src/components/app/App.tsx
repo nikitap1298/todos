@@ -5,6 +5,16 @@ import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { tasksArrayKey } from "../../constants/constants"
 
+const TaskContext = React.createContext({
+  task: "",
+  onDelete: (_index: number) => {},
+  arrayIndex: 0,
+})
+const AlertContext = React.createContext({ title: "", message: "" })
+const CreateNewTaskContext = React.createContext({
+  addNewTask: (_newTask: string) => {},
+})
+
 const App = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [showAlert, setShowAlert] = useState(false)
@@ -46,12 +56,16 @@ const App = () => {
   }
 
   const renderTaskComponent = tasksArray.map((task) => (
-    <Task
+    <TaskContext.Provider
       key={task}
-      arrayIndex={tasksArray.indexOf(task)}
-      task={task}
-      onDelete={deleteTask}
-    />
+      value={{
+        task: task,
+        onDelete: deleteTask,
+        arrayIndex: tasksArray.indexOf(task),
+      }}
+    >
+      <Task />
+    </TaskContext.Provider>
   ))
 
   return (
@@ -60,15 +74,21 @@ const App = () => {
         <Header />
         {renderTaskComponent}
         {showAlert ? (
-          <AlertComponent
-            title="This task already exists:"
-            message={alertMessage}
-          />
+          <AlertContext.Provider
+            value={{
+              title: "This task already exists:",
+              message: alertMessage,
+            }}
+          >
+            <AlertComponent />
+          </AlertContext.Provider>
         ) : null}
-        <CreateNewTask addNewTask={addNewTask} />
+        <CreateNewTaskContext.Provider value={{ addNewTask }}>
+          <CreateNewTask />
+        </CreateNewTaskContext.Provider>
       </div>
     </div>
   )
 }
 
-export default App
+export { App, TaskContext, AlertContext, CreateNewTaskContext }
