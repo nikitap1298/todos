@@ -3,9 +3,7 @@ import { Form } from "react-bootstrap"
 import { TaskContext } from "../app/App"
 
 const Task = () => {
-  const task = React.useContext(TaskContext).task
-  const onDelete = React.useContext(TaskContext).onDelete
-  const arrayIndex = React.useContext(TaskContext).arrayIndex
+  const { task, onDelete, arrayIndex } = React.useContext(TaskContext)
 
   return (
     <div className="task">

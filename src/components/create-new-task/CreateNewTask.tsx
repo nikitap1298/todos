@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap"
 import { CreateNewTaskContext } from "../app/App"
 
 const CreateNewTask = () => {
-  const addNewTask = React.useContext(CreateNewTaskContext).addNewTask
+  const { addNewTask } = React.useContext(CreateNewTaskContext)
 
   const [newTaskName, setNewTaskName] = useState("")
 

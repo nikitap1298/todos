@@ -3,8 +3,7 @@ import Alert from "react-bootstrap/Alert"
 import { AlertContext } from "../app/App"
 
 function AlertComponent() {
-  const title = React.useContext(AlertContext).title
-  const message = React.useContext(AlertContext).message
+  const { title, message } = React.useContext(AlertContext)
 
   return (
     <Alert className="alert" variant="danger" dismissible>
