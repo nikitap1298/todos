@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import App from "./components/app/App"
+import { App } from "./components/app/App"
 
 // For using Bootstrap inside components. Importing the Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css"

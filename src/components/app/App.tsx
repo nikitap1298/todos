@@ -5,7 +5,7 @@ import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { tasksArrayKey } from "../../constants/constants"
 
-const TaskContext = React.createContext("")
+const AlertContext = React.createContext({ title: "", message: "" })
 
 const App = () => {
   const [tasksArray, setTasksArray] = useState([])
@@ -62,10 +62,14 @@ const App = () => {
         <Header />
         {renderTaskComponent}
         {showAlert ? (
-          <AlertComponent
-            title="This task already exists:"
-            message={alertMessage}
-          />
+          <AlertContext.Provider
+            value={{
+              title: "This task already exists:",
+              message: alertMessage,
+            }}
+          >
+            <AlertComponent />
+          </AlertContext.Provider>
         ) : null}
         <CreateNewTask addNewTask={addNewTask} />
       </div>
@@ -73,4 +77,4 @@ const App = () => {
   )
 }
 
-export default App
+export { App, AlertContext }
