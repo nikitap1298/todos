@@ -5,6 +5,8 @@ import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { tasksArrayKey } from "../../constants/constants"
 
+const TaskContext = React.createContext("")
+
 const App = () => {
   const [tasksArray, setTasksArray] = useState([])
   const [showAlert, setShowAlert] = useState(false)
