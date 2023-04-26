@@ -46,9 +46,7 @@ const App = () => {
               <AlertComponent />
             </AlertContext.Provider>
           ) : null}
-          {/* <CreateNewTaskContext.Provider value={{ addNewTask }}>
           <CreateNewTask />
-        </CreateNewTaskContext.Provider> */}
         </TaskContextProvider>
       </div>
     </div>
