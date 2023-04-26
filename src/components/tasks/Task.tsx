@@ -1,10 +1,15 @@
 import React from "react"
 import { Form } from "react-bootstrap"
-import { TaskContext } from "../app/App"
 import "./Task.scss"
 
-const Task = () => {
-  const { task, onDelete, arrayIndex } = React.useContext(TaskContext)
+interface TaskProps {
+  task: string
+  onDelete: (index: number) => void
+  taskIndex: number
+}
+
+const Task = (props: TaskProps) => {
+  const { task, onDelete, taskIndex } = props
 
   return (
     <div className="task">
@@ -14,7 +19,7 @@ const Task = () => {
           <Form.Check
             type="checkbox"
             label=""
-            onChange={() => onDelete(arrayIndex)}
+            onChange={() => onDelete(taskIndex)}
           />
         </Form>
       </div>
