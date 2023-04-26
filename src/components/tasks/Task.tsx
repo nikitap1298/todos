@@ -1,17 +1,15 @@
 import React from "react"
 import { Form } from "react-bootstrap"
-
-
+import "./Task.scss"
 
 interface TaskProps {
-  task: string,
-  taskIndex: number,
-  onDelete: (index: number) => void,
+  task: string
+  onDelete: (index: number) => void
+  taskIndex: number
 }
 
-
 const Task = (props: TaskProps) => {
-  const { task, onDelete, taskIndex } = props;
+  const { task, onDelete, taskIndex } = props
 
   return (
     <div className="task">

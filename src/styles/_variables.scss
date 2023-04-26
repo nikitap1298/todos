@@ -1,20 +1,29 @@
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/variables';
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+// Fonts
+@font-face {
+  font-family: "DongleLight";
+  src: url("fonts/Dongle-Light.ttf") format("truetype");
+}
 
 @font-face {
-    font-family: 'Dongle';
-    src: url("fonts/Dongle-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: 'DongleBold';
-    src: url("fonts/Dongle-Bold.ttf") format("truetype");
-}
-@font-face {
-    font-family: 'DongleLight';
-    src: url("fonts/Dongle-Light.ttf") format("truetype");
+  font-family: "DongleRegular";
+  src: url("fonts/Dongle-Regular.ttf") format("truetype");
 }
 
-$defaultFont: 'Dongle', sans-serif;
-$defaultFontBold: 'DongleBold', sans-serif;
-$defaultFontLight: 'DongleLight', sans-serif;
+@font-face {
+  font-family: "DongleBold";
+  src: url("fonts/Dongle-Bold.ttf") format("truetype");
+}
+
+$dongleLight: "DongleLight", sans-serif;
+$dongleRegular: "DongleRegular", sans-serif;
+$dongleBold: "DongleBold", sans-serif;
+
+// Colors
+$colorBlue: #0078bc;
+$colorGray: #495057;
+$colorVanilla: #fff8eb;

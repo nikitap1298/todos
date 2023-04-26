@@ -1,33 +1,59 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { localStorageTasksKey } from "../constants/constants"
 
 const TaskContext = React.createContext({
-    tasks: [],
-    addTask: (newTask: string) => { },
-    deleteTask: (index: number) => { },
+  tasks: [],
+  addNewTask: (newTask: string) => {},
+  deleteTask: (index: number) => {},
+  showAlert: false,
+  alertMessage: ""
 })
 
 export const TaskContextProvider = ({ children }: any) => {
-    let [tasks, setTasks] = useState([])
+  let [tasks, setTasks] = useState([])
+  let [showAlert, setShowAlert] = useState(false)
+  let [alertMessage, setAlertMessage] = useState("")
 
-    useEffect(() => {
-        const tasksArrayLocalStorage = JSON.parse(
-            localStorage.getItem(localStorageTasksKey)
-        )
-        if (tasksArrayLocalStorage) {
-            setTasks(tasksArrayLocalStorage)
-        }
-    }, [])
+  // Load tasksArray from localStorage
+  useEffect(() => {
+    const tasksArrayLocalStorage = JSON.parse(
+      localStorage.getItem(localStorageTasksKey)
+    )
+    if (tasksArrayLocalStorage) {
+      setTasks(tasksArrayLocalStorage)
+    }
+  }, [])
 
-    const addTask = (newTask: string) => { }
-    const deleteTask = (index: number) => { }
+  const addNewTask = (newTask: string) => {
+    const capitalizedMessage =
+      newTask.charAt(0).toUpperCase() + newTask.slice(1)
 
-    return <TaskContext.Provider value={{ tasks, addTask, deleteTask }}>
-        {children}
+    // User can't add the same task
+    if (!tasks.includes(capitalizedMessage) && capitalizedMessage !== "") {
+      setTasks((oldArray) => [...oldArray, capitalizedMessage])
+      setShowAlert(false)
+      localStorage.setItem(
+        localStorageTasksKey,
+        JSON.stringify([...tasks, capitalizedMessage])
+      )
+    } else if (tasks.includes(capitalizedMessage)) {
+      setAlertMessage(capitalizedMessage)
+      setShowAlert(true)
+    }
+  }
+
+  const deleteTask = (index: number) => {
+    const newTasks = [...tasks]
+    newTasks.splice(index, 1)
+    setTasks(newTasks)
+    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
+  }
+
+  return (
+    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask, showAlert, alertMessage }}>
+      {children}
     </TaskContext.Provider>
+  )
 }
-export const useTaskContext = (): any => useContext(TaskContext) as any
 
-// export const CreateNewTaskContext = React.createContext({
-//   addNewTask: (_newTask: string) => {},
-// })
+export const useTaskContext = (): any => useContext(TaskContext) as any
