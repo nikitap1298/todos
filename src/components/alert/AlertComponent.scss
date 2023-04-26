@@ -1,0 +1,13 @@
+@import "/src/styles/variables";
+
+.alert {
+  div {
+    font-family: $dongleRegular;
+    font-size: 2rem;
+  }
+
+  p {
+    font-family: $dongleLight;
+    font-size: 2rem;
+  }
+}

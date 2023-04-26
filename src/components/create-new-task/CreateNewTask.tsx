@@ -1,23 +1,24 @@
 import React, { useState } from "react"
 import { Form, Button } from "react-bootstrap"
-import { CreateNewTaskContext } from "../app/App"
+import { useTaskContext } from "../../context/TaskContext"
+import "./CreateNewTask.scss"
 
 const CreateNewTask = () => {
-  const { addNewTask } = React.useContext(CreateNewTaskContext)
+  const { addNewTask } = useTaskContext()
 
-  const [newTaskName, setNewTaskName] = useState("")
+  let [newTask, setNewTask] = useState("")
 
   const handleNewTaskInputChange = (event) => {
-    setNewTaskName(event.target.value)
+    setNewTask(event.target.value)
   }
 
   const handleAddClick = (event) => {
     // Turn off the refresh of the page after user click 'enter' in form
     event.preventDefault()
-    addNewTask(newTaskName)
+    addNewTask(newTask)
 
     // Delete text from input
-    setNewTaskName("")
+    setNewTask("")
   }
 
   return (
@@ -27,7 +28,7 @@ const CreateNewTask = () => {
           type="text"
           placeholder="Add some task"
           size="lg"
-          value={newTaskName}
+          value={newTask}
           onChange={handleNewTaskInputChange}
         />
         <Button variant="secondary" size="lg" onClick={handleAddClick}>

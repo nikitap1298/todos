@@ -1,8 +1,11 @@
+// For using Bootstrap inside components. Importing the Bootstrap CSS
 @import "~bootstrap/scss/bootstrap";
+
+@import "/src/styles/variables";
 
 .app {
   height: 100vh;
-  background-color: #fff8eb;
+  background-color: $colorVanilla;
   display: flex;
   flex-direction: column;
   justify-content: center;
