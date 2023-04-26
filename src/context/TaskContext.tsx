@@ -5,10 +5,14 @@ const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
   deleteTask: (index: number) => {},
+  showAlert: false,
+  alertMessage: ""
 })
 
 export const TaskContextProvider = ({ children }: any) => {
   let [tasks, setTasks] = useState([])
+  let [showAlert, setShowAlert] = useState(false)
+  let [alertMessage, setAlertMessage] = useState("")
 
   // Load tasksArray from localStorage
   useEffect(() => {
@@ -27,14 +31,14 @@ export const TaskContextProvider = ({ children }: any) => {
     // User can't add the same task
     if (!tasks.includes(capitalizedMessage) && capitalizedMessage !== "") {
       setTasks((oldArray) => [...oldArray, capitalizedMessage])
-      //   setShowAlert(false)
+      setShowAlert(false)
       localStorage.setItem(
         localStorageTasksKey,
         JSON.stringify([...tasks, capitalizedMessage])
       )
     } else if (tasks.includes(capitalizedMessage)) {
-      //   setAlertMessage(capitalizedMessage)
-      //   setShowAlert(true)
+      setAlertMessage(capitalizedMessage)
+      setShowAlert(true)
     }
   }
 
@@ -46,7 +50,7 @@ export const TaskContextProvider = ({ children }: any) => {
   }
 
   return (
-    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask, showAlert, alertMessage }}>
       {children}
     </TaskContext.Provider>
   )
