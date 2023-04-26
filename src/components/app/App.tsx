@@ -3,18 +3,12 @@ import Header from "../header/Header"
 import Task from "../task/Task"
 import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
-import { tasksArrayKey } from "../../constants/constants"
+import { localStorageTasksKey } from "../../constants/constants"
 import "./App.scss"
+import { TaskContextProvider } from "../../context/TaskContext"
+import Tasks from "../task/Tasks"
 
-const TaskContext = React.createContext({
-  task: "",
-  onDelete: (_index: number) => {},
-  arrayIndex: 0,
-})
 const AlertContext = React.createContext({ title: "", message: "" })
-const CreateNewTaskContext = React.createContext({
-  addNewTask: (_newTask: string) => {},
-})
 
 const App = () => {
   const [tasksArray, setTasksArray] = useState([])
@@ -24,7 +18,7 @@ const App = () => {
   // Load tasksArray from localStorage
   useEffect(() => {
     const tasksArrayLocalStorage = JSON.parse(
-      localStorage.getItem(tasksArrayKey)
+      localStorage.getItem(localStorageTasksKey)
     )
     if (tasksArrayLocalStorage) {
       setTasksArray(tasksArrayLocalStorage)
@@ -40,7 +34,7 @@ const App = () => {
       setTasksArray((oldArray) => [...oldArray, capitalizedMessage])
       setShowAlert(false)
       localStorage.setItem(
-        tasksArrayKey,
+        localStorageTasksKey,
         JSON.stringify([...tasksArray, capitalizedMessage])
       )
     } else if (tasksArray.includes(capitalizedMessage)) {
@@ -53,27 +47,16 @@ const App = () => {
     const newTasksArray = [...tasksArray]
     newTasksArray.splice(index, 1)
     setTasksArray(newTasksArray)
-    localStorage.setItem(tasksArrayKey, JSON.stringify([...newTasksArray]))
+    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasksArray]))
   }
 
-  const renderTaskComponent = tasksArray.map((task) => (
-    <TaskContext.Provider
-      key={task}
-      value={{
-        task: task,
-        onDelete: deleteTask,
-        arrayIndex: tasksArray.indexOf(task),
-      }}
-    >
-      <Task />
-    </TaskContext.Provider>
-  ))
 
   return (
     <div className="app">
       <div style={{ width: "45%" }}>
         <Header />
-        {renderTaskComponent}
+        <TaskContextProvider>
+          <Tasks/>
         {showAlert ? (
           <AlertContext.Provider
             value={{
@@ -84,9 +67,10 @@ const App = () => {
             <AlertComponent />
           </AlertContext.Provider>
         ) : null}
-        <CreateNewTaskContext.Provider value={{ addNewTask }}>
+        {/* <CreateNewTaskContext.Provider value={{ addNewTask }}>
           <CreateNewTask />
-        </CreateNewTaskContext.Provider>
+        </CreateNewTaskContext.Provider> */}
+        </TaskContextProvider>
       </div>
     </div>
   )
