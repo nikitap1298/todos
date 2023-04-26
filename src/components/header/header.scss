@@ -1,6 +1,8 @@
+@import '../../styles/variables';
 .header {
+
   h1 {
-    font-family: "Dongle", sans-serif;
+    font-family: $defaultFont;
     font-size: 4.5rem;
     font-weight: 400;
     color: #0078bc;

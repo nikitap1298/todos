@@ -1,0 +1,21 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/variables';
+
+
+@font-face {
+    font-family: 'Dongle';
+    src: url("fonts/Dongle-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'DongleBold';
+    src: url("fonts/Dongle-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'DongleLight';
+    src: url("fonts/Dongle-Light.ttf") format("truetype");
+}
+
+$defaultFont: 'Dongle', sans-serif;
+$defaultFontBold: 'DongleBold', sans-serif;
+$defaultFontLight: 'DongleLight', sans-serif;

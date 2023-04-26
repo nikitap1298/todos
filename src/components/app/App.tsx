@@ -4,6 +4,7 @@ import Task from "../task/Task"
 import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { tasksArrayKey } from "../../constants/constants"
+import "./App.scss"
 
 const TaskContext = React.createContext({
   task: "",
