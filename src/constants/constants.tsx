@@ -1,3 +1,3 @@
-const tasksArrayKey: string = "tasksArrayKey"
+const localStorageTasksKey: string = "localStorageTasksKey"
 
-export { tasksArrayKey }
+export { localStorageTasksKey }

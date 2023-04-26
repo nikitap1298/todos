@@ -3,7 +3,8 @@ import Header from "../header/Header"
 import Task from "../task/Task"
 import AlertComponent from "../alert/AlertComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
-import { tasksArrayKey } from "../../constants/constants"
+import { localStorageTasksKey } from "../../constants/constants"
+import "./App.scss"
 
 const TaskContext = React.createContext({
   task: "",
@@ -23,7 +24,7 @@ const App = () => {
   // Load tasksArray from localStorage
   useEffect(() => {
     const tasksArrayLocalStorage = JSON.parse(
-      localStorage.getItem(tasksArrayKey)
+      localStorage.getItem(localStorageTasksKey)
     )
     if (tasksArrayLocalStorage) {
       setTasksArray(tasksArrayLocalStorage)
@@ -39,7 +40,7 @@ const App = () => {
       setTasksArray((oldArray) => [...oldArray, capitalizedMessage])
       setShowAlert(false)
       localStorage.setItem(
-        tasksArrayKey,
+        localStorageTasksKey,
         JSON.stringify([...tasksArray, capitalizedMessage])
       )
     } else if (tasksArray.includes(capitalizedMessage)) {
@@ -52,7 +53,10 @@ const App = () => {
     const newTasksArray = [...tasksArray]
     newTasksArray.splice(index, 1)
     setTasksArray(newTasksArray)
-    localStorage.setItem(tasksArrayKey, JSON.stringify([...newTasksArray]))
+    localStorage.setItem(
+      localStorageTasksKey,
+      JSON.stringify([...newTasksArray])
+    )
   }
 
   const renderTaskComponent = tasksArray.map((task) => (

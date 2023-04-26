@@ -1,6 +1,7 @@
 import React from "react"
 import { Form } from "react-bootstrap"
 import { TaskContext } from "../app/App"
+import "./Task.scss"
 
 const Task = () => {
   const { task, onDelete, arrayIndex } = React.useContext(TaskContext)

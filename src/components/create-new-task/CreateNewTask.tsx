@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { CreateNewTaskContext } from "../app/App"
 
+import "./CreateNewTask.scss"
+
 const CreateNewTask = () => {
   const { addNewTask } = React.useContext(CreateNewTaskContext)
 
