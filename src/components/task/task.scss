@@ -1,3 +1,5 @@
+@import "/src/styles/variables";
+
 .task {
   div {
     display: flex;
@@ -7,15 +9,14 @@
 
   h1 {
     margin: 0;
-    font-family: "Dongle", sans-serif;
+    font-family: $dongleLight;
     font-size: 2.5rem;
-    font-weight: 300;
-    color: #495057;
+    color: $colorGray;
   }
 
   hr {
     margin-top: 0;
-    border: 2.5px solid #0078bc;
+    border: 2.5px solid $colorBlue;
     border-radius: 2.5px;
     opacity: 0.4;
   }
