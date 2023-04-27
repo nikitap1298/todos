@@ -1,6 +1,15 @@
 import React from "react"
 import { Form } from "react-bootstrap"
 import "./Task.scss"
+import { PriorityEnum } from "../../enums/PriorityEnum"
+
+interface TaskInterface {
+  title: string
+  priority: PriorityEnum
+  createdAt: Date
+  finished: boolean
+  finishedAt: Date
+}
 
 interface TaskProps {
   task: string
