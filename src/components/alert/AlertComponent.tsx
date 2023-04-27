@@ -1,20 +1,26 @@
 import React from "react"
 import { Alert } from "react-bootstrap"
-import { useTaskContext } from "../../context/TaskContext"
 import "./AlertComponent.scss"
 
-function AlertComponent() {
-  const { showAlert, alertMessage } = useTaskContext()
+interface AlertComponentProps {
+  alert: string
+  onDelete: (index: number) => void
+  alertIndex: number
+}
+
+function AlertComponent(props: AlertComponentProps) {
+  const { alert, onDelete, alertIndex } = props
 
   return (
-    <>
-      {showAlert ? (
-        <Alert className="alert" variant="danger" dismissible>
-          <Alert.Heading>This task already exists:</Alert.Heading>
-          <p>{alertMessage}</p>
-        </Alert>
-      ) : null}
-    </>
+    <Alert
+      className="alert"
+      variant="danger"
+      dismissible
+      onClick={() => onDelete(alertIndex)}
+    >
+      <Alert.Heading>This task already exists:</Alert.Heading>
+      <p>{alert}</p>
+    </Alert>
   )
 }
 

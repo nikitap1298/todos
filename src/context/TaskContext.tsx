@@ -1,18 +1,16 @@
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageTasksKey } from "../constants/constants"
+import { useAlertContext } from "./AlertContext"
 
 const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
   deleteTask: (index: number) => {},
-  showAlert: false,
-  alertMessage: ""
 })
 
 export const TaskContextProvider = ({ children }: any) => {
+  const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   let [tasks, setTasks] = useState([])
-  let [showAlert, setShowAlert] = useState(false)
-  let [alertMessage, setAlertMessage] = useState("")
 
   // Load tasksArray from localStorage
   useEffect(() => {
@@ -31,14 +29,16 @@ export const TaskContextProvider = ({ children }: any) => {
     // User can't add the same task
     if (!tasks.includes(capitalizedMessage) && capitalizedMessage !== "") {
       setTasks((oldArray) => [...oldArray, capitalizedMessage])
-      setShowAlert(false)
+      deleteAllAlerts()
       localStorage.setItem(
         localStorageTasksKey,
         JSON.stringify([...tasks, capitalizedMessage])
       )
-    } else if (tasks.includes(capitalizedMessage)) {
-      setAlertMessage(capitalizedMessage)
-      setShowAlert(true)
+    } else if (
+      tasks.includes(capitalizedMessage) &&
+      !alerts.includes(capitalizedMessage)
+    ) {
+      addAlert(capitalizedMessage)
     }
   }
 
@@ -50,7 +50,7 @@ export const TaskContextProvider = ({ children }: any) => {
   }
 
   return (
-    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask, showAlert, alertMessage }}>
+    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask }}>
       {children}
     </TaskContext.Provider>
   )

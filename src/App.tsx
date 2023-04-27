@@ -1,0 +1,27 @@
+import React from "react"
+import Header from "./components/header/Header"
+import { AlertContextProvider } from "./context/AlertContext"
+import AlertsComponent from "./components/alert/AlertsComponent"
+import { TaskContextProvider } from "./context/TaskContext"
+import Tasks from "./components/tasks/Tasks"
+import CreateNewTask from "./components/create-new-task/CreateNewTask"
+import "./App.scss"
+
+const App = () => {
+  return (
+    <div className="app">
+      <div style={{ width: "45%", marginBottom: "25px" }}>
+        <Header />
+        <AlertContextProvider>
+          <TaskContextProvider>
+            <Tasks />
+            <AlertsComponent />
+            <CreateNewTask />
+          </TaskContextProvider>
+        </AlertContextProvider>
+      </div>
+    </div>
+  )
+}
+
+export default App
