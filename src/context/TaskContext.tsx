@@ -27,15 +27,18 @@ export const TaskContextProvider = ({ children }: any) => {
       newTask.charAt(0).toUpperCase() + newTask.slice(1)
 
     // User can't add the same task
-    if (!tasks.includes(capitalizedMessage) && capitalizedMessage !== "") {
-      setTasks((oldArray) => [...oldArray, capitalizedMessage])
+    if (
+      !tasks.some((element) => element.title === capitalizedMessage) &&
+      capitalizedMessage !== ""
+    ) {
+      setTasks((oldArray) => [...oldArray, { title: capitalizedMessage }])
       deleteAllAlerts()
       localStorage.setItem(
         localStorageTasksKey,
-        JSON.stringify([...tasks, capitalizedMessage])
+        JSON.stringify([...tasks, { title: capitalizedMessage }])
       )
     } else if (
-      tasks.includes(capitalizedMessage) &&
+      tasks.some((element) => element.title === capitalizedMessage) &&
       !alerts.includes(capitalizedMessage)
     ) {
       addAlert(capitalizedMessage)

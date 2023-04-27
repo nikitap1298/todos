@@ -8,8 +8,13 @@ const Tasks = () => {
   return (
     <div>
       {tasks.map((task, index) => (
-        // Use "task" as a key attribute. Using "index" will create a bug
-        <Task key={task} task={task} onDelete={deleteTask} taskIndex={index} />
+        // Use "task.title" as a key attribute. Using "task" or "index" will create a bug
+        <Task
+          key={task.title}
+          task={task}
+          onDelete={deleteTask}
+          taskIndex={index}
+        />
       ))}
     </div>
   )

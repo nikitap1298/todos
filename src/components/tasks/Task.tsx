@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Form } from "react-bootstrap"
 import "./Task.scss"
 import { PriorityEnum } from "../../enums/PriorityEnum"
@@ -12,7 +12,7 @@ interface TaskInterface {
 }
 
 interface TaskProps {
-  task: string
+  task: TaskInterface
   onDelete: (index: number) => void
   taskIndex: number
 }
@@ -23,7 +23,7 @@ const Task = (props: TaskProps) => {
   return (
     <div className="task">
       <div>
-        <h1>{task}</h1>
+        <h1>{task.title}</h1>
         <div>
           <p>Date</p>
           <Form>
