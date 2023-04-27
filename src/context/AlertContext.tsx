@@ -4,23 +4,30 @@ const AlertContext = React.createContext({
   alerts: [],
   addAlert: (newAlert: string) => {},
   deleteAlert: (index: number) => {},
+  deleteAllAlerts: () => {},
 })
 
 export const AlertContextProvider = ({ children }: any) => {
-  let [alerts, setAlerts] = useState([])
+  let [alerts, setAlertMessages] = useState([])
 
   const addAlert = (newAlert: string) => {
-    setAlerts((oldArray) => [...oldArray, newAlert])
+    setAlertMessages((oldArray) => [...oldArray, newAlert])
   }
 
   const deleteAlert = (index: number) => {
     const allAlerts = [...alerts]
     allAlerts.splice(index, 1)
-    setAlerts(allAlerts)
+    setAlertMessages(allAlerts)
+  }
+
+  const deleteAllAlerts = () => {
+    setAlertMessages([])
   }
 
   return (
-    <AlertContext.Provider value={{ alerts, addAlert, deleteAlert }}>
+    <AlertContext.Provider
+      value={{ alerts, addAlert, deleteAlert, deleteAllAlerts }}
+    >
       {children}
     </AlertContext.Provider>
   )

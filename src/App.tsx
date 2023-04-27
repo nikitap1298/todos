@@ -1,6 +1,7 @@
 import React from "react"
 import Header from "./components/header/Header"
-import AlertComponent from "./components/alert/AlertComponent"
+import { AlertContextProvider } from "./context/AlertContext"
+import AlertsComponent from "./components/alert/AlertsComponent"
 import { TaskContextProvider } from "./context/TaskContext"
 import Tasks from "./components/tasks/Tasks"
 import CreateNewTask from "./components/create-new-task/CreateNewTask"
@@ -9,13 +10,15 @@ import "./App.scss"
 const App = () => {
   return (
     <div className="app">
-      <div style={{ width: "45%" }}>
+      <div style={{ width: "45%", marginBottom: "25px" }}>
         <Header />
-        <TaskContextProvider>
-          <Tasks />
-          <AlertComponent />
-          <CreateNewTask />
-        </TaskContextProvider>
+        <AlertContextProvider>
+          <TaskContextProvider>
+            <Tasks />
+            <AlertsComponent />
+            <CreateNewTask />
+          </TaskContextProvider>
+        </AlertContextProvider>
       </div>
     </div>
   )
