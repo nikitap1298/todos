@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import "./Task.scss"
 import { PriorityEnum } from "../../enums/PriorityEnum"
@@ -24,13 +24,16 @@ const Task = (props: TaskProps) => {
     <div className="task">
       <div>
         <h1>{task}</h1>
-        <Form>
-          <Form.Check
-            type="checkbox"
-            label=""
-            onChange={() => onDelete(taskIndex)}
-          />
-        </Form>
+        <div>
+          <p>Date</p>
+          <Form>
+            <Form.Check
+              type="checkbox"
+              label=""
+              onChange={() => onDelete(taskIndex)}
+            />
+          </Form>
+        </div>
       </div>
       <hr></hr>
     </div>
