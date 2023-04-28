@@ -10,20 +10,21 @@ interface TaskInterface {
 }
 
 interface TaskProps {
+  className: string
   task: TaskInterface
   onComplete: (index: number) => void
   taskIndex: number
 }
 
 const Task = (props: TaskProps) => {
-  const {task, onComplete, taskIndex } = props
+  const { className, task, onComplete, taskIndex } = props
 
   return (
-    <div className="task">
+    <div className={className}>
       <div>
         <h1>{task.title}</h1>
         <div>
-          <p>{task.createdAt}</p>
+          <p>{task.finished ? task.finishedAt : task.createdAt}</p>
           <Form>
             <Form.Check
               type="checkbox"

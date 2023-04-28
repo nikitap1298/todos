@@ -19,7 +19,7 @@
     margin: 0 20px 0 0;
     font-family: $dongleLight;
     font-size: 1.5rem;
-    color: $colorGray;
+    color: $colorGreen;
   }
 
   hr {
@@ -50,7 +50,11 @@
     margin: 0 20px 0 0;
     font-family: $dongleLight;
     font-size: 1.5rem;
-    color: $colorGray;
+    color: $colorRed;
+  }
+
+  input {
+    display: none;
   }
 
   hr {
