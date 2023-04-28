@@ -11,12 +11,12 @@ interface TaskInterface {
 
 interface TaskProps {
   task: TaskInterface
-  onDelete: (index: number) => void
+  onComplete: (index: number) => void
   taskIndex: number
 }
 
 const Task = (props: TaskProps) => {
-  const { task, onDelete, taskIndex } = props
+  const {task, onComplete, taskIndex } = props
 
   return (
     <div className="task">
@@ -28,7 +28,7 @@ const Task = (props: TaskProps) => {
             <Form.Check
               type="checkbox"
               label=""
-              onChange={() => onDelete(taskIndex)}
+              onChange={() => onComplete(taskIndex)}
             />
           </Form>
         </div>

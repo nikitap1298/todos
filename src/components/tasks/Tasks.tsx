@@ -3,7 +3,7 @@ import { useTaskContext } from "../../context/TaskContext"
 import Task from "./Task"
 
 const Tasks = () => {
-  const { tasks, deleteTask } = useTaskContext()
+  const { tasks, completeTask } = useTaskContext()
 
   return (
     <div>
@@ -12,7 +12,7 @@ const Tasks = () => {
         <Task
           key={task.title}
           task={task}
-          onDelete={deleteTask}
+          onComplete={completeTask}
           taskIndex={index}
         />
       ))}

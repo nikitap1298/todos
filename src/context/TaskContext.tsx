@@ -5,7 +5,7 @@ import { useAlertContext } from "./AlertContext"
 const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
-  deleteTask: (index: number) => {},
+  completeTask: (index: number) => {},
 })
 
 export const TaskContextProvider = ({ children }: any) => {
@@ -70,7 +70,7 @@ export const TaskContextProvider = ({ children }: any) => {
     }
   }
 
-  const deleteTask = (index: number) => {
+  const completeTask = (index: number) => {
     const newTasks = [...tasks]
     newTasks.splice(index, 1)
     setTasks(newTasks)
@@ -78,7 +78,7 @@ export const TaskContextProvider = ({ children }: any) => {
   }
 
   return (
-    <TaskContext.Provider value={{ tasks, addNewTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, addNewTask, completeTask }}>
       {children}
     </TaskContext.Provider>
   )
