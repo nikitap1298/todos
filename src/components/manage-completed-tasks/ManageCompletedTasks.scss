@@ -1,0 +1,15 @@
+@import "/src/styles/variables";
+
+.manage-completed-tasks {
+  margin: 5px 0;
+
+  button {
+    border: none;
+    border-radius: 6px;
+    background-color: $colorRed;
+  }
+
+  button:hover {
+    background-color: $colorRed;
+  }
+}

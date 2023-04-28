@@ -6,6 +6,7 @@ const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
   completeTask: (index: number) => {},
+  deleteCompletedTasks: () => {},
 })
 
 export const TaskContextProvider = ({ children }: any) => {
@@ -85,8 +86,16 @@ export const TaskContextProvider = ({ children }: any) => {
     // setTasks(newTasks)
   }
 
+  const deleteCompletedTasks = () => {
+    const newTasks = tasks.filter((task) => task.finished !== true)
+    setTasks([...newTasks])
+    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
+  }
+
   return (
-    <TaskContext.Provider value={{ tasks, addNewTask, completeTask }}>
+    <TaskContext.Provider
+      value={{ tasks, addNewTask, completeTask, deleteCompletedTasks }}
+    >
       {children}
     </TaskContext.Provider>
   )

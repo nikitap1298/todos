@@ -1,5 +1,6 @@
 import React from "react"
 import Header from "./components/header/Header"
+import ManageCompletedTasks from "./components/manage-completed-tasks/ManageCompletedTasks"
 import { AlertContextProvider } from "./context/AlertContext"
 import AlertsComponent from "./components/alert/AlertsComponent"
 import { TaskContextProvider } from "./context/TaskContext"
@@ -14,6 +15,7 @@ const App = () => {
         <Header />
         <AlertContextProvider>
           <TaskContextProvider>
+            <ManageCompletedTasks />
             <Tasks />
             <AlertsComponent />
             <CreateNewTask />
