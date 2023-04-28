@@ -92,6 +92,9 @@ export const TaskContextProvider = ({ children }: any) => {
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
   }
 
+  // Sort tasks by "finished" value
+  tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
+
   return (
     <TaskContext.Provider
       value={{ tasks, addNewTask, completeTask, deleteCompletedTasks }}
