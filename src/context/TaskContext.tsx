@@ -77,11 +77,12 @@ export const TaskContextProvider = ({ children }: any) => {
     newTasks[index].finished = !newTasks[index].finished
     if (newTasks[index].finished) {
       newTasks[index].finishedAt = formattedDate
+      setTasks([...newTasks])
     }
+    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
 
     // newTasks.splice(index, 1)
     // setTasks(newTasks)
-    // localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
   }
 
   return (
