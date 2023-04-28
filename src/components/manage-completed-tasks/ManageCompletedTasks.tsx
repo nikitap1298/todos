@@ -22,7 +22,7 @@ const ManageCompletedTasks = () => {
     } else {
       setClassName("manage-completed-tasks-hidden")
     }
-  }, [tasks])
+  }, [tasks, finishedIsTrue])
 
   return (
     <div className={className}>
