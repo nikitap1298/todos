@@ -12,6 +12,17 @@ export const TaskContextProvider = ({ children }: any) => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   let [tasks, setTasks] = useState([])
 
+  const date = new Date()
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    hour: "numeric",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }
+  const formatter = new Intl.DateTimeFormat("en-DE", options)
+  const formattedDate = formatter.format(date).replace(" at", "")
+
   // Load tasksArray from localStorage
   useEffect(() => {
     const tasksArrayLocalStorage = JSON.parse(
@@ -31,11 +42,25 @@ export const TaskContextProvider = ({ children }: any) => {
       !tasks.some((element) => element.title === capitalizedMessage) &&
       capitalizedMessage !== ""
     ) {
-      setTasks((oldArray) => [...oldArray, { title: capitalizedMessage }])
+      setTasks((oldArray) => [
+        ...oldArray,
+        {
+          title: capitalizedMessage,
+          createdAt: formattedDate,
+          finished: false,
+        },
+      ])
       deleteAllAlerts()
       localStorage.setItem(
         localStorageTasksKey,
-        JSON.stringify([...tasks, { title: capitalizedMessage }])
+        JSON.stringify([
+          ...tasks,
+          {
+            title: capitalizedMessage,
+            createdAt: formattedDate,
+            finished: false,
+          },
+        ])
       )
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&

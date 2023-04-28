@@ -10,7 +10,7 @@ import "./App.scss"
 const App = () => {
   return (
     <div className="app">
-      <div style={{ width: "45%", marginBottom: "25px" }}>
+      <div style={{ width: "55%", marginBottom: "25px" }}>
         <Header />
         <AlertContextProvider>
           <TaskContextProvider>

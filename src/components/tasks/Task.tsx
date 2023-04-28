@@ -4,9 +4,9 @@ import "./Task.scss"
 
 interface TaskInterface {
   title: string
-  createdAt: Date
+  createdAt: string
   finished: boolean
-  finishedAt: Date
+  finishedAt: string
 }
 
 interface TaskProps {
@@ -23,7 +23,7 @@ const Task = (props: TaskProps) => {
       <div>
         <h1>{task.title}</h1>
         <div>
-          <p>Date</p>
+          <p>{task.createdAt}</p>
           <Form>
             <Form.Check
               type="checkbox"
