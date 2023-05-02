@@ -93,6 +93,9 @@ export const TaskContextProvider = ({ children }: any) => {
   }
 
   // Sort tasks by "finished" value
+  tasks.sort((a, b) =>
+    new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
+  )
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (
