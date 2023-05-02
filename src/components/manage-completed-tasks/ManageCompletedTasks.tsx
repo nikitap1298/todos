@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Button } from "react-bootstrap"
+import { DropdownButton, Dropdown } from "react-bootstrap"
 import { useTaskContext } from "../../context/TaskContext"
 import "./ManageCompletedTasks.scss"
 
@@ -14,9 +14,9 @@ const ManageCompletedTasks = () => {
   useEffect(() => {
     if (tasks.some((element) => element.finished === true)) {
       if (finishedIsTrue.length <= 1) {
-        setButtonTitle("Delete completed task")
+        setButtonTitle("task")
       } else {
-        setButtonTitle("Delete completed tasks")
+        setButtonTitle("tasks")
       }
       setClassName("manage-completed-tasks")
     } else {
@@ -26,9 +26,17 @@ const ManageCompletedTasks = () => {
 
   return (
     <div className={className}>
-      <Button variant="secondary" size="sm" onClick={deleteCompletedTasks}>
+      <DropdownButton title="Edit" size="sm">
+        <Dropdown.Item eventKey="1">
+          Show / hide completed {buttonTitle}
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="2" onClick={deleteCompletedTasks}>
+          Delete completed {buttonTitle}
+        </Dropdown.Item>
+      </DropdownButton>
+      {/* <Button variant="secondary" size="sm" onClick={deleteCompletedTasks}>
         {buttonTitle}
-      </Button>
+      </Button> */}
     </div>
   )
 }

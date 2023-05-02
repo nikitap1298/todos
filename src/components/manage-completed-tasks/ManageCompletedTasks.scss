@@ -6,11 +6,15 @@
   button {
     border: none;
     border-radius: 6px;
-    background-color: $colorRed;
+    background-color: $colorBlue;
   }
 
   button:hover {
-    background-color: $colorRed;
+    background-color: $colorBlue;
+  }
+
+  button.show {
+    background-color: $colorBlue;
   }
 }
 
