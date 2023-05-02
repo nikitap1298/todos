@@ -2,8 +2,13 @@ import React from "react"
 import { Alert } from "react-bootstrap"
 import "./AlertComponent.scss"
 
+interface AlertInterface {
+  title: string
+  message: string
+}
+
 interface AlertComponentProps {
-  alert: string
+  alert: AlertInterface
   onDelete: (index: number) => void
   alertIndex: number
 }
@@ -18,8 +23,8 @@ function AlertComponent(props: AlertComponentProps) {
       dismissible
       onClick={() => onDelete(alertIndex)}
     >
-      <Alert.Heading>This task already exists:</Alert.Heading>
-      <p>{alert}</p>
+      <Alert.Heading>{alert.title}</Alert.Heading>
+      <p>{alert.message}</p>
     </Alert>
   )
 }

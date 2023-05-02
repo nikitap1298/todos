@@ -12,6 +12,53 @@
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorGray;
+    width: 70%;
+  }
+
+  p {
+    margin: 0 20px 0 0;
+    font-family: $dongleLight;
+    font-size: 1.5rem;
+    color: $colorGreen;
+  }
+
+  input {
+    margin-top: -2px;
+  }
+
+  hr {
+    margin-top: 0;
+    border: 2.5px solid $colorBlue;
+    border-radius: 2.5px;
+    opacity: 0.4;
+  }
+}
+
+.selected-task {
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: $dongleLight;
+    font-size: 2.5rem;
+    color: $colorRed;
+    width: 70%;
+    // text-decoration: line-through;
+  }
+
+  p {
+    margin: 0 20px 0 0;
+    font-family: $dongleLight;
+    font-size: 1.5rem;
+    color: $colorRed;
+  }
+
+  input {
+    display: none;
   }
 
   hr {
