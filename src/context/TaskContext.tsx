@@ -9,6 +9,7 @@ const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
   completeTask: (index: number) => {},
+  showCompletedTasks: true,
   showOrHideCompletedTasks: () => {},
   deleteCompletedTasks: () => {},
 })
@@ -111,10 +112,7 @@ export const TaskContextProvider = ({ children }: any) => {
         new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
       )
     : tasks.filter((task) => !task.finished)
-  // console.log(tasks)
-
   tasks = filteredTasks
-  console.log(filteredTasks)
 
   // Sort tasks by "finished" value
   // tasks.sort((a, b) =>
@@ -128,6 +126,7 @@ export const TaskContextProvider = ({ children }: any) => {
         tasks,
         addNewTask,
         completeTask,
+        showCompletedTasks,
         showOrHideCompletedTasks,
         deleteCompletedTasks,
       }}
