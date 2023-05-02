@@ -1,17 +1,22 @@
 import React, { useContext, useEffect, useState } from "react"
-import { localStorageTasksKey } from "../constants/constants"
+import {
+  localStorageTasksKey,
+  localStorageShowCompletedTasksKey,
+} from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 
 const TaskContext = React.createContext({
   tasks: [],
   addNewTask: (newTask: string) => {},
   completeTask: (index: number) => {},
+  showOrHideCompletedTasks: () => {},
   deleteCompletedTasks: () => {},
 })
 
 export const TaskContextProvider = ({ children }: any) => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   let [tasks, setTasks] = useState([])
+  let [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const date = new Date()
   const options: Intl.DateTimeFormatOptions = {
@@ -29,9 +34,13 @@ export const TaskContextProvider = ({ children }: any) => {
     const tasksArrayLocalStorage = JSON.parse(
       localStorage.getItem(localStorageTasksKey)
     )
+    const showCompletedTasksLocalStorage = JSON.parse(
+      localStorage.getItem(localStorageShowCompletedTasksKey)
+    )
     if (tasksArrayLocalStorage) {
       setTasks(tasksArrayLocalStorage)
     }
+    setShowCompletedTasks(showCompletedTasksLocalStorage)
   }, [])
 
   const addNewTask = (newTask: string) => {
@@ -81,9 +90,14 @@ export const TaskContextProvider = ({ children }: any) => {
       setTasks([...newTasks])
     }
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
+  }
 
-    // newTasks.splice(index, 1)
-    // setTasks(newTasks)
+  const showOrHideCompletedTasks = () => {
+    setShowCompletedTasks(!showCompletedTasks)
+    localStorage.setItem(
+      localStorageShowCompletedTasksKey,
+      JSON.stringify(!showCompletedTasks)
+    )
   }
 
   const deleteCompletedTasks = () => {
@@ -92,15 +106,31 @@ export const TaskContextProvider = ({ children }: any) => {
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
   }
 
+  const filteredTasks = showCompletedTasks
+    ? tasks.sort((a, b) =>
+        new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
+      )
+    : tasks.filter((task) => !task.finished)
+  // console.log(tasks)
+
+  tasks = filteredTasks
+  console.log(filteredTasks)
+
   // Sort tasks by "finished" value
-  tasks.sort((a, b) =>
-    new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
-  )
+  // tasks.sort((a, b) =>
+  //   new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
+  // )
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (
     <TaskContext.Provider
-      value={{ tasks, addNewTask, completeTask, deleteCompletedTasks }}
+      value={{
+        tasks,
+        addNewTask,
+        completeTask,
+        showOrHideCompletedTasks,
+        deleteCompletedTasks,
+      }}
     >
       {children}
     </TaskContext.Provider>

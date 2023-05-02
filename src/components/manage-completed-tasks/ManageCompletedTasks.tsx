@@ -4,9 +4,9 @@ import { useTaskContext } from "../../context/TaskContext"
 import "./ManageCompletedTasks.scss"
 
 const ManageCompletedTasks = () => {
-  const { tasks, deleteCompletedTasks } = useTaskContext()
-  let [className, setClassName] = useState("manage-completed-tasks-hidden")
-  let [buttonTitle, setButtonTitle] = useState("Delete completed task")
+  const { tasks, showOrHideCompletedTasks, deleteCompletedTasks } =
+    useTaskContext()
+  let [buttonTitle, setButtonTitle] = useState("task")
 
   // Check if objects in "tasks" contains "finished === true"
   const finishedIsTrue = tasks.filter((element) => element.finished === true)
@@ -18,16 +18,13 @@ const ManageCompletedTasks = () => {
       } else {
         setButtonTitle("tasks")
       }
-      setClassName("manage-completed-tasks")
-    } else {
-      setClassName("manage-completed-tasks-hidden")
     }
   }, [tasks, finishedIsTrue])
 
   return (
-    <div className={className}>
+    <div className="manage-completed-tasks">
       <DropdownButton title="Edit" size="sm">
-        <Dropdown.Item eventKey="1">
+        <Dropdown.Item eventKey="1" onClick={showOrHideCompletedTasks}>
           Show / hide completed {buttonTitle}
         </Dropdown.Item>
         <Dropdown.Item eventKey="2" onClick={deleteCompletedTasks}>
