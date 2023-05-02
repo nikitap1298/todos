@@ -9,7 +9,7 @@ const AlertsComponent = () => {
     <div>
       {alerts.map((alert, index) => (
         <AlertComponent
-          key={alert}
+          key={Math.random()}
           alert={alert}
           onDelete={deleteAlert}
           alertIndex={index}

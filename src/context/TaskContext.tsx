@@ -77,7 +77,10 @@ export const TaskContextProvider = ({ children }: any) => {
       tasks.some((element) => element.title === capitalizedMessage) &&
       !alerts.includes(capitalizedMessage)
     ) {
-      addAlert(capitalizedMessage)
+      addAlert({
+        title: "This task already exists:",
+        message: capitalizedMessage,
+      })
     }
   }
 
