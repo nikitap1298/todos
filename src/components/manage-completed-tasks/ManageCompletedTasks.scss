@@ -4,9 +4,12 @@
   margin: 5px 0;
 
   button {
+    padding: 2px 4px 0 8px;
     border: none;
     border-radius: 6px;
     background-color: $colorBlue;
+    font-family: $dongleRegular;
+    font-size: 1.5rem;
   }
 
   button:hover {
@@ -15,5 +18,15 @@
 
   button.show {
     background-color: $colorBlue;
+  }
+
+  .dropdown-item {
+    font-family: $dongleRegular;
+    font-size: 1.5rem;
+    color: $colorGray;
+  }
+
+  .dropdown-item:hover {
+    color: $colorGray;
   }
 }
