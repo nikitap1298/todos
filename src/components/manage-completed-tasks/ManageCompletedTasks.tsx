@@ -18,7 +18,7 @@ const ManageCompletedTasks = () => {
 
   return (
     <div className="manage-completed-tasks">
-      <DropdownButton title="Edit" size="sm">
+      <DropdownButton variant="secondary" title="Edit" size="sm">
         <Dropdown.Item eventKey="1" onClick={showOrHideCompletedTasks}>
           {firstButtonTitle}
         </Dropdown.Item>
