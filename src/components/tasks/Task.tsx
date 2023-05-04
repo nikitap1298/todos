@@ -1,13 +1,7 @@
 import React from "react"
 import { Form } from "react-bootstrap"
 import "./Task.scss"
-
-interface TaskInterface {
-  title: string
-  createdAt: string
-  finished: boolean
-  finishedAt: string
-}
+import { TaskInterface } from "../../lib/interfaces/task.interface"
 
 interface TaskProps {
   className: string

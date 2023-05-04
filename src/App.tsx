@@ -1,6 +1,6 @@
 import React from "react"
-import Header from "./components/header/Header"
-import ManageCompletedTasks from "./components/manage-completed-tasks/ManageCompletedTasks"
+import { Header } from "./components/header/Header"
+import CompletedTasksDropdown from "./components/manage-completed-tasks/ManageCompletedTasks"
 import { AlertContextProvider } from "./context/AlertContext"
 import AlertsComponent from "./components/alert/AlertsComponent"
 import { TaskContextProvider } from "./context/TaskContext"
@@ -8,14 +8,15 @@ import Tasks from "./components/tasks/Tasks"
 import CreateNewTask from "./components/create-new-task/CreateNewTask"
 import "./App.scss"
 
-const App = () => {
+
+export default function App (): JSX.Element {
   return (
     <div className="app">
       <div style={{ width: "55%", marginBottom: "25px" }}>
         <Header />
         <AlertContextProvider>
           <TaskContextProvider>
-            <ManageCompletedTasks />
+            <CompletedTasksDropdown />
             <Tasks />
             <AlertsComponent />
             <CreateNewTask />
@@ -25,5 +26,3 @@ const App = () => {
     </div>
   )
 }
-
-export default App

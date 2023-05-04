@@ -4,6 +4,8 @@ import {
   localStorageShowCompletedTasksKey,
 } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
+import { TaskInterface } from "../lib/interfaces/task.interface"
+
 
 const TaskContext = React.createContext({
   tasks: [],
@@ -16,8 +18,8 @@ const TaskContext = React.createContext({
 
 export const TaskContextProvider = ({ children }: any) => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
-  let [tasks, setTasks] = useState([])
-  let [showCompletedTasks, setShowCompletedTasks] = useState(true)
+  const [tasks, setTasks] = useState([])
+  const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const date = new Date()
   const options: Intl.DateTimeFormatOptions = {
@@ -85,7 +87,7 @@ export const TaskContextProvider = ({ children }: any) => {
   }
 
   const completeTask = (index: number) => {
-    const newTasks = [...tasks]
+    const newTasks: TaskInterface[] = [...tasks]
 
     // Toggle "finished" value
     newTasks[index].finished = !newTasks[index].finished

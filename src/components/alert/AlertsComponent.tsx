@@ -1,6 +1,7 @@
 import React from "react"
 import { useAlertContext } from "../../context/AlertContext"
 import AlertComponent from "./AlertComponent"
+import { v4 as uuid } from 'uuid';
 
 const AlertsComponent = () => {
   const { alerts, deleteAlert } = useAlertContext()
@@ -9,7 +10,7 @@ const AlertsComponent = () => {
     <div>
       {alerts.map((alert, index) => (
         <AlertComponent
-          key={Math.random()}
+          key={uuid()}
           alert={alert}
           onDelete={deleteAlert}
           alertIndex={index}
