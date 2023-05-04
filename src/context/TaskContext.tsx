@@ -66,8 +66,8 @@ export const TaskContextProvider = ({
         {
           title: capitalizedMessage,
           createdAt: formattedDate,
-          finishedAt: "",
           finished: false,
+          finishedAt: "",
         },
       ])
       deleteAllAlerts()
