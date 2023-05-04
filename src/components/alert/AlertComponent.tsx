@@ -19,7 +19,7 @@ export default function AlertComponent(
       className="alert"
       variant="danger"
       dismissible
-      onClick={() => onDelete(alertIndex)}
+      onClick={(): void => onDelete(alertIndex)}
     >
       <Alert.Heading>{alert.title}</Alert.Heading>
       <p>{alert.message}</p>

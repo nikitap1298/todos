@@ -1,7 +1,7 @@
 import React from "react"
 import { Form } from "react-bootstrap"
-import "./Task.scss"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
+import "./Task.scss"
 
 interface TaskProps {
   className: string
@@ -23,7 +23,7 @@ export default function Task(props: TaskProps): JSX.Element {
             <Form.Check
               type="checkbox"
               label=""
-              onChange={() => onComplete(taskIndex)}
+              onChange={(): void => onComplete(taskIndex)}
             />
           </Form>
         </div>

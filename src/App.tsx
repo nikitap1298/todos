@@ -1,5 +1,5 @@
 import React from "react"
-import { Header } from "./components/header/Header"
+import Header from "./components/header/Header"
 import { AlertContextProvider } from "./context/AlertContext"
 import AlertsComponent from "./components/alert/AlertsComponent"
 import { TaskContextProvider } from "./context/TaskContext"

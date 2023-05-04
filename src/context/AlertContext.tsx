@@ -2,25 +2,25 @@ import React, { useContext, useState } from "react"
 
 const AlertContext = React.createContext({
   alerts: [],
-  addAlert: (newAlert: string) => {},
-  deleteAlert: (index: number) => {},
-  deleteAllAlerts: () => {},
+  addAlert: (newAlert: string): void => void {},
+  deleteAlert: (index: number): void => void {},
+  deleteAllAlerts: (): void => void {},
 })
 
-export const AlertContextProvider = ({ children }: any) => {
-  let [alerts, setAlertMessages] = useState([])
+export const AlertContextProvider = ({ children }: any): JSX.Element => {
+  const [alerts, setAlertMessages] = useState([])
 
-  const addAlert = (newAlert: string) => {
+  const addAlert = (newAlert: string): void => {
     setAlertMessages((oldArray) => [...oldArray, newAlert])
   }
 
-  const deleteAlert = (index: number) => {
+  const deleteAlert = (index: number): void => {
     const allAlerts = [...alerts]
     allAlerts.splice(index, 1)
     setAlertMessages(allAlerts)
   }
 
-  const deleteAllAlerts = () => {
+  const deleteAllAlerts = (): void => {
     setAlertMessages([])
   }
 

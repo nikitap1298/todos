@@ -6,19 +6,18 @@ import {
 import { useAlertContext } from "./AlertContext"
 import { TaskInterface } from "../lib/interfaces/task.interface"
 
-
 const TaskContext = React.createContext({
-  tasks: [],
-  addNewTask: (newTask: string) => {},
-  completeTask: (index: number) => {},
+  tasks: [{}],
+  addNewTask: (newTask: string): void => void {},
+  completeTask: (index: number): void => void {},
   showCompletedTasks: true,
-  showOrHideCompletedTasks: () => {},
-  deleteCompletedTasks: () => {},
+  showOrHideCompletedTasks: (): void => void {},
+  deleteCompletedTasks: (): void => void {},
 })
 
 export const TaskContextProvider = ({ children }: any) => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const date = new Date()
@@ -34,19 +33,19 @@ export const TaskContextProvider = ({ children }: any) => {
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    const tasksArrayLocalStorage = JSON.parse(
-      localStorage.getItem(localStorageTasksKey)
+    const tasksArrayLocalStorage = localStorage.getItem(localStorageTasksKey)
+    const showCompletedTasksLocalStorage = localStorage.getItem(
+      localStorageShowCompletedTasksKey
     )
-    const showCompletedTasksLocalStorage = JSON.parse(
-      localStorage.getItem(localStorageShowCompletedTasksKey)
-    )
-    if (tasksArrayLocalStorage) {
-      setTasks(tasksArrayLocalStorage)
+    if (typeof tasksArrayLocalStorage === "string") {
+      setTasks(JSON.parse(tasksArrayLocalStorage))
     }
-    setShowCompletedTasks(showCompletedTasksLocalStorage)
+    if (typeof showCompletedTasksLocalStorage === "string") {
+      setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
+    }
   }, [])
 
-  const addNewTask = (newTask: string) => {
+  const addNewTask = (newTask: string): void => {
     const capitalizedMessage =
       newTask.charAt(0).toUpperCase() + newTask.slice(1)
 
@@ -86,7 +85,7 @@ export const TaskContextProvider = ({ children }: any) => {
     }
   }
 
-  const completeTask = (index: number) => {
+  const completeTask = (index: number): void => {
     const newTasks: TaskInterface[] = [...tasks]
 
     // Toggle "finished" value
@@ -98,7 +97,7 @@ export const TaskContextProvider = ({ children }: any) => {
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
   }
 
-  const showOrHideCompletedTasks = () => {
+  const showOrHideCompletedTasks = (): void => {
     setShowCompletedTasks(!showCompletedTasks)
     localStorage.setItem(
       localStorageShowCompletedTasksKey,
@@ -106,7 +105,7 @@ export const TaskContextProvider = ({ children }: any) => {
     )
   }
 
-  const deleteCompletedTasks = () => {
+  const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
