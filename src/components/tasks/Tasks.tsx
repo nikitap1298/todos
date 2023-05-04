@@ -2,7 +2,7 @@ import React from "react"
 import { useTaskContext } from "../../context/TaskContext"
 import Task from "./Task"
 
-const Tasks = () => {
+export default function Tasks(): JSX.Element {
   const { tasks, completeTask } = useTaskContext()
 
   return (
@@ -20,5 +20,3 @@ const Tasks = () => {
     </div>
   )
 }
-
-export default Tasks

@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap"
 import { useTaskContext } from "../../context/TaskContext"
 import "./CreateNewTask.scss"
 
-const CreateNewTask = () => {
+export default function CreateNewTask(): JSX.Element {
   const { addNewTask } = useTaskContext()
 
   let [newTask, setNewTask] = useState("")
@@ -38,5 +38,3 @@ const CreateNewTask = () => {
     </div>
   )
 }
-
-export default CreateNewTask

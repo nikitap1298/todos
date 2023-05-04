@@ -10,7 +10,7 @@ interface TaskProps {
   taskIndex: number
 }
 
-const Task = (props: TaskProps) => {
+export default function Task(props: TaskProps): JSX.Element {
   const { className, task, onComplete, taskIndex } = props
 
   return (
@@ -32,5 +32,3 @@ const Task = (props: TaskProps) => {
     </div>
   )
 }
-
-export default Task

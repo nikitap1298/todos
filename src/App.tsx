@@ -1,15 +1,14 @@
 import React from "react"
 import { Header } from "./components/header/Header"
-import CompletedTasksDropdown from "./components/manage-completed-tasks/ManageCompletedTasks"
 import { AlertContextProvider } from "./context/AlertContext"
 import AlertsComponent from "./components/alert/AlertsComponent"
 import { TaskContextProvider } from "./context/TaskContext"
+import CompletedTasksDropdown from "./components/completed-tasks-dropdown/CompletedTasksDropdown"
 import Tasks from "./components/tasks/Tasks"
 import CreateNewTask from "./components/create-new-task/CreateNewTask"
 import "./App.scss"
 
-
-export default function App (): JSX.Element {
+export default function App(): JSX.Element {
   return (
     <div className="app">
       <div style={{ width: "55%", marginBottom: "25px" }}>
