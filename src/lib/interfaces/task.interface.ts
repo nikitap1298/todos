@@ -7,7 +7,7 @@ export interface TaskInterface {
 
 export interface TaskContextInterface {
   tasks: TaskInterface[]
-  addNewTask: (newTask: string) => void
+  addNewTask: (newTaskTitle: string) => void
   completeTask: (index: number) => void
   showCompletedTasks: boolean
   showOrHideCompletedTasks: () => void

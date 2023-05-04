@@ -7,7 +7,7 @@ import "./CreateNewTask.scss"
 export default function CreateNewTask(): JSX.Element {
   const { addNewTask } = useTaskContext()
 
-  const [newTask, setNewTask] = useState("")
+  const [newTaskTitle, setNewTask] = useState("")
 
   const handleNewTaskInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -18,7 +18,7 @@ export default function CreateNewTask(): JSX.Element {
   const handleAddClick = (event: MouseFormEvent): void => {
     // Turn off the refresh of the page after user click 'enter' in form
     event.preventDefault()
-    addNewTask(newTask)
+    addNewTask(newTaskTitle)
 
     // Delete text from input
     setNewTask("")
@@ -31,7 +31,7 @@ export default function CreateNewTask(): JSX.Element {
           type="text"
           placeholder="Add some task"
           size="lg"
-          value={newTask}
+          value={newTaskTitle}
           onChange={handleNewTaskInputChange}
         />
         <Button variant="secondary" size="lg" onClick={handleAddClick}>

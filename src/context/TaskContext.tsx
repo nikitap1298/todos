@@ -13,7 +13,7 @@ import { ContextProviderProps } from "../lib/custom-types/custom-types"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
-  addNewTask: (newTask: string): void => void {},
+  addNewTask: (newTaskTitle: string): void => void {},
   completeTask: (index: number): void => void {},
   showCompletedTasks: true,
   showOrHideCompletedTasks: (): void => void {},
@@ -52,9 +52,9 @@ export const TaskContextProvider = ({
     }
   }, [])
 
-  const addNewTask = (newTask: string): void => {
+  const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
-      newTask.charAt(0).toUpperCase() + newTask.slice(1)
+      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1)
 
     // User can't add the same task
     if (
