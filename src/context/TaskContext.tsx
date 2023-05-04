@@ -1,24 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react"
 import {
   localStorageTasksKey,
   localStorageShowCompletedTasksKey,
 } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
-import { TaskInterface } from "../lib/interfaces/task.interface"
+import {
+  TaskContextInterface,
+  TaskInterface,
+} from "../lib/interfaces/task.interface"
+import { ContextProviderProps } from "../lib/custom-types/custom-types"
 
-
-const TaskContext = React.createContext({
+const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
-  addNewTask: (newTask: string) => {},
-  completeTask: (index: number) => {},
+  addNewTask: (newTaskTitle: string): void => void {},
+  completeTask: (index: number): void => void {},
   showCompletedTasks: true,
-  showOrHideCompletedTasks: () => {},
-  deleteCompletedTasks: () => {},
+  showOrHideCompletedTasks: (): void => void {},
+  deleteCompletedTasks: (): void => void {},
 })
 
-export const TaskContextProvider = ({ children }: any) => {
+export const TaskContextProvider = ({
+  children,
+}: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const date = new Date()
@@ -34,21 +40,21 @@ export const TaskContextProvider = ({ children }: any) => {
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    const tasksArrayLocalStorage = JSON.parse(
-      localStorage.getItem(localStorageTasksKey)
+    const tasksArrayLocalStorage = localStorage.getItem(localStorageTasksKey)
+    const showCompletedTasksLocalStorage = localStorage.getItem(
+      localStorageShowCompletedTasksKey
     )
-    const showCompletedTasksLocalStorage = JSON.parse(
-      localStorage.getItem(localStorageShowCompletedTasksKey)
-    )
-    if (tasksArrayLocalStorage) {
-      setTasks(tasksArrayLocalStorage)
+    if (typeof tasksArrayLocalStorage === "string") {
+      setTasks(JSON.parse(tasksArrayLocalStorage))
     }
-    setShowCompletedTasks(showCompletedTasksLocalStorage)
+    if (typeof showCompletedTasksLocalStorage === "string") {
+      setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
+    }
   }, [])
 
-  const addNewTask = (newTask: string) => {
+  const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
-      newTask.charAt(0).toUpperCase() + newTask.slice(1)
+      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1)
 
     // User can't add the same task
     if (
@@ -61,6 +67,7 @@ export const TaskContextProvider = ({ children }: any) => {
           title: capitalizedMessage,
           createdAt: formattedDate,
           finished: false,
+          finishedAt: "",
         },
       ])
       deleteAllAlerts()
@@ -77,7 +84,7 @@ export const TaskContextProvider = ({ children }: any) => {
       )
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
-      !alerts.includes(capitalizedMessage)
+      !alerts.some((element) => element.message === capitalizedMessage)
     ) {
       addAlert({
         title: "This task already exists:",
@@ -86,7 +93,7 @@ export const TaskContextProvider = ({ children }: any) => {
     }
   }
 
-  const completeTask = (index: number) => {
+  const completeTask = (index: number): void => {
     const newTasks: TaskInterface[] = [...tasks]
 
     // Toggle "finished" value
@@ -98,7 +105,7 @@ export const TaskContextProvider = ({ children }: any) => {
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
   }
 
-  const showOrHideCompletedTasks = () => {
+  const showOrHideCompletedTasks = (): void => {
     setShowCompletedTasks(!showCompletedTasks)
     localStorage.setItem(
       localStorageShowCompletedTasksKey,
@@ -106,7 +113,7 @@ export const TaskContextProvider = ({ children }: any) => {
     )
   }
 
-  const deleteCompletedTasks = () => {
+  const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
     localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
@@ -136,4 +143,5 @@ export const TaskContextProvider = ({ children }: any) => {
   )
 }
 
-export const useTaskContext = (): any => useContext(TaskContext) as any
+export const useTaskContext = (): TaskContextInterface =>
+  useContext(TaskContext)

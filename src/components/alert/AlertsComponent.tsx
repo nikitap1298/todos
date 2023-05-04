@@ -1,16 +1,17 @@
 import React from "react"
 import { useAlertContext } from "../../context/AlertContext"
 import AlertComponent from "./AlertComponent"
-import { v4 as uuid } from 'uuid';
+import { AlertInterface } from "../../lib/interfaces/alert.interface"
+import { v4 as uuidv4 } from "uuid"
 
-const AlertsComponent = () => {
+export default function AlertsComponent(): JSX.Element {
   const { alerts, deleteAlert } = useAlertContext()
 
   return (
     <div>
-      {alerts.map((alert, index) => (
+      {alerts.map((alert: AlertInterface, index: number) => (
         <AlertComponent
-          key={uuid()}
+          key={uuidv4()}
           alert={alert}
           onDelete={deleteAlert}
           alertIndex={index}
@@ -19,5 +20,3 @@ const AlertsComponent = () => {
     </div>
   )
 }
-
-export default AlertsComponent

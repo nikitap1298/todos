@@ -1,11 +1,7 @@
 import React from "react"
 import { Alert } from "react-bootstrap"
+import { AlertInterface } from "../../lib/interfaces/alert.interface"
 import "./AlertComponent.scss"
-
-interface AlertInterface {
-  title: string
-  message: string
-}
 
 interface AlertComponentProps {
   alert: AlertInterface
@@ -13,7 +9,9 @@ interface AlertComponentProps {
   alertIndex: number
 }
 
-function AlertComponent(props: AlertComponentProps) {
+export default function AlertComponent(
+  props: AlertComponentProps
+): JSX.Element {
   const { alert, onDelete, alertIndex } = props
 
   return (
@@ -21,12 +19,10 @@ function AlertComponent(props: AlertComponentProps) {
       className="alert"
       variant="danger"
       dismissible
-      onClick={() => onDelete(alertIndex)}
+      onClick={(): void => onDelete(alertIndex)}
     >
       <Alert.Heading>{alert.title}</Alert.Heading>
       <p>{alert.message}</p>
     </Alert>
   )
 }
-
-export default AlertComponent

@@ -1,26 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from "react"
+import { ContextProviderProps } from "../lib/custom-types/custom-types"
+import {
+  AlertContextInterface,
+  AlertInterface,
+} from "../lib/interfaces/alert.interface"
 
-const AlertContext = React.createContext({
+const AlertContext = React.createContext<AlertContextInterface>({
   alerts: [],
-  addAlert: (newAlert: string) => {},
-  deleteAlert: (index: number) => {},
-  deleteAllAlerts: () => {},
+  addAlert: (newAlert: AlertInterface): void => void {},
+  deleteAlert: (index: number): void => void {},
+  deleteAllAlerts: (): void => void {},
 })
 
-export const AlertContextProvider = ({ children }: any) => {
-  let [alerts, setAlertMessages] = useState([])
+export const AlertContextProvider = ({
+  children,
+}: ContextProviderProps): JSX.Element => {
+  const [alerts, setAlertMessages] = useState<AlertInterface[]>([])
 
-  const addAlert = (newAlert: string) => {
+  const addAlert = (newAlert: AlertInterface): void => {
     setAlertMessages((oldArray) => [...oldArray, newAlert])
   }
 
-  const deleteAlert = (index: number) => {
+  const deleteAlert = (index: number): void => {
     const allAlerts = [...alerts]
     allAlerts.splice(index, 1)
     setAlertMessages(allAlerts)
   }
 
-  const deleteAllAlerts = () => {
+  const deleteAllAlerts = (): void => {
     setAlertMessages([])
   }
 
@@ -33,4 +41,5 @@ export const AlertContextProvider = ({ children }: any) => {
   )
 }
 
-export const useAlertContext = (): any => useContext(AlertContext) as any
+export const useAlertContext = (): AlertContextInterface =>
+  useContext(AlertContext)
