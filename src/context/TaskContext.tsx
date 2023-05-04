@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react"
 import {
   localStorageTasksKey,
   localStorageShowCompletedTasksKey,
 } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
-import { TaskInterface } from "../lib/interfaces/task.interface"
+import {
+  TaskContextInterface,
+  TaskInterface,
+} from "../lib/interfaces/task.interface"
+import { ContextProviderProps } from "../lib/custom-types/custom-types"
 
-const TaskContext = React.createContext({
-  tasks: [{}],
+const TaskContext = React.createContext<TaskContextInterface>({
+  tasks: [],
   addNewTask: (newTask: string): void => void {},
   completeTask: (index: number): void => void {},
   showCompletedTasks: true,
@@ -15,7 +20,9 @@ const TaskContext = React.createContext({
   deleteCompletedTasks: (): void => void {},
 })
 
-export const TaskContextProvider = ({ children }: any) => {
+export const TaskContextProvider = ({
+  children,
+}: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
@@ -59,6 +66,7 @@ export const TaskContextProvider = ({ children }: any) => {
         {
           title: capitalizedMessage,
           createdAt: formattedDate,
+          finishedAt: "",
           finished: false,
         },
       ])
@@ -76,7 +84,7 @@ export const TaskContextProvider = ({ children }: any) => {
       )
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
-      !alerts.includes(capitalizedMessage)
+      !alerts.some((element) => element.message === capitalizedMessage)
     ) {
       addAlert({
         title: "This task already exists:",
@@ -135,4 +143,5 @@ export const TaskContextProvider = ({ children }: any) => {
   )
 }
 
-export const useTaskContext = (): any => useContext(TaskContext) as any
+export const useTaskContext = (): TaskContextInterface =>
+  useContext(TaskContext)

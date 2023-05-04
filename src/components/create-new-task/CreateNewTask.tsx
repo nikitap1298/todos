@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { useTaskContext } from "../../context/TaskContext"
-import { MouseFormEvent } from "../../lib/uniontypes/uniontypes"
+import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./CreateNewTask.scss"
 
 export default function CreateNewTask(): JSX.Element {
