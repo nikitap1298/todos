@@ -8,9 +8,9 @@ import {
 
 const AlertContext = React.createContext<AlertContextInterface>({
   alerts: [],
-  addAlert: (newAlert: AlertInterface): void => void {},
-  deleteAlert: (index: number): void => void {},
-  deleteAllAlerts: (): void => void {},
+  addAlert: (newAlert: AlertInterface) => void {},
+  deleteAlert: (index: number) => void {},
+  deleteAllAlerts: () => void {},
 })
 
 export const AlertContextProvider = ({

@@ -13,11 +13,11 @@ import { ContextProviderProps } from "../lib/custom-types/custom-types"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
-  addNewTask: (newTaskTitle: string): void => void {},
-  completeTask: (index: number): void => void {},
+  addNewTask: (newTaskTitle: string) => void{},
+  completeTask: (index: number) => void {},
   showCompletedTasks: true,
-  showOrHideCompletedTasks: (): void => void {},
-  deleteCompletedTasks: (): void => void {},
+  showOrHideCompletedTasks: () => void {},
+  deleteCompletedTasks: () => void {},
 })
 
 export const TaskContextProvider = ({
