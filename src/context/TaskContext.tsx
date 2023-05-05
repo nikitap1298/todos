@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react"
 import {
   localStorageTasksKey,
@@ -13,8 +12,8 @@ import { ContextProviderProps } from "../lib/custom-types/custom-types"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
-  addNewTask: (newTaskTitle: string) => void{},
-  completeTask: (index: number) => void {},
+  addNewTask: () => void {},
+  completeTask: () => void {},
   showCompletedTasks: true,
   showOrHideCompletedTasks: () => void {},
   deleteCompletedTasks: () => void {},

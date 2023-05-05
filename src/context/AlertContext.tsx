@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import {
@@ -8,8 +7,8 @@ import {
 
 const AlertContext = React.createContext<AlertContextInterface>({
   alerts: [],
-  addAlert: (newAlert: AlertInterface) => void {},
-  deleteAlert: (index: number) => void {},
+  addAlert: () => void {},
+  deleteAlert: () => void {},
   deleteAllAlerts: () => void {},
 })
 
