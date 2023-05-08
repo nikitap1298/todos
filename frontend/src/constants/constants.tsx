@@ -1,4 +1,4 @@
-const localStorageTasksKey = "localStorageTasksKey"
+const backendServerURL = "http://localhost:8000/tasks"
 const localStorageShowCompletedTasksKey = "localStorageShowCompletedTasksKey"
 
-export { localStorageTasksKey, localStorageShowCompletedTasksKey }
+export { backendServerURL, localStorageShowCompletedTasksKey }

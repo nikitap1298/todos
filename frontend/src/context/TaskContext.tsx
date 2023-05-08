@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
-  localStorageTasksKey,
+  backendServerURL,
   localStorageShowCompletedTasksKey,
 } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
@@ -37,8 +37,20 @@ export const TaskContextProvider = ({
   const formatter = new Intl.DateTimeFormat("en-DE", options)
   const formattedDate = formatter.format(date).replace(" at", "")
 
+  // Load tasksArray from localStorage
+  useEffect(() => {
+    fetchTasksFromServer()
+    const showCompletedTasksLocalStorage = localStorage.getItem(
+      localStorageShowCompletedTasksKey
+    )
+    if (typeof showCompletedTasksLocalStorage === "string") {
+      setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
+    }
+  }, [])
+
+  // Server Connection
   const fetchTasksFromServer = (): void => {
-    fetch("http://localhost:8000/tasks", {
+    fetch(backendServerURL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +62,7 @@ export const TaskContextProvider = ({
   }
 
   const sendTasksToServer = (data: TaskInterface[]): void => {
-    fetch("http://localhost:8000/tasks", {
+    fetch(backendServerURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,26 +71,15 @@ export const TaskContextProvider = ({
     }).catch((error) => Error(`Error sending tasks: ${error}`))
   }
 
-  const deleteTasksOnServer = (data: TaskInterface[]): void => {
-    fetch("http://localhost:8000/tasks", {
-      method: "DELETE",
+  const updateTasksOnServer = (data: TaskInterface[]): void => {
+    fetch(backendServerURL, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).catch((error) => Error(`Error deleting tasks: ${error}`))
+    }).catch((error) => Error(`Error updating tasks: ${error}`))
   }
-
-  // Load tasksArray from localStorage
-  useEffect(() => {
-    fetchTasksFromServer()
-    const showCompletedTasksLocalStorage = localStorage.getItem(
-      localStorageShowCompletedTasksKey
-    )
-    if (typeof showCompletedTasksLocalStorage === "string") {
-      setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
-    }
-  }, [])
 
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
@@ -128,7 +129,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
     }
-    sendTasksToServer([...newTasks])
+    updateTasksOnServer([...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -142,7 +143,7 @@ export const TaskContextProvider = ({
   const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
-    // sendTasks([...newTasks])
+    updateTasksOnServer([...newTasks])
   }
 
   // Filter or sort tasks

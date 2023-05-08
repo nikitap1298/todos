@@ -12,27 +12,29 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
 
-app.get("/tasks", (req, res) => {
-  res.json(tasks)
-})
-
-app.post("/tasks", (req, res) => {
-  const dataArray = req.body
-
-  dataArray.forEach((element: TaskInterface) => {
-    const exists = tasks.some((task) => {
-      return (
-        task.title === element.title && task.createdAt === element.createdAt
-      )
-    })
-
-    if (!exists) {
-      tasks.push(element)
-    }
+app
+  .route("/tasks")
+  .get((req, res) => {
+    res.json(tasks)
   })
+  .post((req, res) => {
+    const dataArray = req.body
+    dataArray.forEach((element: TaskInterface) => {
+      const exists = tasks.some((task) => {
+        return (
+          task.title === element.title && task.createdAt === element.createdAt
+        )
+      })
 
-  console.log(tasks)
-})
+      if (!exists) {
+        tasks.push(element)
+      }
+    })
+  })
+  .put((req, res) => {
+    const updatedArray = req.body
+    tasks = updatedArray
+  })
 
 app.listen(port, () => {
   console.log("Server is running on port " + port)
