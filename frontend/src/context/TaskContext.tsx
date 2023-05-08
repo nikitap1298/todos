@@ -37,15 +37,44 @@ export const TaskContextProvider = ({
   const formatter = new Intl.DateTimeFormat("en-DE", options)
   const formattedDate = formatter.format(date).replace(" at", "")
 
+  const fetchTasksFromServer = (): void => {
+    fetch("http://localhost:8000/tasks", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setTasks(data))
+      .catch((error) => Error(`Error fetching tasks: ${error}`))
+  }
+
+  const sendTasksToServer = (data: TaskInterface[]): void => {
+    fetch("http://localhost:8000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).catch((error) => Error(`Error sending tasks: ${error}`))
+  }
+
+  const deleteTasksOnServer = (data: TaskInterface[]): void => {
+    fetch("http://localhost:8000/tasks", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).catch((error) => Error(`Error deleting tasks: ${error}`))
+  }
+
   // Load tasksArray from localStorage
   useEffect(() => {
-    const tasksArrayLocalStorage = localStorage.getItem(localStorageTasksKey)
+    fetchTasksFromServer()
     const showCompletedTasksLocalStorage = localStorage.getItem(
       localStorageShowCompletedTasksKey
     )
-    if (typeof tasksArrayLocalStorage === "string") {
-      setTasks(JSON.parse(tasksArrayLocalStorage))
-    }
     if (typeof showCompletedTasksLocalStorage === "string") {
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
     }
@@ -70,17 +99,15 @@ export const TaskContextProvider = ({
         },
       ])
       deleteAllAlerts()
-      localStorage.setItem(
-        localStorageTasksKey,
-        JSON.stringify([
-          ...tasks,
-          {
-            title: capitalizedMessage,
-            createdAt: formattedDate,
-            finished: false,
-          },
-        ])
-      )
+      sendTasksToServer([
+        ...tasks,
+        {
+          title: capitalizedMessage,
+          createdAt: formattedDate,
+          finished: false,
+          finishedAt: "",
+        },
+      ])
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
       !alerts.some((element) => element.message === capitalizedMessage)
@@ -101,7 +128,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
     }
-    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
+    sendTasksToServer([...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -115,7 +142,7 @@ export const TaskContextProvider = ({
   const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
-    localStorage.setItem(localStorageTasksKey, JSON.stringify([...newTasks]))
+    // sendTasks([...newTasks])
   }
 
   // Filter or sort tasks
