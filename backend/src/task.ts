@@ -8,8 +8,6 @@ import { TaskInterface } from "./lib/interfaces/task.interface"
 const app = express()
 const port = 8000
 
-let tasks: TaskInterface[] = []
-
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
@@ -41,29 +39,27 @@ app
   .post((req, res) => {
     const dataArray = req.body
     dataArray.forEach((element: TaskInterface) => {
-      const exists = tasks.some((task) => {
-        return (
-          task.title === element.title && task.createdAt === element.createdAt
-        )
-      })
-
-      if (!exists) {
-        tasks.push(element)
-
-        const el = new Tasks({
-          title: element.title,
-          createdAt: element.createdAt,
-          finished: element.finished,
-          finishedAt: element.finishedAt,
+      Tasks.find({}).then((tasks) => {
+        const exists = tasks.some((task) => {
+          return (
+            task.title === element.title && task.createdAt === element.createdAt
+          )
         })
-        el.save()
-      }
+
+        if (!exists) {
+          const task = new Tasks({
+            title: element.title,
+            createdAt: element.createdAt,
+            finished: element.finished,
+            finishedAt: element.finishedAt,
+          })
+          task.save()
+        }
+      })
     })
   })
   .put((req, res) => {
     const updatedArray = req.body
-    tasks = updatedArray
-    
   })
 
 app.listen(port, () => {
