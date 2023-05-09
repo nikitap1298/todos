@@ -6,7 +6,7 @@ export class APIService {
     "Content-Type": "application/json",
   }
 
-  methodGET = (path: string): Promise<TaskInterface[]> => {
+  protected methodGET = (path: string): Promise<TaskInterface[]> => {
     return fetch(backendServerURL + path, {
       method: "GET",
       headers: this.headers,
@@ -20,7 +20,7 @@ export class APIService {
       })
   }
 
-  methodPOST = (path: string, data: TaskInterface[]): void => {
+  protected methodPOST = (path: string, data: TaskInterface[]): void => {
     fetch(backendServerURL + path, {
       method: "POST",
       headers: this.headers,
@@ -30,7 +30,7 @@ export class APIService {
     })
   }
 
-  methodPUT = (path: string, data: TaskInterface[]): void => {
+  protected methodPUT = (path: string, data: TaskInterface[]): void => {
     fetch(backendServerURL + path, {
       method: "PUT",
       headers: this.headers,

@@ -7,7 +7,7 @@ import {
   TaskInterface,
 } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import { TaskService } from "../services/task-service"
+import { TasksService } from "../services/tasks-service"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
@@ -36,18 +36,13 @@ export const TaskContextProvider = ({
   const formatter = new Intl.DateTimeFormat("en-DE", options)
   const formattedDate = formatter.format(date).replace(" at", "")
 
-  const tasksService = new TaskService()
+  const tasksService = new TasksService()
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    tasksService
-      .methodGET("/tasks")
-      .then((data) => {
-        setTasks(data)
-      })
-      .catch((error) => {
-        throw new Error(error)
-      })
+    tasksService.readTasks().then((tasks) => {
+      setTasks(tasks)
+    })
 
     const showCompletedTasksLocalStorage = localStorage.getItem(
       localStorageShowCompletedTasksKey
@@ -76,7 +71,7 @@ export const TaskContextProvider = ({
         },
       ])
       deleteAllAlerts()
-      tasksService.methodPOST("/tasks", [
+      tasksService.sendTasks([
         ...tasks,
         {
           title: capitalizedMessage,
@@ -105,7 +100,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
     }
-    tasksService.methodPUT("/tasks", [...newTasks])
+    tasksService.updateTask([...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -119,7 +114,7 @@ export const TaskContextProvider = ({
   const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
-    tasksService.methodPUT("/tasks", [...newTasks])
+    tasksService.updateTask([...newTasks])
   }
 
   // Filter or sort tasks

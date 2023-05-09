@@ -28,12 +28,10 @@ const tasksSchema = new mongoose.Schema({
 const Tasks = mongoose.model("Tasks", tasksSchema)
 
 app
-  .route("/tasks")
+  .route("/task")
   .get((req, res) => {
     Tasks.find({}).then((tasks) => {
       res.json(tasks)
-      console.log(tasks)
-      tasks = tasks
     })
   })
   .post((req, res) => {
@@ -60,6 +58,18 @@ app
   })
   .put((req, res) => {
     const updatedArray = req.body
+
+    console.log("PUT Method")
+
+    // Tasks.find({}).then((tasks) => {
+    //   tasks.forEach((task) => {
+    //     Tasks.updateOne({
+    //       title: task.title
+    //     }, {
+    //       finished: true
+    //     })
+    //   })
+    // })
   })
 
 app.listen(port, () => {
