@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
-import {
-  backendServerURL,
-  localStorageShowCompletedTasksKey,
-} from "../constants/constants"
+import { localStorageShowCompletedTasksKey } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 import {
   TaskContextInterface,
   TaskInterface,
 } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
+import { TaskService } from "../services/task-service"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
@@ -37,9 +35,19 @@ export const TaskContextProvider = ({
   const formatter = new Intl.DateTimeFormat("en-DE", options)
   const formattedDate = formatter.format(date).replace(" at", "")
 
+  const tasksService = new TaskService()
+
   // Load tasksArray from localStorage
   useEffect(() => {
-    fetchTasksFromServer()
+    tasksService
+      .methodGET("/tasks")
+      .then((data) => {
+        setTasks(data)
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+
     const showCompletedTasksLocalStorage = localStorage.getItem(
       localStorageShowCompletedTasksKey
     )
@@ -47,39 +55,6 @@ export const TaskContextProvider = ({
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
     }
   }, [])
-
-  // Server Connection
-  const fetchTasksFromServer = (): void => {
-    fetch(backendServerURL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setTasks(data))
-      .catch((error) => Error(`Error fetching tasks: ${error}`))
-  }
-
-  const sendTasksToServer = (data: TaskInterface[]): void => {
-    fetch(backendServerURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch((error) => Error(`Error sending tasks: ${error}`))
-  }
-
-  const updateTasksOnServer = (data: TaskInterface[]): void => {
-    fetch(backendServerURL, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch((error) => Error(`Error updating tasks: ${error}`))
-  }
 
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
@@ -100,7 +75,7 @@ export const TaskContextProvider = ({
         },
       ])
       deleteAllAlerts()
-      sendTasksToServer([
+      tasksService.methodPOST("/tasks", [
         ...tasks,
         {
           title: capitalizedMessage,
@@ -129,7 +104,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
     }
-    updateTasksOnServer([...newTasks])
+    tasksService.methodPUT("/tasks", [...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -143,7 +118,7 @@ export const TaskContextProvider = ({
   const deleteCompletedTasks = (): void => {
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
-    updateTasksOnServer([...newTasks])
+    tasksService.methodPUT("/tasks", [...newTasks])
   }
 
   // Filter or sort tasks
