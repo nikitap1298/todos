@@ -59,17 +59,29 @@ app
     })
   })
   .put((req, res) => {
-    const updatedArray = req.body
-    console.log(`method PUT: ${req.body}`)
-    
+    const updatedTaskID = req.body.id
+    const updatedTaskFinished = req.body.finished
+    const updatedTaskFinishedAt = req.body.finishedAt
+
+    Tasks.updateOne(
+      {
+        id: updatedTaskID,
+      },
+      {
+        finished: updatedTaskFinished,
+        finishedAt: updatedTaskFinishedAt
+      }
+    ).then(() => {
+      console.log("Task updated successfully")
+    })
   })
   .delete((req, res) => {
-    console.log(`method DELETE: ${req.body.id}`);
-    
+    const deletedTaskID = req.body.id
+
     Tasks.deleteOne({
-      id: req.body.id
+      id: deletedTaskID,
     }).then(() => {
-      console.log('Task deleted successfully');
+      console.log("Task deleted successfully")
     })
   })
 

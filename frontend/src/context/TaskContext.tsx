@@ -102,8 +102,8 @@ export const TaskContextProvider = ({
     if (newTasks[index].finished) {
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
+      tasksService.updateTask(newTasks[index])
     }
-    // tasksService.updateTask([...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
