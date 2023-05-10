@@ -2,22 +2,16 @@ import { TaskInterface } from "../lib/interfaces/task.interface"
 import { APIService } from "./api-service"
 
 export class TasksService extends APIService {
-  readTasks = (): Promise<TaskInterface[]> => {
-    return this.methodGET("/task")
-      .then((data) => {
-        return data
-      })
-      .catch((error) => {
-        throw new Error(error)
-      })
+  async readTasks(): Promise<TaskInterface[]> {
+    return (await this.methodGET("/task")) as TaskInterface[]
   }
 
   async addTask(task: TaskInterface): Promise<TaskInterface> {
     return (await this.methodPOST("/task", task)) as TaskInterface
   }
 
-  updateTask = (task: TaskInterface): void => {
-    this.methodPUT("/task", task)
+  async updateTask(task: TaskInterface): Promise<TaskInterface> {
+    return (await this.methodPUT("/task", task)) as TaskInterface
   }
 
   deleteTask = (task: TaskInterface): void => {

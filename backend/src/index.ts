@@ -29,10 +29,14 @@ const Task = mongoose.model("Task", tasksSchema)
 
 app
   .route("/task")
-  .get((req, res) => {
-    Task.find({}).then((tasks) => {
+  .get(async (req, res, next) => {
+    try {
+      const tasks = await Task.find({})
       res.json(tasks)
-    })
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
   })
   .post(async (req, res, next) => {
     const task = new Task({
@@ -49,32 +53,35 @@ app
       return next(error)
     }
   })
-  .put((req, res) => {
-    const updatedTaskTitle = req.body.title
-    const updatedTaskFinished = req.body.finished
-    const updatedTaskFinishedAt = req.body.finishedAt
-
-    Task.updateOne(
-      {
-        title: updatedTaskTitle,
-      },
-      {
-        finished: updatedTaskFinished,
-        finishedAt: updatedTaskFinishedAt,
-      }
-    ).then(() => {
-      console.log("Task updated successfully")
-    })
+  .put(async (req, res, next) => {
+    try {
+      const updatedTaskTitle = req.body.title
+      const updatedTaskFinished = req.body.finished
+      const updatedTaskFinishedAt = req.body.finishedAt
+      await Task.updateOne(
+        {
+          title: updatedTaskTitle,
+        },
+        {
+          finished: updatedTaskFinished,
+          finishedAt: updatedTaskFinishedAt,
+        }
+      )
+      console.log(`Task: ${updatedTaskTitle} updated successfully`)
+      res.json("")
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
   })
   .delete((req, res) => {
     const deletedTaskTitle = req.body.title
 
     Task.deleteOne({
-      title: deletedTaskTitle
+      title: deletedTaskTitle,
     }).then(() => {
-      console.log(deletedTaskTitle)
-      
-      console.log("Task deleted successfully")
+
+      console.log(`Task: ${deletedTaskTitle} deleted successfully`)
     })
   })
 

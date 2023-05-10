@@ -7,9 +7,7 @@ import {
   TaskInterface,
 } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import { v4 as uuidv4 } from "uuid"
 import { TasksService } from "../services/tasks-service"
-import { error } from "console"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
@@ -31,9 +29,14 @@ export const TaskContextProvider = ({
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    tasksService.readTasks().then((tasks) => {
-      setTasks(tasks)
-    })
+    tasksService
+      .readTasks()
+      .then((tasks) => {
+        setTasks(tasks as TaskInterface[])
+      })
+      .catch((error) => {
+        console.log(error)
+      })
 
     const showCompletedTasksLocalStorage = localStorage.getItem(
       localStorageShowCompletedTasksKey
@@ -63,7 +66,7 @@ export const TaskContextProvider = ({
           deleteAllAlerts()
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error)
         })
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
@@ -84,7 +87,9 @@ export const TaskContextProvider = ({
     if (newTasks[index].finished) {
       newTasks[index].finishedAt = new Date()
       setTasks([...newTasks])
-      tasksService.updateTask(newTasks[index])
+      tasksService.updateTask(newTasks[index]).catch((error) => {
+        console.log(error)
+      })
     }
   }
 
@@ -112,7 +117,7 @@ export const TaskContextProvider = ({
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks
     ? tasks.sort((a, b) =>
-        (a.finishedAt as Date) > (b.finishedAt as Date)  ? 1 : -1
+        (a.finishedAt as Date) > (b.finishedAt as Date) ? 1 : -1
       )
     : tasks.filter((task) => !task.finished)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
