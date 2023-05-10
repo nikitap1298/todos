@@ -54,12 +54,12 @@ app
     }
   })
   .put(async (req, res, next) => {
-    const updatedTaskTitle = req.body.title
+    const updatedTaskID = req.body._id
     const updatedTaskFinished = req.body.finished
     const updatedTaskFinishedAt = req.body.finishedAt
     const task = Task.updateOne(
       {
-        title: updatedTaskTitle,
+        _id: updatedTaskID,
       },
       {
         finished: updatedTaskFinished,
@@ -69,21 +69,19 @@ app
     try {
       const updatedTask = await task
       res.json(updatedTask)
-      console.log(`Task: ${updatedTaskTitle} updated successfully`)
     } catch (error) {
       console.error(error)
       return next(error)
     }
   })
   .delete(async (req, res, next) => {
-    const deletedTaskTitle = req.body.title
+    const deletedTaskID = req.body._id
     const task = Task.deleteOne({
-      title: deletedTaskTitle,
+      _id: deletedTaskID,
     })
     try {
       const deletedTask = await task
       res.json(deletedTask)
-      console.log(`Task: ${deletedTaskTitle} deleted successfully`)
     } catch (error) {
       console.error(error)
       return next(error)

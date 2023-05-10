@@ -35,7 +35,7 @@ export const TaskContextProvider = ({
         setTasks(tasks as TaskInterface[])
       })
       .catch((error) => {
-        console.log(error)
+        throw new Error(error)
       })
 
     const showCompletedTasksLocalStorage = localStorage.getItem(
@@ -66,7 +66,7 @@ export const TaskContextProvider = ({
           deleteAllAlerts()
         })
         .catch((error) => {
-          console.log(error)
+          throw new Error(error)
         })
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
@@ -88,7 +88,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = new Date()
       setTasks([...newTasks])
       tasksService.updateTask(newTasks[index]).catch((error) => {
-        console.log(error)
+        throw new Error(error)
       })
     }
   }
@@ -106,15 +106,13 @@ export const TaskContextProvider = ({
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
     const deletedTasks = oldTasks.filter(
-      (obj1) => !newTasks.some((obj2) => obj1.title === obj2.title)
+      (obj1) => !newTasks.some((obj2) => obj1._id === obj2._id)
     )
 
     deletedTasks.forEach((task) => {
-      tasksService
-        .deleteTask(task)
-        .catch((error) => {
-          console.log(error)
-        })
+      tasksService.deleteTask(task).catch((error) => {
+        throw new Error(error)
+      })
     })
   }
 
