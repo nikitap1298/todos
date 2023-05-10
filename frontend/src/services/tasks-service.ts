@@ -17,10 +17,14 @@ export class TasksService extends APIService {
   }
 
   //   updateTask(task: TaskInterface){
-  //       this.methodPUT(`/task/${task.id}`, task)
+  //       this.methodPUT(`/task`, task)
   //   }
 
-  updateTask = (tasks: TaskInterface[]): void => {
-    this.methodPUT("/task", tasks)
+  updateTask = (task: TaskInterface): void => {
+    this.methodPUT("/task", task)
   }
-}
+
+  deleteTask = (task: TaskInterface): void => {
+    this.methodDELETE("/task", task)
+  }
+ }

@@ -58,18 +58,17 @@ app
   })
   .put((req, res) => {
     const updatedArray = req.body
-
-    console.log("PUT Method")
-
-    // Tasks.find({}).then((tasks) => {
-    //   tasks.forEach((task) => {
-    //     Tasks.updateOne({
-    //       title: task.title
-    //     }, {
-    //       finished: true
-    //     })
-    //   })
-    // })
+    console.log(`method PUT: ${req.body}`)
+    
+  })
+  .delete((req, res) => {
+    console.log(`method DELETE: ${req.body.title}`);
+    
+    Tasks.deleteOne({
+      title: req.body.title
+    }).then(() => {
+      console.log('Task deleted successfully');
+    })
   })
 
 app.listen(port, () => {

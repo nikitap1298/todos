@@ -30,13 +30,23 @@ export class APIService {
     })
   }
 
-  protected methodPUT = (path: string, data: TaskInterface[]): void => {
+  protected methodPUT = (path: string, data: TaskInterface): void => {
     fetch(backendServerURL + path, {
       method: "PUT",
       headers: this.headers,
       body: JSON.stringify(data),
     }).catch((error) => {
       throw new Error(`Error during PUT method: ${error}`)
+    })
+  }
+
+  protected methodDELETE = (path: string, data: TaskInterface): void => {
+    fetch(backendServerURL + path, {
+      method: "DELETE",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).catch((error) => {
+      throw new Error(`Error during DELETE method: ${error}`)
     })
   }
 }

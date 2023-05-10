@@ -100,7 +100,7 @@ export const TaskContextProvider = ({
       newTasks[index].finishedAt = formattedDate
       setTasks([...newTasks])
     }
-    tasksService.updateTask([...newTasks])
+    // tasksService.updateTask([...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -112,9 +112,16 @@ export const TaskContextProvider = ({
   }
 
   const deleteCompletedTasks = (): void => {
+    const oldTasks = tasks
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
-    tasksService.updateTask([...newTasks])
+    const deletedTasks = oldTasks.filter(
+      (obj1) => !newTasks.some((obj2) => obj1.title === obj2.title)
+    )
+    
+    deletedTasks.forEach((task) => {
+      tasksService.deleteTask(task)
+    })
   }
 
   // Filter or sort tasks
