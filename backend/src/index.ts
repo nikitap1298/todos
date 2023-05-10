@@ -54,34 +54,36 @@ app
     }
   })
   .put(async (req, res, next) => {
+    const updatedTaskTitle = req.body.title
+    const updatedTaskFinished = req.body.finished
+    const updatedTaskFinishedAt = req.body.finishedAt
+    const task = Task.updateOne(
+      {
+        title: updatedTaskTitle,
+      },
+      {
+        finished: updatedTaskFinished,
+        finishedAt: updatedTaskFinishedAt,
+      }
+    )
     try {
-      const updatedTaskTitle = req.body.title
-      const updatedTaskFinished = req.body.finished
-      const updatedTaskFinishedAt = req.body.finishedAt
-      await Task.updateOne(
-        {
-          title: updatedTaskTitle,
-        },
-        {
-          finished: updatedTaskFinished,
-          finishedAt: updatedTaskFinishedAt,
-        }
-      )
+      const updatedTask = await task
+      res.json(updatedTask)
       console.log(`Task: ${updatedTaskTitle} updated successfully`)
-      res.json()
     } catch (error) {
       console.error(error)
       return next(error)
     }
   })
   .delete(async (req, res, next) => {
+    const deletedTaskTitle = req.body.title
+    const task = Task.deleteOne({
+      title: deletedTaskTitle,
+    })
     try {
-      const deletedTaskTitle = req.body.title
-      await Task.deleteOne({
-        title: deletedTaskTitle,
-      })
+      const deletedTask = await task
+      res.json(deletedTask)
       console.log(`Task: ${deletedTaskTitle} deleted successfully`)
-      res.json()
     } catch (error) {
       console.error(error)
       return next(error)
