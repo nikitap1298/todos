@@ -14,7 +14,7 @@ export class TasksService extends APIService {
     return (await this.methodPUT("/task", task)) as TaskInterface
   }
 
-  deleteTask = (task: TaskInterface): void => {
-    this.methodDELETE("/task", task)
+  async deleteTask(task: TaskInterface): Promise<TaskInterface> {
+    return (await this.methodDELETE("/task", task)) as TaskInterface
   }
 }

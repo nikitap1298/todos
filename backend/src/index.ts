@@ -74,15 +74,17 @@ app
       return next(error)
     }
   })
-  .delete((req, res) => {
-    const deletedTaskTitle = req.body.title
-
-    Task.deleteOne({
-      title: deletedTaskTitle,
-    }).then(() => {
-
+  .delete(async (req, res, next) => {
+    try {
+      const deletedTaskTitle = req.body.title
+      await Task.deleteOne({
+        title: deletedTaskTitle,
+      })
       console.log(`Task: ${deletedTaskTitle} deleted successfully`)
-    })
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
   })
 
 app.listen(port, () => {

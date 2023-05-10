@@ -50,13 +50,18 @@ export class APIService {
     return resultJSON
   }
 
-  protected methodDELETE = (path: string, data: TaskInterface): void => {
-    fetch(backendServerURL + path, {
+  protected async methodDELETE(path: string, data: unknown): Promise<unknown> {
+    const response = await fetch(backendServerURL + path, {
       method: "DELETE",
       headers: this.headers,
       body: JSON.stringify(data),
     }).catch((error) => {
       throw new Error(`Error during DELETE method: ${error}`)
     })
+    if (response.status !== 200) {
+      throw new Error(`Error during DELETE method: ${response.statusText}`)
+    }
+    const resultJSON = await response.json()
+    return resultJSON
   }
 }
