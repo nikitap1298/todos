@@ -19,6 +19,7 @@ mongoose.connect(url, {
 } as ConnectOptions)
 
 const tasksSchema = new mongoose.Schema({
+  id: String,
   title: String,
   createdAt: String,
   finished: Boolean,
@@ -46,6 +47,7 @@ app
 
         if (!exists) {
           const task = new Tasks({
+            id: element.id,
             title: element.title,
             createdAt: element.createdAt,
             finished: element.finished,
@@ -62,10 +64,10 @@ app
     
   })
   .delete((req, res) => {
-    console.log(`method DELETE: ${req.body.title}`);
+    console.log(`method DELETE: ${req.body.id}`);
     
     Tasks.deleteOne({
-      title: req.body.title
+      id: req.body.id
     }).then(() => {
       console.log('Task deleted successfully');
     })

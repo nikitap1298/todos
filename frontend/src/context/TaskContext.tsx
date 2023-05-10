@@ -7,6 +7,7 @@ import {
   TaskInterface,
 } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
+import { v4 as uuidv4 } from "uuid"
 import { TasksService } from "../services/tasks-service"
 
 const TaskContext = React.createContext<TaskContextInterface>({
@@ -64,6 +65,7 @@ export const TaskContextProvider = ({
       setTasks((oldArray) => [
         ...oldArray,
         {
+          id: uuidv4(),
           title: capitalizedMessage,
           createdAt: formattedDate,
           finished: false,
@@ -74,6 +76,7 @@ export const TaskContextProvider = ({
       tasksService.sendTasks([
         ...tasks,
         {
+          id: uuidv4(),
           title: capitalizedMessage,
           createdAt: formattedDate,
           finished: false,
@@ -116,7 +119,7 @@ export const TaskContextProvider = ({
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
     const deletedTasks = oldTasks.filter(
-      (obj1) => !newTasks.some((obj2) => obj1.title === obj2.title)
+      (obj1) => !newTasks.some((obj2) => obj1.id === obj2.id)
     )
     
     deletedTasks.forEach((task) => {
