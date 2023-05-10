@@ -110,7 +110,11 @@ export const TaskContextProvider = ({
     )
 
     deletedTasks.forEach((task) => {
-      tasksService.deleteTask(task)
+      tasksService
+        .deleteTask(task)
+        .catch((error) => {
+          console.log(error)
+        })
     })
   }
 

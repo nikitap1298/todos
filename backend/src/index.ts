@@ -68,7 +68,7 @@ app
         }
       )
       console.log(`Task: ${updatedTaskTitle} updated successfully`)
-      res.json("")
+      res.json()
     } catch (error) {
       console.error(error)
       return next(error)
@@ -81,6 +81,7 @@ app
         title: deletedTaskTitle,
       })
       console.log(`Task: ${deletedTaskTitle} deleted successfully`)
+      res.json()
     } catch (error) {
       console.error(error)
       return next(error)

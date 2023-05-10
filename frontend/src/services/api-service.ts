@@ -1,5 +1,4 @@
 import { backendServerURL } from "../constants/constants"
-import { TaskInterface } from "../lib/interfaces/task.interface"
 
 export class APIService {
   private headers = {
