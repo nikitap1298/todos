@@ -16,10 +16,6 @@ export class TasksService extends APIService {
     this.methodPOST("/task", tasks)
   }
 
-  //   updateTask(task: TaskInterface){
-  //       this.methodPUT(`/task`, task)
-  //   }
-
   updateTask = (task: TaskInterface): void => {
     this.methodPUT("/task", task)
   }
