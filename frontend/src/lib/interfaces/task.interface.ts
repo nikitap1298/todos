@@ -1,9 +1,8 @@
 export interface TaskInterface {
-  id: string
   title: string
-  createdAt: string
+  createdAt: Date
   finished: boolean
-  finishedAt: string
+  finishedAt?: Date
 }
 
 export interface TaskContextInterface {

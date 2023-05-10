@@ -12,8 +12,8 @@ export class TasksService extends APIService {
       })
   }
 
-  sendTasks = (tasks: TaskInterface[]): void => {
-    this.methodPOST("/task", tasks)
+  async addTask(task: TaskInterface): Promise<TaskInterface> {
+    return (await this.methodPOST("/task", task)) as TaskInterface
   }
 
   updateTask = (task: TaskInterface): void => {
@@ -23,4 +23,4 @@ export class TasksService extends APIService {
   deleteTask = (task: TaskInterface): void => {
     this.methodDELETE("/task", task)
   }
- }
+}

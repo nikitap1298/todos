@@ -20,14 +20,20 @@ export class APIService {
       })
   }
 
-  protected methodPOST = (path: string, data: TaskInterface[]): void => {
-    fetch(backendServerURL + path, {
+  protected async methodPOST(path: string, data: unknown): Promise<unknown> {
+    const response = await fetch(backendServerURL + path, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data),
     }).catch((error) => {
       throw new Error(`Error during POST method: ${error}`)
     })
+    if (response.status !== 200) {
+      throw new Error(`Error during POST method: ${response.statusText}`)
+    }
+    const resultJson = await response.json()
+    console.log(resultJson)
+    return resultJson
   }
 
   protected methodPUT = (path: string, data: TaskInterface): void => {

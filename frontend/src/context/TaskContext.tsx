@@ -9,6 +9,7 @@ import {
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { v4 as uuidv4 } from "uuid"
 import { TasksService } from "../services/tasks-service"
+import { error } from "console"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
@@ -25,17 +26,6 @@ export const TaskContextProvider = ({
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
-
-  const date = new Date()
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    hour: "numeric",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }
-  const formatter = new Intl.DateTimeFormat("en-DE", options)
-  const formattedDate = formatter.format(date).replace(" at", "")
 
   const tasksService = new TasksService()
 
@@ -62,27 +52,19 @@ export const TaskContextProvider = ({
       !tasks.some((element) => element.title === capitalizedMessage) &&
       capitalizedMessage !== ""
     ) {
-      setTasks((oldArray) => [
-        ...oldArray,
-        {
-          id: uuidv4(),
+      tasksService
+        .addTask({
           title: capitalizedMessage,
-          createdAt: formattedDate,
+          createdAt: new Date(),
           finished: false,
-          finishedAt: "",
-        },
-      ])
-      deleteAllAlerts()
-      tasksService.sendTasks([
-        ...tasks,
-        {
-          id: uuidv4(),
-          title: capitalizedMessage,
-          createdAt: formattedDate,
-          finished: false,
-          finishedAt: "",
-        },
-      ])
+        })
+        .then((newTask) => {
+          setTasks((oldArray) => [...oldArray, newTask])
+          deleteAllAlerts()
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
       !alerts.some((element) => element.message === capitalizedMessage)
@@ -100,7 +82,7 @@ export const TaskContextProvider = ({
     // Toggle "finished" value
     newTasks[index].finished = !newTasks[index].finished
     if (newTasks[index].finished) {
-      newTasks[index].finishedAt = formattedDate
+      newTasks[index].finishedAt = new Date()
       setTasks([...newTasks])
       tasksService.updateTask(newTasks[index])
     }
@@ -119,9 +101,9 @@ export const TaskContextProvider = ({
     const newTasks = tasks.filter((task) => task.finished !== true)
     setTasks([...newTasks])
     const deletedTasks = oldTasks.filter(
-      (obj1) => !newTasks.some((obj2) => obj1.id === obj2.id)
+      (obj1) => !newTasks.some((obj2) => obj1.title === obj2.title)
     )
-    
+
     deletedTasks.forEach((task) => {
       tasksService.deleteTask(task)
     })
@@ -130,7 +112,7 @@ export const TaskContextProvider = ({
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks
     ? tasks.sort((a, b) =>
-        new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
+        (a.finishedAt as Date) > (b.finishedAt as Date)  ? 1 : -1
       )
     : tasks.filter((task) => !task.finished)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))

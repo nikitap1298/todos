@@ -19,68 +19,61 @@ mongoose.connect(url, {
 } as ConnectOptions)
 
 const tasksSchema = new mongoose.Schema({
-  id: String,
   title: String,
-  createdAt: String,
+  createdAt: Date,
   finished: Boolean,
-  finishedAt: String,
+  finishedAt: Date,
 })
 
-const Tasks = mongoose.model("Tasks", tasksSchema)
+const Task = mongoose.model("Task", tasksSchema)
 
 app
   .route("/task")
   .get((req, res) => {
-    Tasks.find({}).then((tasks) => {
+    Task.find({}).then((tasks) => {
       res.json(tasks)
     })
   })
-  .post((req, res) => {
-    const dataArray = req.body
-    dataArray.forEach((element: TaskInterface) => {
-      Tasks.find({}).then((tasks) => {
-        const exists = tasks.some((task) => {
-          return (
-            task.title === element.title && task.createdAt === element.createdAt
-          )
-        })
-
-        if (!exists) {
-          const task = new Tasks({
-            id: element.id,
-            title: element.title,
-            createdAt: element.createdAt,
-            finished: element.finished,
-            finishedAt: element.finishedAt,
-          })
-          task.save()
-        }
-      })
+  .post(async (req, res, next) => {
+    const task = new Task({
+      title: req.body.title,
+      createdAt: new Date(req.body.createdAt),
+      finished: req.body.finished,
+      finishedAt: req.body.finishedAt ? new Date(req.body.finishedAt) : null,
     })
+    try {
+      const newTask = await task.save()
+      res.json(newTask)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
   })
   .put((req, res) => {
-    const updatedTaskID = req.body.id
+    const updatedTaskTitle = req.body.title
     const updatedTaskFinished = req.body.finished
     const updatedTaskFinishedAt = req.body.finishedAt
 
-    Tasks.updateOne(
+    Task.updateOne(
       {
-        id: updatedTaskID,
+        title: updatedTaskTitle,
       },
       {
         finished: updatedTaskFinished,
-        finishedAt: updatedTaskFinishedAt
+        finishedAt: updatedTaskFinishedAt,
       }
     ).then(() => {
       console.log("Task updated successfully")
     })
   })
   .delete((req, res) => {
-    const deletedTaskID = req.body.id
+    const deletedTaskTitle = req.body.title
 
-    Tasks.deleteOne({
-      id: deletedTaskID,
+    Task.deleteOne({
+      title: deletedTaskTitle
     }).then(() => {
+      console.log(deletedTaskTitle)
+      
       console.log("Task deleted successfully")
     })
   })
