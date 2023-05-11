@@ -7,12 +7,19 @@
     align-items: center;
   }
 
-  h1 {
+  .task-editable-form {
     margin: 0;
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorGray;
+    background-color: transparent;
+    border-style: none;
+    height: 50px;
     width: 70%;
+  }
+
+  .task-editable-form:hover {
+    animation: shake 0.55s;
   }
 
   p {
@@ -31,6 +38,13 @@
     border: 2.5px solid $colorBlue;
     border-radius: 2.5px;
     opacity: 0.4;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 0); }
+    20%, 40%, 60%, 80% { transform: translate(5px, 0); }
+    100% { transform: translate(0, 0); }
   }
 }
 
