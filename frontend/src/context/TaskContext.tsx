@@ -29,14 +29,7 @@ export const TaskContextProvider = ({
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    tasksService
-      .readTasks()
-      .then((tasks) => {
-        setTasks(tasks as TaskInterface[])
-      })
-      .catch((error) => {
-        throw new Error(error)
-      })
+    fetchTasksFromDB()
 
     const showCompletedTasksLocalStorage = localStorage.getItem(
       localStorageShowCompletedTasksKey
@@ -45,6 +38,17 @@ export const TaskContextProvider = ({
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
     }
   }, [])
+
+  const fetchTasksFromDB = (): void => {
+    tasksService
+      .readTasks()
+      .then((tasks) => {
+        setTasks(tasks as TaskInterface[])
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  }
 
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
@@ -115,6 +119,7 @@ export const TaskContextProvider = ({
     for (const task of deletedTasks) {
       try {
         await tasksService.deleteTask(task).then(() => {
+          newTasks.filter((element) => element._id !== task._id)
           setTasks([...newTasks])
         })
       } catch (error) {
