@@ -17,13 +17,7 @@ export default function Task(props: TaskProps): JSX.Element {
   return (
     <div className={className}>
       <div>
-        <Form>
-          <Form.Control
-            className="task-editable-input"
-            type="text"
-            placeholder={task.title}
-          />
-        </Form>
+        <h1>{task.title}</h1>
         <div>
           <p>
             {task.finished
