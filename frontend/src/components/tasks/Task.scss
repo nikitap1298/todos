@@ -7,18 +7,21 @@
     align-items: center;
   }
 
-  .task-editable-form {
+  .task-editable-input {
     margin: 0;
     font-family: $dongleLight;
     font-size: 2.5rem;
-    color: $colorGray;
     background-color: transparent;
     border-style: none;
     height: 50px;
     width: 70%;
   }
 
-  .task-editable-form:hover {
+  .task-editable-input::placeholder {
+    color: $colorGray;
+  }
+
+  .task-editable-input:hover {
     animation: shake 0.55s;
   }
 
@@ -41,10 +44,25 @@
   }
 
   @keyframes shake {
-    0% { transform: translate(0, 0); }
-    10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 0); }
-    20%, 40%, 60%, 80% { transform: translate(5px, 0); }
-    100% { transform: translate(0, 0); }
+    0% {
+      transform: translate(0, 0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translate(-5px, 0);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translate(5px, 0);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
   }
 }
 
@@ -55,13 +73,20 @@
     align-items: center;
   }
 
-  h1 {
+  .task-editable-input {
     margin: 0;
     font-family: $dongleLight;
     font-size: 2.5rem;
-    color: $colorRed;
+    background-color: transparent;
+    border-style: none;
+    height: 50px;
     width: 70%;
-    // text-decoration: line-through;
+    pointer-events: none;
+    display: block;
+  }
+
+  .task-editable-input::placeholder {
+    color: $colorRed;
   }
 
   p {
