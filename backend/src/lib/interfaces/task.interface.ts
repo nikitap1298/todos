@@ -1,6 +1,7 @@
 export interface TaskInterface {
+  _id: string
   title: string
-  createdAt: string
+  createdAt: Date
   finished: boolean
-  finishedAt: string
+  finishedAt: Date
 }

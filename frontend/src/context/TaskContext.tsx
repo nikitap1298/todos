@@ -7,7 +7,7 @@ import {
   TaskInterface,
 } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import { TaskService } from "../services/task-service"
+import { TasksService } from "../services/tasks-service"
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
@@ -25,25 +25,14 @@ export const TaskContextProvider = ({
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
-  const date = new Date()
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    hour: "numeric",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }
-  const formatter = new Intl.DateTimeFormat("en-DE", options)
-  const formattedDate = formatter.format(date).replace(" at", "")
-
-  const tasksService = new TaskService()
+  const tasksService = new TasksService()
 
   // Load tasksArray from localStorage
   useEffect(() => {
     tasksService
-      .methodGET("/tasks")
-      .then((data) => {
-        setTasks(data)
+      .readTasks()
+      .then((tasks) => {
+        setTasks(tasks as TaskInterface[])
       })
       .catch((error) => {
         throw new Error(error)
@@ -66,25 +55,19 @@ export const TaskContextProvider = ({
       !tasks.some((element) => element.title === capitalizedMessage) &&
       capitalizedMessage !== ""
     ) {
-      setTasks((oldArray) => [
-        ...oldArray,
-        {
+      tasksService
+        .addTask({
           title: capitalizedMessage,
-          createdAt: formattedDate,
+          createdAt: new Date(),
           finished: false,
-          finishedAt: "",
-        },
-      ])
-      deleteAllAlerts()
-      tasksService.methodPOST("/tasks", [
-        ...tasks,
-        {
-          title: capitalizedMessage,
-          createdAt: formattedDate,
-          finished: false,
-          finishedAt: "",
-        },
-      ])
+        })
+        .then((newTask) => {
+          setTasks((oldArray) => [...oldArray, newTask])
+          deleteAllAlerts()
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     } else if (
       tasks.some((element) => element.title === capitalizedMessage) &&
       !alerts.some((element) => element.message === capitalizedMessage)
@@ -102,10 +85,16 @@ export const TaskContextProvider = ({
     // Toggle "finished" value
     newTasks[index].finished = !newTasks[index].finished
     if (newTasks[index].finished) {
-      newTasks[index].finishedAt = formattedDate
-      setTasks([...newTasks])
+      newTasks[index].finishedAt = new Date()
+      tasksService
+        .updateTask(newTasks[index])
+        .then(() => {
+          setTasks([...newTasks])
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
-    tasksService.methodPUT("/tasks", [...newTasks])
   }
 
   const showOrHideCompletedTasks = (): void => {
@@ -116,16 +105,28 @@ export const TaskContextProvider = ({
     )
   }
 
-  const deleteCompletedTasks = (): void => {
+  const deleteCompletedTasks = async (): Promise<void> => {
+    const oldTasks = tasks
     const newTasks = tasks.filter((task) => task.finished !== true)
-    setTasks([...newTasks])
-    tasksService.methodPUT("/tasks", [...newTasks])
+    const deletedTasks = oldTasks.filter(
+      (obj1) => !newTasks.some((obj2) => obj1._id === obj2._id)
+    )
+
+    for (const task of deletedTasks) {
+      try {
+        await tasksService.deleteTask(task).then(() => {
+          setTasks([...newTasks])
+        })
+      } catch (error) {
+        throw new Error(`Error during for loop: ${error}`)
+      }
+    }
   }
 
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks
     ? tasks.sort((a, b) =>
-        new Date(a.finishedAt) > new Date(b.finishedAt) ? 1 : -1
+        (a.finishedAt as Date) > (b.finishedAt as Date) ? 1 : -1
       )
     : tasks.filter((task) => !task.finished)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
