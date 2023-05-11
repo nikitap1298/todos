@@ -28,7 +28,7 @@ const tasksSchema = new mongoose.Schema({
 const Task = mongoose.model("Task", tasksSchema)
 
 app
-  .route("/task/:_id")
+  .route("/task/:taskId")
   .get(async (req, res, next) => {
     try {
       const tasks = await Task.find({})
@@ -54,7 +54,7 @@ app
     }
   })
   .put(async (req, res, next) => {
-    const taskID = req.params._id
+    const taskID = req.params.taskId
 
     try {
       const updatedTask = await Task.updateOne(
@@ -70,7 +70,7 @@ app
     }
   })
   .delete(async (req, res, next) => {
-    const taskID = req.params._id
+    const taskID = req.params.taskId
 
     try {
       const deletedTask = await Task.deleteOne({
