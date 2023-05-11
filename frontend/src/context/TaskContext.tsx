@@ -86,10 +86,14 @@ export const TaskContextProvider = ({
     newTasks[index].finished = !newTasks[index].finished
     if (newTasks[index].finished) {
       newTasks[index].finishedAt = new Date()
-      setTasks([...newTasks])
-      tasksService.updateTask(newTasks[index]).catch((error) => {
-        throw new Error(error)
-      })
+      tasksService
+        .updateTask(newTasks[index])
+        .then(() => {
+          setTasks([...newTasks])
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 
@@ -101,19 +105,22 @@ export const TaskContextProvider = ({
     )
   }
 
-  const deleteCompletedTasks = (): void => {
+  const deleteCompletedTasks = async (): Promise<void> => {
     const oldTasks = tasks
     const newTasks = tasks.filter((task) => task.finished !== true)
-    setTasks([...newTasks])
     const deletedTasks = oldTasks.filter(
       (obj1) => !newTasks.some((obj2) => obj1._id === obj2._id)
     )
 
-    deletedTasks.forEach((task) => {
-      tasksService.deleteTask(task).catch((error) => {
-        throw new Error(error)
-      })
-    })
+    for (const task of deletedTasks) {
+      try {
+        await tasksService.deleteTask(task).then(() => {
+          setTasks([...newTasks])
+        })
+      } catch (error) {
+        throw new Error(`Error during for loop: ${error}`)
+      }
+    }
   }
 
   // Filter or sort tasks
