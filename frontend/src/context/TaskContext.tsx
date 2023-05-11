@@ -2,12 +2,18 @@
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageShowCompletedTasksKey } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
-import {
-  TaskContextInterface,
-  TaskInterface,
-} from "../lib/interfaces/task.interface"
+import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
+
+interface TaskContextInterface {
+  tasks: TaskInterface[]
+  addNewTask: (newTaskTitle: string) => void
+  completeTask: (index: number) => void
+  showCompletedTasks: boolean
+  showOrHideCompletedTasks: () => void
+  deleteCompletedTasks: () => void
+}
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
