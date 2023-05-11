@@ -28,7 +28,7 @@ const tasksSchema = new mongoose.Schema({
 const Task = mongoose.model("Task", tasksSchema)
 
 app
-  .route("/task")
+  .route("/task/:_id")
   .get(async (req, res, next) => {
     try {
       const tasks = await Task.find({})
@@ -54,20 +54,15 @@ app
     }
   })
   .put(async (req, res, next) => {
-    const updatedTaskID = req.body._id
-    const updatedTaskFinished = req.body.finished
-    const updatedTaskFinishedAt = req.body.finishedAt
-    const task = Task.updateOne(
-      {
-        _id: updatedTaskID,
-      },
-      {
-        finished: updatedTaskFinished,
-        finishedAt: updatedTaskFinishedAt,
-      }
-    )
+    const taskID = req.params._id
+
     try {
-      const updatedTask = await task
+      const updatedTask = await Task.updateOne(
+        {
+          _id: taskID,
+        },
+        req.body
+      )
       res.json(updatedTask)
     } catch (error) {
       console.error(error)
@@ -75,12 +70,12 @@ app
     }
   })
   .delete(async (req, res, next) => {
-    const deletedTaskID = req.body._id
-    const task = Task.deleteOne({
-      _id: deletedTaskID,
-    })
+    const taskID = req.params._id
+
     try {
-      const deletedTask = await task
+      const deletedTask = await Task.deleteOne({
+        _id: taskID,
+      })
       res.json(deletedTask)
     } catch (error) {
       console.error(error)
