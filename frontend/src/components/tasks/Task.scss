@@ -12,7 +12,15 @@
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorGray;
+    height: 50px;
     width: 70%;
+  }
+
+  h1:hover {
+    border: 2.5px solid $colorBlue;
+    border-radius: 15px;
+    height: 50px;
+    // opacity: 0.1;
   }
 
   p {
