@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Form } from "react-bootstrap"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
 import "./Task.scss"
@@ -14,13 +14,22 @@ interface TaskProps {
 export default function Task(props: TaskProps): JSX.Element {
   const { className, task, onComplete, taskIndex } = props
 
+  const [editedValue, setEditedValue] = useState("")
+
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>
   ): void => {
     if (event.key === "Escape") {
       event.currentTarget.value = ""
       event.currentTarget.blur()
+    } else if (event.key === "Enter") {
+      console.log(editedValue)
+      event.preventDefault()
     }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setEditedValue(event.target.value)
   }
 
   return (
@@ -32,6 +41,7 @@ export default function Task(props: TaskProps): JSX.Element {
             type="text"
             placeholder={task.title}
             onKeyDown={handleKeyDown}
+            onChange={handleChange}
           />
         </form>
         <div>
