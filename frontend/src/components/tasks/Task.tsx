@@ -16,6 +16,7 @@ export default function Task(props: TaskProps): JSX.Element {
   const { className, task, onEdit, onComplete, taskIndex } = props
 
   const [editedValue, setEditedValue] = useState("")
+  const [showTitleEditor, setShowTitleEditor] = useState(false)
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -23,9 +24,11 @@ export default function Task(props: TaskProps): JSX.Element {
     if (event.key === "Escape") {
       event.currentTarget.value = ""
       event.currentTarget.blur()
+      setShowTitleEditor(false)
     } else if (event.key === "Enter") {
       onEdit(taskIndex, editedValue)
       event.preventDefault()
+      setShowTitleEditor(false)
     }
   }
 
@@ -33,17 +36,27 @@ export default function Task(props: TaskProps): JSX.Element {
     setEditedValue(event.target.value)
   }
 
+  const handleH1MouseDown = (): void => {
+    if (!task.finished) {
+      setShowTitleEditor(true)
+    }
+  }
+
   return (
     <div className={className}>
       <div>
         <form>
-          <input
-            className="task-editable-input"
-            type="text"
-            placeholder={task.title}
-            onKeyDown={handleKeyDown}
-            onChange={handleChange}
-          />
+          {!showTitleEditor ? (
+            <h1 onMouseDown={handleH1MouseDown}>{task.title}</h1>
+          ) : (
+            <input
+              className="task-editable-input"
+              type="text"
+              placeholder={task.title}
+              onKeyDown={handleKeyDown}
+              onChange={handleChange}
+            />
+          )}
         </form>
         <div>
           <p>

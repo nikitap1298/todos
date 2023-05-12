@@ -7,6 +7,21 @@
     align-items: center;
   }
 
+  h1 {
+    margin: 0;
+    font-family: $dongleLight;
+    font-size: 2.5rem;
+    color: $colorGray;
+    background-color: transparenti;
+    border-style: none;
+    min-height: 50px;
+  }
+
+  h1:hover {
+    border: 2.5px solid $colorBlue;
+    border-radius: 15px;
+  }
+
   .task-editable-input {
     margin: 0;
     font-family: $dongleLight;
@@ -51,19 +66,13 @@
     align-items: center;
   }
 
-  .task-editable-input {
+  h1 {
     margin: 0;
     font-family: $dongleLight;
     font-size: 2.5rem;
-    background-color: transparent;
-    border-style: none;
-    height: 50px;
-    pointer-events: none;
-    display: block;
-  }
-
-  .task-editable-input::placeholder {
     color: $colorRed;
+    background-color: transparenti;
+    border-style: none;
   }
 
   p {
