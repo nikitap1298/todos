@@ -17,7 +17,13 @@ export default function Task(props: TaskProps): JSX.Element {
   return (
     <div className={className}>
       <div>
-        <h1>{task.title}</h1>
+        <form>
+          <input
+            className="task-editable-input"
+            type="text"
+            placeholder={task.title}
+          />
+        </form>
         <div>
           <p>
             {task.finished
