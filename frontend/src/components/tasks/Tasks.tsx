@@ -4,7 +4,7 @@ import Task from "./Task"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
 
 export default function Tasks(): JSX.Element {
-  const { tasks, completeTask } = useTaskContext()
+  const { tasks, updateTask, completeTask } = useTaskContext()
 
   return (
     <div>
@@ -14,6 +14,7 @@ export default function Tasks(): JSX.Element {
           key={task.title}
           className={task.finished ? "selected-task" : "task"}
           task={task}
+          onEdit={updateTask}
           onComplete={completeTask}
           taskIndex={index}
         />

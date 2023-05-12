@@ -7,12 +7,13 @@ import dayjs from "dayjs"
 interface TaskProps {
   className: string
   task: TaskInterface
+  onEdit: (index: number, updatedTaskTitle: string) => void
   onComplete: (index: number) => void
   taskIndex: number
 }
 
 export default function Task(props: TaskProps): JSX.Element {
-  const { className, task, onComplete, taskIndex } = props
+  const { className, task, onEdit, onComplete, taskIndex } = props
 
   const [editedValue, setEditedValue] = useState("")
 
@@ -23,7 +24,7 @@ export default function Task(props: TaskProps): JSX.Element {
       event.currentTarget.value = ""
       event.currentTarget.blur()
     } else if (event.key === "Enter") {
-      console.log(editedValue)
+      onEdit(taskIndex, editedValue)
       event.preventDefault()
     }
   }

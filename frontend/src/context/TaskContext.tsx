@@ -9,6 +9,7 @@ import { TasksService } from "../services/tasks-service"
 interface TaskContextInterface {
   tasks: TaskInterface[]
   addNewTask: (newTaskTitle: string) => void
+  updateTask: (index: number, updatedTitle: string) => void
   completeTask: (index: number) => void
   showCompletedTasks: boolean
   showOrHideCompletedTasks: () => void
@@ -18,6 +19,7 @@ interface TaskContextInterface {
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
   addNewTask: () => void {},
+  updateTask: () => void {},
   completeTask: () => void {},
   showCompletedTasks: true,
   showOrHideCompletedTasks: () => void {},
@@ -89,6 +91,21 @@ export const TaskContextProvider = ({
     }
   }
 
+  const updateTask = (index: number, updatedTaskTitle: string): void => {
+    const newTasks: TaskInterface[] = [...tasks]
+    newTasks[index].title =
+      updatedTaskTitle.charAt(0).toUpperCase() + updatedTaskTitle.slice(1)
+
+    tasksService
+      .updateTask(newTasks[index])
+      .then(() => {
+        setTasks([...newTasks])
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  }
+
   const completeTask = (index: number): void => {
     const newTasks: TaskInterface[] = [...tasks]
 
@@ -147,6 +164,7 @@ export const TaskContextProvider = ({
       value={{
         tasks: filteredTasks,
         addNewTask,
+        updateTask,
         completeTask,
         showCompletedTasks,
         showOrHideCompletedTasks,
