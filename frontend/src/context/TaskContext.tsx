@@ -60,7 +60,7 @@ export const TaskContextProvider = ({
 
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
-      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1)
+      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
     // User can't add the same task
     if (
@@ -94,7 +94,8 @@ export const TaskContextProvider = ({
   const updateTask = (index: number, updatedTaskTitle: string): void => {
     const newTasks: TaskInterface[] = [...tasks]
     newTasks[index].title =
-      updatedTaskTitle.charAt(0).toUpperCase() + updatedTaskTitle.slice(1)
+      updatedTaskTitle.charAt(0).toUpperCase() +
+      updatedTaskTitle.slice(1).trim()
 
     tasksService
       .updateTask(newTasks[index])

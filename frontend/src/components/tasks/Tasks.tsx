@@ -2,6 +2,7 @@ import React from "react"
 import { useTaskContext } from "../../context/TaskContext"
 import Task from "./Task"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
+import { v4 as uuidv4 } from "uuid"
 
 export default function Tasks(): JSX.Element {
   const { tasks, updateTask, completeTask } = useTaskContext()
@@ -11,7 +12,7 @@ export default function Tasks(): JSX.Element {
       {tasks.map((task: TaskInterface, index: number) => (
         // Use "task.title" as a key attribute. Using "task" or "index" will create a bug
         <Task
-          key={task.title}
+          key={uuidv4()}
           className={task.finished ? "selected-task" : "task"}
           task={task}
           onEdit={updateTask}
