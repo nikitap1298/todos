@@ -97,23 +97,16 @@ export const TaskContextProvider = ({
       updatedTaskTitle.charAt(0).toUpperCase() +
       updatedTaskTitle.slice(1).trim()
 
-    if (newTasks.some((element) => element.title === newTaskTitle)) {
-      addAlert({
-        title: "This task already exists:",
-        message: newTaskTitle,
+    newTasks[index].title = newTaskTitle
+    tasksService
+      .updateTask(newTasks[index])
+      .then(() => {
+        deleteAllAlerts()
+        setTasks([...newTasks])
       })
-    } else {
-      newTasks[index].title = newTaskTitle
-      tasksService
-        .updateTask(newTasks[index])
-        .then(() => {
-          deleteAllAlerts()
-          setTasks([...newTasks])
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    }
+      .catch((error) => {
+        throw new Error(error)
+      })
   }
 
   const completeTask = (index: number): void => {
