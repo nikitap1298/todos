@@ -14,6 +14,15 @@ interface TaskProps {
 export default function Task(props: TaskProps): JSX.Element {
   const { className, task, onComplete, taskIndex } = props
 
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (event.key === "Escape") {
+      event.currentTarget.value = ""
+      event.currentTarget.blur()
+    }
+  }
+
   return (
     <div className={className}>
       <div>
@@ -22,6 +31,7 @@ export default function Task(props: TaskProps): JSX.Element {
             className="task-editable-input"
             type="text"
             placeholder={task.title}
+            onKeyDown={handleKeyDown}
           />
         </form>
         <div>
