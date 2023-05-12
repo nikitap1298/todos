@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
 import "./Task.scss"
@@ -17,6 +17,13 @@ export default function Task(props: TaskProps): JSX.Element {
 
   const [editedValue, setEditedValue] = useState("")
   const [showTitleEditor, setShowTitleEditor] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (showTitleEditor && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [showTitleEditor])
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -36,7 +43,7 @@ export default function Task(props: TaskProps): JSX.Element {
     setEditedValue(event.target.value)
   }
 
-  const handleH1MouseDown = (): void => {
+  const handleTriggerInputClick = (): void => {
     if (!task.finished) {
       setShowTitleEditor(true)
     }
@@ -47,7 +54,7 @@ export default function Task(props: TaskProps): JSX.Element {
       <div>
         <form>
           {!showTitleEditor ? (
-            <h1 onMouseDown={handleH1MouseDown}>{task.title}</h1>
+            <h1 onClick={handleTriggerInputClick}>{task.title}</h1>
           ) : (
             <input
               className="task-editable-input"
@@ -55,6 +62,7 @@ export default function Task(props: TaskProps): JSX.Element {
               placeholder={task.title}
               onKeyDown={handleKeyDown}
               onChange={handleChange}
+              ref={inputRef}
             />
           )}
         </form>

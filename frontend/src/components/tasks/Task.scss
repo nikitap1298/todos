@@ -34,8 +34,9 @@
   .task-editable-input::placeholder {
     color: $colorGray;
   }
-
-  .task-editable-input:hover {
+  
+  .task-editable-input:focus {
+    border: none;
     border: 2.5px solid $colorBlue;
     border-radius: 15px;
   }
