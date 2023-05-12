@@ -20,10 +20,11 @@ export default function Task(props: TaskProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    setEditedValue(task.title)
     if (showTitleEditor && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [showTitleEditor])
+  }, [showTitleEditor, task.title])
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -59,6 +60,7 @@ export default function Task(props: TaskProps): JSX.Element {
             <input
               className="task-editable-input"
               type="text"
+              value={editedValue}
               placeholder={task.title}
               onKeyDown={handleKeyDown}
               onChange={handleChange}
