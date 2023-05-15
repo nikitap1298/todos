@@ -1,0 +1,27 @@
+@import "/src/styles/variables";
+
+.nav-bar {
+  margin-bottom: 0;
+  background-color: $colorVanilla;
+
+  div {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+// .h5 {
+//   font-family: $dongleRegular;
+//   font-size: 3.5rem;
+//   color: $colorBlue;
+// }
+
+.offcanvas-body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.btn-secondary {
+  --bs-btn-bg: $colorVanilla;
+}
