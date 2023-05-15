@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useContext, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
