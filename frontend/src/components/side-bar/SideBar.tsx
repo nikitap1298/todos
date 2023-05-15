@@ -17,13 +17,33 @@ export default function SideBar(): JSX.Element {
   const { addNewList } = useListContext()
 
   const [showModal, setShowModal] = useState(false)
+  const [newListTitle, setNewListTitle] = useState("")
+
+  const handleOpenClick = (): void => {
+    setShowModal(true)
+  }
 
   const handleCloseModal = (): void => {
     setShowModal(false)
   }
 
-  const handleShowModal = (): void => {
-    setShowModal(true)
+  const handleNewListInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    event.preventDefault()
+    console.log(event.target.value)
+
+    // Reload page after click new keyboard button ??
+    setNewListTitle(event.target.value)
+  }
+
+  const handleAddClick = (event: MouseFormEvent): void => {
+    event.preventDefault()
+    addNewList(newListTitle)
+
+    // Delete text from input
+    setNewListTitle("")
+    setShowModal(false)
   }
 
   return (
@@ -50,22 +70,23 @@ export default function SideBar(): JSX.Element {
                     <Modal.Title>Add List</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleAddClick}>
                       <Form.Label>Title</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Example list"
+                        onChange={handleNewListInputChange}
                         autoFocus
                       />
                     </Form>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="primary" onClick={handleCloseModal}>
+                    <Button variant="primary" onClick={handleAddClick}>
                       Save
                     </Button>
                   </Modal.Footer>
                 </Modal>
-                <Button variant="secondary" onClick={handleShowModal}>
+                <Button variant="secondary" onClick={handleOpenClick}>
                   +
                 </Button>
               </Offcanvas.Body>
