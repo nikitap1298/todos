@@ -9,4 +9,8 @@ export class ListsService extends APIService {
   async addList(list: ListInterface): Promise<ListInterface> {
     return (await this.methodPOST(`/list/${list._id}`, list)) as ListInterface
   }
+
+  async deleteList(list: ListInterface): Promise<ListInterface> {
+    return (await this.methodDELETE(`/list/${list._id}`, list)) as ListInterface
+  }
 }

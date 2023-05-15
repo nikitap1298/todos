@@ -48,6 +48,20 @@ app
       return next(error)
     }
   })
+  .delete(async (req, res, next) => {
+    const listId = req.params.listId
+    try {
+      const deletedList = await List.deleteOne({
+        _id: listId,
+      })
+      console.log(deletedList)
+
+      res.json(deletedList)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
 
 // Task API
 const tasksSchema = new mongoose.Schema({
@@ -87,12 +101,12 @@ app
     }
   })
   .put(async (req, res, next) => {
-    const taskID = req.params.taskId
+    const taskId = req.params.taskId
 
     try {
       const updatedTask = await Task.updateOne(
         {
-          _id: taskID,
+          _id: taskId,
         },
         req.body
       )
@@ -103,11 +117,11 @@ app
     }
   })
   .delete(async (req, res, next) => {
-    const taskID = req.params.taskId
+    const taskId = req.params.taskId
 
     try {
       const deletedTask = await Task.deleteOne({
-        _id: taskID,
+        _id: taskId,
       })
       res.json(deletedTask)
     } catch (error) {

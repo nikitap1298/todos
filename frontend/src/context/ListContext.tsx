@@ -53,7 +53,12 @@ export const ListContextProvider = ({
   }
 
   const deleteList = (index: number): void => {
-    console.log(`Delete list: ${index}`)
+    const deletedList = lists[index]
+    const newLists = lists.filter((element) => element._id !== deletedList._id)
+
+    listsService.deleteList(deletedList).then(() => {
+      setLists(newLists)
+    })
   }
 
   return (
