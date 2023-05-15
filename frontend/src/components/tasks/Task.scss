@@ -12,7 +12,33 @@
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorGray;
-    width: 70%;
+    background-color: transparenti;
+    border-style: none;
+    min-height: 50px;
+  }
+
+  h1:hover {
+    border: 2.5px solid $colorBlue;
+    border-radius: 15px;
+  }
+
+  .task-editable-input {
+    margin: 0;
+    font-family: $dongleLight;
+    font-size: 2.5rem;
+    background-color: transparent;
+    border-style: none;
+    height: 50px;
+  }
+
+  .task-editable-input::placeholder {
+    color: $colorGray;
+  }
+  
+  .task-editable-input:focus {
+    border: none;
+    border: 2.5px solid $colorBlue;
+    border-radius: 15px;
   }
 
   p {
@@ -46,8 +72,8 @@
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorRed;
-    width: 70%;
-    // text-decoration: line-through;
+    background-color: transparenti;
+    border-style: none;
   }
 
   p {

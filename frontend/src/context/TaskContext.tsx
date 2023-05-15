@@ -2,16 +2,24 @@
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageShowCompletedTasksKey } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
-import {
-  TaskContextInterface,
-  TaskInterface,
-} from "../lib/interfaces/task.interface"
+import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
+
+interface TaskContextInterface {
+  tasks: TaskInterface[]
+  addNewTask: (newTaskTitle: string) => void
+  updateTask: (index: number, updatedTitle: string) => void
+  completeTask: (index: number) => void
+  showCompletedTasks: boolean
+  showOrHideCompletedTasks: () => void
+  deleteCompletedTasks: () => void
+}
 
 const TaskContext = React.createContext<TaskContextInterface>({
   tasks: [],
   addNewTask: () => void {},
+  updateTask: () => void {},
   completeTask: () => void {},
   showCompletedTasks: true,
   showOrHideCompletedTasks: () => void {},
@@ -52,7 +60,7 @@ export const TaskContextProvider = ({
 
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage =
-      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1)
+      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
     // User can't add the same task
     if (
@@ -81,6 +89,24 @@ export const TaskContextProvider = ({
         message: capitalizedMessage,
       })
     }
+  }
+
+  const updateTask = (index: number, updatedTaskTitle: string): void => {
+    const newTasks: TaskInterface[] = [...tasks]
+    const newTaskTitle =
+      updatedTaskTitle.charAt(0).toUpperCase() +
+      updatedTaskTitle.slice(1).trim()
+
+    newTasks[index].title = newTaskTitle
+    tasksService
+      .updateTask(newTasks[index])
+      .then(() => {
+        deleteAllAlerts()
+        setTasks([...newTasks])
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
   }
 
   const completeTask = (index: number): void => {
@@ -141,6 +167,7 @@ export const TaskContextProvider = ({
       value={{
         tasks: filteredTasks,
         addNewTask,
+        updateTask,
         completeTask,
         showCompletedTasks,
         showOrHideCompletedTasks,
