@@ -1,0 +1,29 @@
+@import "/src/styles/variables";
+
+.list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+    font-family: $dongleLight;
+    font-size: 2.5rem;
+    background-color: transparent;
+    color: $colorBlue;
+    border-style: none;
+  }
+
+  h1:hover {
+    cursor: pointer;
+  }
+
+  button {
+    margin: 0 0 0px 15px;
+    border: none;
+    background: transparent;
+    color: $colorRed;
+    font-family: $dongleLight;
+    font-size: 1.75rem;
+  }
+}

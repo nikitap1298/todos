@@ -18,8 +18,9 @@
 
 .offcanvas-body {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .btn-secondary {
