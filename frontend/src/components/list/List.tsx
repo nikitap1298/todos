@@ -1,11 +1,20 @@
 import React from "react"
+import { ListInterface } from "../../lib/interfaces/list.interface"
 import "./List.scss"
 
-export default function List(): JSX.Element {
+interface ListProps {
+  list: ListInterface
+  onDelete: (index: number) => void
+  listIndex: number
+}
+
+export default function List(props: ListProps): JSX.Element {
+  const { list, onDelete, listIndex } = props
+
   return (
     <div className="list">
-      <h1>List 1</h1>
-      <button>Delete</button>
+      <h1>{list.title}</h1>
+      <button onClick={(): void => onDelete(listIndex)}>Delete</button>
     </div>
   )
 }

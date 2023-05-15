@@ -5,8 +5,8 @@ import Navbar from "react-bootstrap/Navbar"
 import Offcanvas from "react-bootstrap/Offcanvas"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { v4 as uuidv4 } from "uuid"
+import Lists from "../list/Lists"
 import "./SideBar.scss"
-import List from "../list/List"
 
 export default function SideBar(): JSX.Element {
   const handlePlusClick = (event: MouseFormEvent): void => {
@@ -31,7 +31,7 @@ export default function SideBar(): JSX.Element {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
-                <List />
+                <Lists />
                 <Button variant="secondary" onClick={handlePlusClick}>
                   +
                 </Button>
