@@ -6,11 +6,15 @@ import Offcanvas from "react-bootstrap/Offcanvas"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { v4 as uuidv4 } from "uuid"
 import Lists from "../list/Lists"
+import { useListContext } from "../../context/ListContext"
 import "./SideBar.scss"
 
 export default function SideBar(): JSX.Element {
+  const { addNewList } = useListContext()
   const handlePlusClick = (event: MouseFormEvent): void => {
-    console.log("Click Plus")
+    event.preventDefault()
+    event.stopPropagation()
+    addNewList("List 1")
   }
 
   return (
