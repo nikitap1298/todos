@@ -18,7 +18,40 @@ mongoose.connect(url, {
   useNewUrlParser: true,
 } as ConnectOptions)
 
+// List API
+const listSchema = new mongoose.Schema({
+  title: String,
+})
+
+const List = mongoose.model("List", listSchema)
+
+app
+  .route("/list/:listId")
+  .get(async (req, res, next) => {
+    try {
+      const lists = await List.find({})
+      res.json(lists)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+  .post(async (req, res, next) => {
+    const list = new List({
+      title: req.body.title,
+    })
+    try {
+      const newList = await list.save()
+      res.json(newList)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+
+// Task API
 const tasksSchema = new mongoose.Schema({
+  listId: String,
   title: String,
   createdAt: Date,
   finished: Boolean,
