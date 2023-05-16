@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
-import { localStorageShowCompletedTasksKey } from "../constants/constants"
+import {
+  localStorageCurrentListIdKey,
+  localStorageShowCompletedTasksKey,
+} from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
+import { useListContext } from "./ListContext"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
@@ -30,6 +34,7 @@ export const TaskContextProvider = ({
   children,
 }: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
+  const { currentListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
@@ -69,7 +74,7 @@ export const TaskContextProvider = ({
     ) {
       tasksService
         .addTask({
-          list: "64634bae6095c8c8fcd8c31e",
+          list: currentListId,
           title: capitalizedMessage,
           createdAt: new Date(),
           finished: false,
@@ -157,10 +162,10 @@ export const TaskContextProvider = ({
 
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks
-    ? tasks.sort((a, b) =>
-        (a.finishedAt as Date) > (b.finishedAt as Date) ? 1 : -1
-      )
-    : tasks.filter((task) => !task.finished)
+    ? tasks.filter((element) => element.list === currentListId)
+    : tasks
+        .filter((task) => !task.finished)
+        .filter((element) => element.list === currentListId)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (

@@ -15,20 +15,20 @@ export default function App(): JSX.Element {
     <div className="app">
       <ListContextProvider>
         <SideBar />
-      </ListContextProvider>
-      <div className="main-app-div">
-        <div style={{ width: "55%", marginBottom: "25px" }}>
-          <Header />
-          <AlertContextProvider>
-            <TaskContextProvider>
-              <CompletedTasksDropdown />
-              <Tasks />
-              <AlertsComponent />
-              <CreateNewTask />
-            </TaskContextProvider>
-          </AlertContextProvider>
+        <div className="main-app-div">
+          <div style={{ width: "55%", marginBottom: "25px" }}>
+            <Header />
+            <AlertContextProvider>
+              <TaskContextProvider>
+                <CompletedTasksDropdown />
+                <Tasks />
+                <AlertsComponent />
+                <CreateNewTask />
+              </TaskContextProvider>
+            </AlertContextProvider>
+          </div>
         </div>
-      </div>
+      </ListContextProvider>
     </div>
   )
 }

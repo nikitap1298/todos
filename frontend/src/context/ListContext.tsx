@@ -4,10 +4,12 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
+import { localStorageCurrentListIdKey } from "../constants/constants"
 
 interface ListContextInterface {
   lists: ListInterface[]
   addNewList: (newListTitle: string) => void
+  currentListId: string | undefined
   selectList: (index: number) => void
   deleteList: (index: number) => void
 }
@@ -15,6 +17,7 @@ interface ListContextInterface {
 const ListContext = React.createContext<ListContextInterface>({
   lists: [],
   addNewList: () => void {},
+  currentListId: "",
   selectList: () => void {},
   deleteList: () => void {},
 })
@@ -23,6 +26,7 @@ export const ListContextProvider = ({
   children,
 }: ContextProviderProps): JSX.Element => {
   const [lists, setLists] = useState<ListInterface[]>([])
+  const [currentListId, setCurrentListId] = useState<string | undefined>("")
 
   const listsService = new ListsService()
 
@@ -56,7 +60,10 @@ export const ListContextProvider = ({
   }
 
   const selectList = (index: number): void => {
-    console.log(`List with Id: ${lists[index]._id} is selected`)
+    const id = lists[index]._id
+    console.log(`Selected list with Id: ${id}`)
+    setCurrentListId(id)
+    localStorage.setItem(localStorageCurrentListIdKey, JSON.stringify(id))
   }
 
   const deleteList = (index: number): void => {
@@ -69,7 +76,9 @@ export const ListContextProvider = ({
   }
 
   return (
-    <ListContext.Provider value={{ lists, addNewList, selectList, deleteList }}>
+    <ListContext.Provider
+      value={{ lists, addNewList, currentListId, selectList, deleteList }}
+    >
       {children}
     </ListContext.Provider>
   )
