@@ -69,6 +69,7 @@ export const TaskContextProvider = ({
     ) {
       tasksService
         .addTask({
+          list: "64634bae6095c8c8fcd8c31e",
           title: capitalizedMessage,
           createdAt: new Date(),
           finished: false,

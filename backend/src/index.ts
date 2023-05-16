@@ -3,7 +3,6 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import { ConnectOptions } from "mongoose"
-import { TaskInterface } from "./lib/interfaces/task.interface"
 
 const app = express()
 const port = 8000
@@ -63,7 +62,10 @@ app
 
 // Task API
 const tasksSchema = new mongoose.Schema({
-  listId: String,
+  list: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List",
+  },
   title: String,
   createdAt: Date,
   finished: Boolean,
@@ -76,6 +78,7 @@ app
   .route("/task/:taskId")
   .get(async (req, res, next) => {
     try {
+      // const tasks = await Task.find({}).populate("list", "title").select("title list")
       const tasks = await Task.find({})
       res.json(tasks)
     } catch (error) {
@@ -85,6 +88,7 @@ app
   })
   .post(async (req, res, next) => {
     const task = new Task({
+      list: req.body.list,
       title: req.body.title,
       createdAt: new Date(req.body.createdAt),
       finished: req.body.finished,
