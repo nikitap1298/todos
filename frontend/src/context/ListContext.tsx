@@ -8,12 +8,14 @@ import { ListsService } from "../services/lists-service"
 interface ListContextInterface {
   lists: ListInterface[]
   addNewList: (newListTitle: string) => void
+  selectList: (index: number) => void
   deleteList: (index: number) => void
 }
 
 const ListContext = React.createContext<ListContextInterface>({
   lists: [],
   addNewList: () => void {},
+  selectList: () => void {},
   deleteList: () => void {},
 })
 
@@ -53,6 +55,10 @@ export const ListContextProvider = ({
       })
   }
 
+  const selectList = (index: number): void => {
+    console.log(`List with Id: ${lists[index]._id} is selected`)
+  }
+
   const deleteList = (index: number): void => {
     const deletedList = lists[index]
     const newLists = lists.filter((element) => element._id !== deletedList._id)
@@ -63,7 +69,7 @@ export const ListContextProvider = ({
   }
 
   return (
-    <ListContext.Provider value={{ lists, addNewList, deleteList }}>
+    <ListContext.Provider value={{ lists, addNewList, selectList, deleteList }}>
       {children}
     </ListContext.Provider>
   )

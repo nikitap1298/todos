@@ -5,7 +5,7 @@ import { useListContext } from "../../context/ListContext"
 import { ListInterface } from "../../lib/interfaces/list.interface"
 
 export default function Lists(): JSX.Element {
-  const { lists, deleteList } = useListContext()
+  const { lists, selectList, deleteList } = useListContext()
 
   return (
     <div>
@@ -13,6 +13,7 @@ export default function Lists(): JSX.Element {
         <List
           key={uuidv4()}
           list={list}
+          onSelect={selectList}
           onDelete={deleteList}
           listIndex={index}
         />

@@ -4,16 +4,17 @@ import "./List.scss"
 
 interface ListProps {
   list: ListInterface
+  onSelect: (index: number) => void
   onDelete: (index: number) => void
   listIndex: number
 }
 
 export default function List(props: ListProps): JSX.Element {
-  const { list, onDelete, listIndex } = props
+  const { list, onSelect, onDelete, listIndex } = props
 
   return (
     <div className="list">
-      <h1>{list.title}</h1>
+      <h1 onClick={(): void => onSelect(listIndex)}>{list.title}</h1>
       <button onClick={(): void => onDelete(listIndex)}>Delete</button>
     </div>
   )
