@@ -55,6 +55,9 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     }
   }, [])
 
+  // Check if isCurrentListIdEmpty
+  const isCurrentListIdEmpty = currentListId?.length === 0
+
   const fetchTasksFromDB = (): void => {
     tasksService
       .readTasks()
@@ -76,7 +79,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     ) {
       tasksService
         .addTask({
-          list: currentListId,
+          list: isCurrentListIdEmpty ? listId : currentListId,
           title: capitalizedMessage,
           createdAt: new Date(),
           finished: false,
@@ -150,7 +153,9 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const newTasks = tasks.filter((task) => task.finished !== true)
     const deletedTasks = oldTasks
       .filter((obj1) => !newTasks.some((obj2) => obj1._id === obj2._id))
-      .filter((element) => element.list === currentListId)
+      .filter((element) =>
+        isCurrentListIdEmpty ? element.list === listId : element.list === currentListId
+      )
 
     for (const task of deletedTasks) {
       try {
@@ -166,7 +171,6 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks ? tasks : tasks.filter((task) => !task.finished)
-  const isCurrentListIdEmpty = currentListId?.length === 0
   const finalFilteredTasks = isCurrentListIdEmpty
     ? filteredTasks.filter((element) => element.list === listId)
     : filteredTasks.filter((element) => element.list === currentListId)
