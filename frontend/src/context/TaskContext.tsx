@@ -13,8 +13,8 @@ import { useListContext } from "./ListContext"
 interface TaskContextInterface {
   tasks: TaskInterface[]
   addNewTask: (newTaskTitle: string) => void
-  updateTask: (index: number, updatedTitle: string) => void
-  completeTask: (index: number) => void
+  updateTask: (taskId: string | undefined, updatedTitle: string) => void
+  completeTask: (taskId: string | undefined) => void
   showCompletedTasks: boolean
   showOrHideCompletedTasks: () => void
   deleteCompletedTasks: () => void
@@ -97,15 +97,22 @@ export const TaskContextProvider = ({
     }
   }
 
-  const updateTask = (index: number, updatedTaskTitle: string): void => {
+  const updateTask = (
+    taskId: string | undefined,
+    updatedTaskTitle: string
+  ): void => {
     const newTasks: TaskInterface[] = [...tasks]
     const newTaskTitle =
       updatedTaskTitle.charAt(0).toUpperCase() +
       updatedTaskTitle.slice(1).trim()
 
-    newTasks[index].title = newTaskTitle
+    const updatedTask = newTasks.find(
+      (element: TaskInterface) => element._id === taskId
+    ) as TaskInterface
+
+    updatedTask.title = newTaskTitle
     tasksService
-      .updateTask(newTasks[index])
+      .updateTask(updatedTask)
       .then(() => {
         deleteAllAlerts()
         setTasks([...newTasks])
@@ -115,15 +122,18 @@ export const TaskContextProvider = ({
       })
   }
 
-  const completeTask = (index: number): void => {
+  const completeTask = (taskId: string | undefined): void => {
     const newTasks: TaskInterface[] = [...tasks]
+    const completedTask = newTasks.find(
+      (element: TaskInterface) => element._id === taskId
+    ) as TaskInterface
 
     // Toggle "finished" value
-    newTasks[index].finished = !newTasks[index].finished
-    if (newTasks[index].finished) {
-      newTasks[index].finishedAt = new Date()
+    completedTask.finished = !completedTask.finished
+    if (completedTask.finished) {
+      completedTask.finishedAt = new Date()
       tasksService
-        .updateTask(newTasks[index])
+        .updateTask(completedTask)
         .then(() => {
           setTasks([...newTasks])
         })

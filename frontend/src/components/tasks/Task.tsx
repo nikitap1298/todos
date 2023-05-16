@@ -7,13 +7,13 @@ import dayjs from "dayjs"
 interface TaskProps {
   className: string
   task: TaskInterface
-  onEdit: (index: number, updatedTaskTitle: string) => void
-  onComplete: (index: number) => void
-  taskIndex: number
+  onEdit: (taskId: string | undefined, updatedTaskTitle: string) => void
+  onComplete: (taskId: string | undefined) => void
+  taskId: string | undefined
 }
 
 export default function Task(props: TaskProps): JSX.Element {
-  const { className, task, onEdit, onComplete, taskIndex } = props
+  const { className, task, onEdit, onComplete, taskId } = props
 
   const [editedValue, setEditedValue] = useState("")
   const [showTitleEditor, setShowTitleEditor] = useState(false)
@@ -34,7 +34,7 @@ export default function Task(props: TaskProps): JSX.Element {
       event.currentTarget.blur()
       setShowTitleEditor(false)
     } else if (event.key === "Enter") {
-      onEdit(taskIndex, editedValue)
+      onEdit(taskId, editedValue)
       event.preventDefault()
       setShowTitleEditor(false)
     }
@@ -78,7 +78,7 @@ export default function Task(props: TaskProps): JSX.Element {
             <Form.Check
               type="checkbox"
               label=""
-              onChange={(): void => onComplete(taskIndex)}
+              onChange={(): void => onComplete(taskId)}
             />
           </Form>
         </div>
