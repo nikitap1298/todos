@@ -1,28 +1,19 @@
 @import "/src/styles/variables";
 
-.nav-bar {
-  margin-bottom: 0;
-  background-color: $colorVanilla;
+.side-bar {
+  margin: 0;
+  background-color: white;
+  width: 20%;
+  min-height: 100vh;
 
-  div {
-    display: flex;
-    justify-content: center;
+  button {
+    margin: 5px 0 0 5px;
+    background-color: $colorBlue;
+    border: none;
+    color: $colorVanilla;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 15px;
+    text-align: center;
   }
-}
-
-// .h5 {
-//   font-family: $dongleRegular;
-//   font-size: 3.5rem;
-//   color: $colorBlue;
-// }
-
-.offcanvas-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.btn-secondary {
-  --bs-btn-bg: $colorVanilla;
 }
