@@ -54,8 +54,6 @@ app
       const deletedList = await List.deleteOne({
         _id: listId,
       })
-      console.log(deletedList)
-
       res.json(deletedList)
     } catch (error) {
       console.error(error)

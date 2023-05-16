@@ -40,10 +40,11 @@ export const ListContextProvider = ({
   }
 
   const addNewList = (newListTitle: string): void => {
-    setLists((oldArray) => [...oldArray, { title: newListTitle }])
+    const capitalizedMessage =
+      newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
 
     listsService
-      .addList({ title: newListTitle })
+      .addList({ title: capitalizedMessage })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
       })
