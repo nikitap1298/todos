@@ -53,7 +53,10 @@ app
       const deletedList = await List.deleteOne({
         _id: listId,
       })
-      res.json(deletedList)
+      const deletedTasks = await Task.deleteMany({
+        list: listId,
+      })
+      res.json({ deletedList, deletedTasks })
     } catch (error) {
       console.error(error)
       return next(error)
