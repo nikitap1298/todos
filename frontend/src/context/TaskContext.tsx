@@ -30,11 +30,10 @@ const TaskContext = React.createContext<TaskContextInterface>({
   deleteCompletedTasks: () => void {},
 })
 
-export const TaskContextProvider = ({
-  children,
-}: ContextProviderProps): JSX.Element => {
+export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   const { currentListId } = useListContext()
+  const [listId, setListId] = useState("")
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
@@ -44,11 +43,15 @@ export const TaskContextProvider = ({
   useEffect(() => {
     fetchTasksFromDB()
 
-    const showCompletedTasksLocalStorage = localStorage.getItem(
-      localStorageShowCompletedTasksKey
-    )
+    const showCompletedTasksLocalStorage = localStorage.getItem(localStorageShowCompletedTasksKey)
+    const currentListIdLocalStorage = localStorage.getItem(localStorageCurrentListIdKey)
+
     if (typeof showCompletedTasksLocalStorage === "string") {
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
+    }
+
+    if (typeof currentListIdLocalStorage === "string") {
+      setListId(JSON.parse(currentListIdLocalStorage))
     }
   }, [])
 
@@ -64,8 +67,7 @@ export const TaskContextProvider = ({
   }
 
   const addNewTask = (newTaskTitle: string): void => {
-    const capitalizedMessage =
-      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
+    const capitalizedMessage = newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
     // User can't add the same task
     if (
@@ -97,14 +99,9 @@ export const TaskContextProvider = ({
     }
   }
 
-  const updateTask = (
-    taskId: string | undefined,
-    updatedTaskTitle: string
-  ): void => {
+  const updateTask = (taskId: string | undefined, updatedTaskTitle: string): void => {
     const newTasks: TaskInterface[] = [...tasks]
-    const newTaskTitle =
-      updatedTaskTitle.charAt(0).toUpperCase() +
-      updatedTaskTitle.slice(1).trim()
+    const newTaskTitle = updatedTaskTitle.charAt(0).toUpperCase() + updatedTaskTitle.slice(1).trim()
 
     const updatedTask = newTasks.find(
       (element: TaskInterface) => element._id === taskId
@@ -145,10 +142,7 @@ export const TaskContextProvider = ({
 
   const showOrHideCompletedTasks = (): void => {
     setShowCompletedTasks(!showCompletedTasks)
-    localStorage.setItem(
-      localStorageShowCompletedTasksKey,
-      JSON.stringify(!showCompletedTasks)
-    )
+    localStorage.setItem(localStorageShowCompletedTasksKey, JSON.stringify(!showCompletedTasks))
   }
 
   const deleteCompletedTasks = async (): Promise<void> => {
@@ -171,17 +165,17 @@ export const TaskContextProvider = ({
   }
 
   // Filter or sort tasks
-  const filteredTasks = showCompletedTasks
-    ? tasks.filter((element) => element.list === currentListId)
-    : tasks
-        .filter((task) => !task.finished)
-        .filter((element) => element.list === currentListId)
+  const filteredTasks = showCompletedTasks ? tasks : tasks.filter((task) => !task.finished)
+  const isCurrentListIdEmpty = currentListId?.length === 0
+  const finalFilteredTasks = isCurrentListIdEmpty
+    ? filteredTasks.filter((element) => element.list === listId)
+    : filteredTasks.filter((element) => element.list === currentListId)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (
     <TaskContext.Provider
       value={{
-        tasks: filteredTasks,
+        tasks: finalFilteredTasks,
         addNewTask,
         updateTask,
         completeTask,
@@ -195,5 +189,4 @@ export const TaskContextProvider = ({
   )
 }
 
-export const useTaskContext = (): TaskContextInterface =>
-  useContext(TaskContext)
+export const useTaskContext = (): TaskContextInterface => useContext(TaskContext)
