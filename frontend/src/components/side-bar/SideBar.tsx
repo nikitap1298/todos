@@ -20,15 +20,12 @@ export default function SideBar(): JSX.Element {
     setShowModal(false)
   }
 
-  const handleNewListInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleNewListInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setNewListTitle(event.target.value)
   }
 
   const handleAddClick = (event: MouseFormEvent): void => {
     event.preventDefault()
-
     addNewList(newListTitle)
 
     // Delete text from input

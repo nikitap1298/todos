@@ -20,6 +20,7 @@ mongoose.connect(url, {
 // List API
 const listSchema = new mongoose.Schema({
   title: String,
+  selected: Boolean,
 })
 
 const List = mongoose.model("List", listSchema)
@@ -38,10 +39,27 @@ app
   .post(async (req, res, next) => {
     const list = new List({
       title: req.body.title,
+      selected: req.body.selected,
     })
     try {
       const newList = await list.save()
       res.json(newList)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+  .put(async (req, res, next) => {
+    const listId = req.params.listId
+
+    try {
+      const updatedList = await List.updateOne(
+        {
+          _id: listId,
+        },
+        req.body
+      )
+      res.json(updatedList)
     } catch (error) {
       console.error(error)
       return next(error)

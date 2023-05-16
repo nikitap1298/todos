@@ -22,9 +22,7 @@ const ListContext = React.createContext<ListContextInterface>({
   deleteList: () => void {},
 })
 
-export const ListContextProvider = ({
-  children,
-}: ContextProviderProps): JSX.Element => {
+export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const [lists, setLists] = useState<ListInterface[]>([])
   const [currentListId, setCurrentListId] = useState<string | undefined>("")
 
@@ -46,11 +44,10 @@ export const ListContextProvider = ({
   }
 
   const addNewList = (newListTitle: string): void => {
-    const capitalizedMessage =
-      newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
+    const capitalizedMessage = newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
 
     listsService
-      .addList({ title: capitalizedMessage })
+      .addList({ title: capitalizedMessage, selected: true })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
       })
@@ -71,18 +68,18 @@ export const ListContextProvider = ({
     const newLists = lists.filter((element) => element._id !== deletedList._id)
 
     listsService.deleteList(deletedList).then(() => {
+      if (index !== 0) {
+        setCurrentListId(lists[index - 1]._id)
+      }
       setLists(newLists)
     })
   }
 
   return (
-    <ListContext.Provider
-      value={{ lists, addNewList, currentListId, selectList, deleteList }}
-    >
+    <ListContext.Provider value={{ lists, addNewList, currentListId, selectList, deleteList }}>
       {children}
     </ListContext.Provider>
   )
 }
 
-export const useListContext = (): ListContextInterface =>
-  useContext(ListContext)
+export const useListContext = (): ListContextInterface => useContext(ListContext)
