@@ -154,9 +154,9 @@ export const TaskContextProvider = ({
   const deleteCompletedTasks = async (): Promise<void> => {
     const oldTasks = tasks
     const newTasks = tasks.filter((task) => task.finished !== true)
-    const deletedTasks = oldTasks.filter(
-      (obj1) => !newTasks.some((obj2) => obj1._id === obj2._id)
-    )
+    const deletedTasks = oldTasks
+      .filter((obj1) => !newTasks.some((obj2) => obj1._id === obj2._id))
+      .filter((element) => element.list === currentListId)
 
     for (const task of deletedTasks) {
       try {
