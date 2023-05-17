@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageShowCompletedTasksKey } from "../constants/constants"
@@ -5,12 +6,13 @@ import { useAlertContext } from "./AlertContext"
 import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
+import { useListContext } from "./ListContext"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
   addNewTask: (newTaskTitle: string) => void
-  updateTask: (index: number, updatedTitle: string) => void
-  completeTask: (index: number) => void
+  updateTask: (taskId: string | undefined, updatedTitle: string) => void
+  completeTask: (taskId: string | undefined) => void
   showCompletedTasks: boolean
   showOrHideCompletedTasks: () => void
   deleteCompletedTasks: () => void
@@ -26,10 +28,9 @@ const TaskContext = React.createContext<TaskContextInterface>({
   deleteCompletedTasks: () => void {},
 })
 
-export const TaskContextProvider = ({
-  children,
-}: ContextProviderProps): JSX.Element => {
+export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
+  const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
@@ -39,13 +40,15 @@ export const TaskContextProvider = ({
   useEffect(() => {
     fetchTasksFromDB()
 
-    const showCompletedTasksLocalStorage = localStorage.getItem(
-      localStorageShowCompletedTasksKey
-    )
+    const showCompletedTasksLocalStorage = localStorage.getItem(localStorageShowCompletedTasksKey)
     if (typeof showCompletedTasksLocalStorage === "string") {
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
     }
   }, [])
+
+  // Find selectedList
+  const selectedList = lists.find((element) => element._id === selectedListId)
+  console.log(`Using list: ${selectedList?.title}`)
 
   const fetchTasksFromDB = (): void => {
     tasksService
@@ -59,16 +62,17 @@ export const TaskContextProvider = ({
   }
 
   const addNewTask = (newTaskTitle: string): void => {
-    const capitalizedMessage =
-      newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
+    const capitalizedMessage = newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
-    // User can't add the same task
+    // User can't add the same task, empty task or task if there are no lists
     if (
       !tasks.some((element) => element.title === capitalizedMessage) &&
-      capitalizedMessage !== ""
+      capitalizedMessage !== "" &&
+      selectedList
     ) {
       tasksService
         .addTask({
+          listId: selectedList?._id,
           title: capitalizedMessage,
           createdAt: new Date(),
           finished: false,
@@ -88,18 +92,25 @@ export const TaskContextProvider = ({
         title: "This task already exists:",
         message: capitalizedMessage,
       })
+    } else if (!selectedList) {
+      addAlert({
+        title: "List is not selected",
+        message: "Select or add new list",
+      })
     }
   }
 
-  const updateTask = (index: number, updatedTaskTitle: string): void => {
+  const updateTask = (taskId: string | undefined, updatedTaskTitle: string): void => {
     const newTasks: TaskInterface[] = [...tasks]
-    const newTaskTitle =
-      updatedTaskTitle.charAt(0).toUpperCase() +
-      updatedTaskTitle.slice(1).trim()
+    const newTaskTitle = updatedTaskTitle.charAt(0).toUpperCase() + updatedTaskTitle.slice(1).trim()
 
-    newTasks[index].title = newTaskTitle
+    const updatedTask = newTasks.find(
+      (element: TaskInterface) => element._id === taskId
+    ) as TaskInterface
+
+    updatedTask.title = newTaskTitle
     tasksService
-      .updateTask(newTasks[index])
+      .updateTask(updatedTask)
       .then(() => {
         deleteAllAlerts()
         setTasks([...newTasks])
@@ -109,15 +120,18 @@ export const TaskContextProvider = ({
       })
   }
 
-  const completeTask = (index: number): void => {
+  const completeTask = (taskId: string | undefined): void => {
     const newTasks: TaskInterface[] = [...tasks]
+    const completedTask = newTasks.find(
+      (element: TaskInterface) => element._id === taskId
+    ) as TaskInterface
 
     // Toggle "finished" value
-    newTasks[index].finished = !newTasks[index].finished
-    if (newTasks[index].finished) {
-      newTasks[index].finishedAt = new Date()
+    completedTask.finished = !completedTask.finished
+    if (completedTask.finished) {
+      completedTask.finishedAt = new Date()
       tasksService
-        .updateTask(newTasks[index])
+        .updateTask(completedTask)
         .then(() => {
           setTasks([...newTasks])
         })
@@ -129,18 +143,15 @@ export const TaskContextProvider = ({
 
   const showOrHideCompletedTasks = (): void => {
     setShowCompletedTasks(!showCompletedTasks)
-    localStorage.setItem(
-      localStorageShowCompletedTasksKey,
-      JSON.stringify(!showCompletedTasks)
-    )
+    localStorage.setItem(localStorageShowCompletedTasksKey, JSON.stringify(!showCompletedTasks))
   }
 
   const deleteCompletedTasks = async (): Promise<void> => {
     const oldTasks = tasks
     const newTasks = tasks.filter((task) => task.finished !== true)
-    const deletedTasks = oldTasks.filter(
-      (obj1) => !newTasks.some((obj2) => obj1._id === obj2._id)
-    )
+    const deletedTasks = oldTasks
+      .filter((obj1) => !newTasks.some((obj2) => obj1._id === obj2._id))
+      .filter((element) => element.listId === selectedList?._id)
 
     for (const task of deletedTasks) {
       try {
@@ -155,17 +166,14 @@ export const TaskContextProvider = ({
   }
 
   // Filter or sort tasks
-  const filteredTasks = showCompletedTasks
-    ? tasks.sort((a, b) =>
-        (a.finishedAt as Date) > (b.finishedAt as Date) ? 1 : -1
-      )
-    : tasks.filter((task) => !task.finished)
+  const filteredTasks = showCompletedTasks ? tasks : tasks.filter((task) => !task.finished)
+  const finalFilteredTasks = filteredTasks.filter((element) => element.listId === selectedList?._id)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (
     <TaskContext.Provider
       value={{
-        tasks: filteredTasks,
+        tasks: finalFilteredTasks,
         addNewTask,
         updateTask,
         completeTask,
@@ -179,5 +187,4 @@ export const TaskContextProvider = ({
   )
 }
 
-export const useTaskContext = (): TaskContextInterface =>
-  useContext(TaskContext)
+export const useTaskContext = (): TaskContextInterface => useContext(TaskContext)

@@ -9,15 +9,15 @@ export default function Tasks(): JSX.Element {
 
   return (
     <div>
-      {tasks.map((task: TaskInterface, index: number) => (
+      {tasks.map((task: TaskInterface) => (
         // Use "task.title" as a key attribute. Using "task" or "index" will create a bug
         <Task
           key={uuidv4()}
-          className={task.finished ? "selected-task" : "task"}
+          className={task.finished ? "task selected-task" : "task"}
           task={task}
           onEdit={updateTask}
           onComplete={completeTask}
-          taskIndex={index}
+          taskId={task._id}
         />
       ))}
     </div>

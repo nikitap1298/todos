@@ -1,0 +1,19 @@
+@import "/src/styles/variables";
+
+.side-bar {
+  margin: 0;
+  background-color: white;
+  width: 25%;
+  min-height: 100vh;
+
+  .side-bar-plus-button {
+    margin: 5px 0 0 5px;
+    background-color: $colorBlue;
+    border: none;
+    color: $colorVanilla;
+    padding: 6px 24px;
+    font-size: 16px;
+    border-radius: 15px;
+    text-align: center;
+  }
+}
