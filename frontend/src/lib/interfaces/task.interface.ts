@@ -1,6 +1,6 @@
 export interface TaskInterface {
   _id?: string
-  list?: string
+  listId?: string
   title: string
   createdAt: Date
   finished: boolean

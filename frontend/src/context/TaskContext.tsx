@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageShowCompletedTasksKey } from "../constants/constants"
@@ -29,7 +30,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
-  const { lists } = useListContext()
+  const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
@@ -40,14 +41,14 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     fetchTasksFromDB()
 
     const showCompletedTasksLocalStorage = localStorage.getItem(localStorageShowCompletedTasksKey)
-
     if (typeof showCompletedTasksLocalStorage === "string") {
       setShowCompletedTasks(JSON.parse(showCompletedTasksLocalStorage))
     }
   }, [])
 
   // Find selectedList
-  const selectedList = lists.find((element) => element.selected === true)  
+  const selectedList = lists.find((element) => element._id === selectedListId)
+  console.log(`Using list: ${selectedList?.title}`)
 
   const fetchTasksFromDB = (): void => {
     tasksService
@@ -67,11 +68,11 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     if (
       !tasks.some((element) => element.title === capitalizedMessage) &&
       capitalizedMessage !== "" &&
-      selectedList?.selected === true
+      selectedList
     ) {
       tasksService
         .addTask({
-          list: selectedList?._id,
+          listId: selectedList?._id,
           title: capitalizedMessage,
           createdAt: new Date(),
           finished: false,
@@ -91,7 +92,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         title: "This task already exists:",
         message: capitalizedMessage,
       })
-    } else if (selectedList?.selected !== true) {
+    } else if (!selectedList) {
       addAlert({
         title: "List is not selected",
         message: "Select or add new list",
@@ -150,7 +151,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const newTasks = tasks.filter((task) => task.finished !== true)
     const deletedTasks = oldTasks
       .filter((obj1) => !newTasks.some((obj2) => obj1._id === obj2._id))
-      .filter((element) => element.list === selectedList?._id)
+      .filter((element) => element.listId === selectedList?._id)
 
     for (const task of deletedTasks) {
       try {
@@ -166,7 +167,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   // Filter or sort tasks
   const filteredTasks = showCompletedTasks ? tasks : tasks.filter((task) => !task.finished)
-  const finalFilteredTasks = filteredTasks.filter((element) => element.list === selectedList?._id)
+  const finalFilteredTasks = filteredTasks.filter((element) => element.listId === selectedList?._id)
   tasks.sort((a, b) => (a.finished === b.finished ? 0 : a.finished ? 1 : -1))
 
   return (

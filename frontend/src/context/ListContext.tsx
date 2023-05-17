@@ -4,10 +4,12 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
+import { localStorageSelectedListIdKey } from "../constants/constants"
 
 interface ListContextInterface {
   lists: ListInterface[]
   addNewList: (newListTitle: string) => void
+  selectedListId: string | undefined
   selectList: (index: number) => void
   deleteList: (index: number) => void
 }
@@ -15,17 +17,24 @@ interface ListContextInterface {
 const ListContext = React.createContext<ListContextInterface>({
   lists: [],
   addNewList: () => void {},
+  selectedListId: "",
   selectList: () => void {},
   deleteList: () => void {},
 })
 
 export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const [lists, setLists] = useState<ListInterface[]>([])
+  const [selectedListId, setSelectedListId] = useState<string | undefined>("")
 
   const listsService = new ListsService()
 
   useEffect(() => {
     fetchListsFromDB()
+
+    const selectedListIdLocalStorage = localStorage.getItem(localStorageSelectedListIdKey)
+    if (typeof selectedListIdLocalStorage === "string") {
+      setSelectedListId(JSON.parse(selectedListIdLocalStorage))
+    }
   }, [])
 
   const fetchListsFromDB = (): void => {
@@ -43,7 +52,7 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const capitalizedMessage = newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
 
     listsService
-      .addList({ title: capitalizedMessage, selected: false })
+      .addList({ title: capitalizedMessage })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
       })
@@ -53,20 +62,11 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const selectList = (index: number): void => {
-    const newLists = lists
     const id = lists[index]._id
     console.log(`Selected list with Id: ${id}`)
 
-    for (const list of newLists) {
-      if (list._id === id) {
-        list.selected = true
-      } else {
-        list.selected = false
-      }
-      listsService.updateList(list).then(() => {
-        setLists([...newLists])
-      })
-    }
+    setSelectedListId(id)
+    localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(id))
   }
 
   const deleteList = (index: number): void => {
@@ -79,7 +79,7 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   return (
-    <ListContext.Provider value={{ lists, addNewList, selectList, deleteList }}>
+    <ListContext.Provider value={{ lists, addNewList, selectedListId, selectList, deleteList }}>
       {children}
     </ListContext.Provider>
   )

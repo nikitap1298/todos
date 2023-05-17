@@ -20,7 +20,6 @@ mongoose.connect(url, {
 // List API
 const listSchema = new mongoose.Schema({
   title: String,
-  selected: Boolean,
 })
 
 const List = mongoose.model("List", listSchema)
@@ -39,7 +38,6 @@ app
   .post(async (req, res, next) => {
     const list = new List({
       title: req.body.title,
-      selected: req.body.selected,
     })
     try {
       const newList = await list.save()
@@ -72,7 +70,7 @@ app
         _id: listId,
       })
       const deletedTasks = await Task.deleteMany({
-        list: listId,
+        listId: listId,
       })
       res.json({ deletedList, deletedTasks })
     } catch (error) {
@@ -83,7 +81,7 @@ app
 
 // Task API
 const tasksSchema = new mongoose.Schema({
-  list: {
+  listId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "List",
   },
@@ -109,7 +107,7 @@ app
   })
   .post(async (req, res, next) => {
     const task = new Task({
-      list: req.body.list,
+      listId: req.body.listId,
       title: req.body.title,
       createdAt: new Date(req.body.createdAt),
       finished: req.body.finished,
