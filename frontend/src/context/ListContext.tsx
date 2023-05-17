@@ -4,12 +4,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
-import { localStorageCurrentListIdKey } from "../constants/constants"
 
 interface ListContextInterface {
   lists: ListInterface[]
   addNewList: (newListTitle: string) => void
-  currentListId: string | undefined
   selectList: (index: number) => void
   deleteList: (index: number) => void
 }
@@ -17,14 +15,12 @@ interface ListContextInterface {
 const ListContext = React.createContext<ListContextInterface>({
   lists: [],
   addNewList: () => void {},
-  currentListId: "",
   selectList: () => void {},
   deleteList: () => void {},
 })
 
 export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const [lists, setLists] = useState<ListInterface[]>([])
-  const [currentListId, setCurrentListId] = useState<string | undefined>("")
 
   const listsService = new ListsService()
 
@@ -57,18 +53,19 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const selectList = (index: number): void => {
+    const newLists = lists
     const id = lists[index]._id
     console.log(`Selected list with Id: ${id}`)
-    setCurrentListId(id)
-    localStorage.setItem(localStorageCurrentListIdKey, JSON.stringify(id))
 
-    for (const list of lists) {
+    for (const list of newLists) {
       if (list._id === id) {
         list.selected = true
       } else {
         list.selected = false
       }
-      listsService.updateList(list)
+      listsService.updateList(list).then(() => {
+        setLists([...newLists])
+      })
     }
   }
 
@@ -77,15 +74,12 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const newLists = lists.filter((element) => element._id !== deletedList._id)
 
     listsService.deleteList(deletedList).then(() => {
-      if (index !== 0) {
-        setCurrentListId(lists[index - 1]._id)
-      }
       setLists(newLists)
     })
   }
 
   return (
-    <ListContext.Provider value={{ lists, addNewList, currentListId, selectList, deleteList }}>
+    <ListContext.Provider value={{ lists, addNewList, selectList, deleteList }}>
       {children}
     </ListContext.Provider>
   )
