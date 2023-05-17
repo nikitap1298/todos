@@ -4,10 +4,16 @@
 @import "/src/styles/variables";
 
 .app {
-  min-height: 100vh;
-  background-color: $colorVanilla;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+
+  .main-app-div {
+    min-height: 100vh;
+    background-color: $colorVanilla;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+  }
 }

@@ -3,7 +3,6 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import { ConnectOptions } from "mongoose"
-import { TaskInterface } from "./lib/interfaces/task.interface"
 
 const app = express()
 const port = 8000
@@ -18,7 +17,74 @@ mongoose.connect(url, {
   useNewUrlParser: true,
 } as ConnectOptions)
 
+// List API
+const listSchema = new mongoose.Schema({
+  title: String,
+})
+
+const List = mongoose.model("List", listSchema)
+
+app
+  .route("/list/:listId")
+  .get(async (req, res, next) => {
+    try {
+      const lists = await List.find({})
+      res.json(lists)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+  .post(async (req, res, next) => {
+    const list = new List({
+      title: req.body.title,
+    })
+    try {
+      const newList = await list.save()
+      res.json(newList)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+  .put(async (req, res, next) => {
+    const listId = req.params.listId
+
+    try {
+      const updatedList = await List.updateOne(
+        {
+          _id: listId,
+        },
+        req.body
+      )
+      res.json(updatedList)
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+  .delete(async (req, res, next) => {
+    const listId = req.params.listId
+    try {
+      const deletedList = await List.deleteOne({
+        _id: listId,
+      })
+      const deletedTasks = await Task.deleteMany({
+        listId: listId,
+      })
+      res.json({ deletedList, deletedTasks })
+    } catch (error) {
+      console.error(error)
+      return next(error)
+    }
+  })
+
+// Task API
 const tasksSchema = new mongoose.Schema({
+  listId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List",
+  },
   title: String,
   createdAt: Date,
   finished: Boolean,
@@ -28,9 +94,10 @@ const tasksSchema = new mongoose.Schema({
 const Task = mongoose.model("Task", tasksSchema)
 
 app
-  .route("/task/:_id")
+  .route("/task/:taskId")
   .get(async (req, res, next) => {
     try {
+      // const tasks = await Task.find({}).populate("list", "title").select("title list")
       const tasks = await Task.find({})
       res.json(tasks)
     } catch (error) {
@@ -40,6 +107,7 @@ app
   })
   .post(async (req, res, next) => {
     const task = new Task({
+      listId: req.body.listId,
       title: req.body.title,
       createdAt: new Date(req.body.createdAt),
       finished: req.body.finished,
@@ -54,12 +122,12 @@ app
     }
   })
   .put(async (req, res, next) => {
-    const taskID = req.params._id
+    const taskId = req.params.taskId
 
     try {
       const updatedTask = await Task.updateOne(
         {
-          _id: taskID,
+          _id: taskId,
         },
         req.body
       )
@@ -70,11 +138,11 @@ app
     }
   })
   .delete(async (req, res, next) => {
-    const taskID = req.params._id
+    const taskId = req.params.taskId
 
     try {
       const deletedTask = await Task.deleteOne({
-        _id: taskID,
+        _id: taskId,
       })
       res.json(deletedTask)
     } catch (error) {

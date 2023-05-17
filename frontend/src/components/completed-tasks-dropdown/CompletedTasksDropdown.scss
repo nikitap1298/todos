@@ -10,23 +10,23 @@
     background-color: $colorBlue;
     font-family: $dongleRegular;
     font-size: 1.5rem;
-  }
 
-  button:hover {
-    background-color: $colorBlue;
-  }
+    &:hover {
+      background-color: $colorBlue;
+    }
 
-  button.show {
-    background-color: $colorBlue;
+    .show {
+      background-color: $colorBlue;
+    }
   }
 
   .dropdown-item {
     font-family: $dongleRegular;
     font-size: 1.5rem;
     color: $colorGray;
-  }
 
-  .dropdown-item:hover {
-    color: $colorGray;
+    &:hover {
+      color: $colorGray;
+    }
   }
 }
