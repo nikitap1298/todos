@@ -47,7 +47,7 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const capitalizedMessage = newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
 
     listsService
-      .addList({ title: capitalizedMessage, selected: true })
+      .addList({ title: capitalizedMessage, selected: false })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
       })
@@ -61,6 +61,15 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     console.log(`Selected list with Id: ${id}`)
     setCurrentListId(id)
     localStorage.setItem(localStorageCurrentListIdKey, JSON.stringify(id))
+
+    for (const list of lists) {
+      if (list._id === id) {
+        list.selected = true
+      } else {
+        list.selected = false
+      }
+      listsService.updateList(list)
+    }
   }
 
   const deleteList = (index: number): void => {

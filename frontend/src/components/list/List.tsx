@@ -3,6 +3,7 @@ import { ListInterface } from "../../lib/interfaces/list.interface"
 import "./List.scss"
 
 interface ListProps {
+  className: string
   list: ListInterface
   onSelect: (index: number) => void
   onDelete: (index: number) => void
@@ -10,10 +11,10 @@ interface ListProps {
 }
 
 export default function List(props: ListProps): JSX.Element {
-  const { list, onSelect, onDelete, listIndex } = props
+  const { className, list, onSelect, onDelete, listIndex } = props
 
   return (
-    <div className="list">
+    <div className={className}>
       <h1 onClick={(): void => onSelect(listIndex)}>{list.title}</h1>
       <button onClick={(): void => onDelete(listIndex)}>Delete</button>
     </div>

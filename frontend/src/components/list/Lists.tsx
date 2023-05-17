@@ -12,6 +12,7 @@ export default function Lists(): JSX.Element {
       {lists.map((list: ListInterface, index: number) => (
         <List
           key={uuidv4()}
+          className={list.selected ? "selected-list" : "list"}
           list={list}
           onSelect={selectList}
           onDelete={deleteList}
