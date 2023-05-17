@@ -29,3 +29,11 @@
     font-size: 1.75rem;
   }
 }
+
+.selected-list {
+  @extend .list;
+
+  h1 {
+    color: $colorGreen;
+  }
+}

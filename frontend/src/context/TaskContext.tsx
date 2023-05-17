@@ -32,7 +32,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
-  const { currentListId } = useListContext()
+  const { lists, currentListId } = useListContext()
   const [listId, setListId] = useState("")
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
@@ -72,10 +72,11 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage = newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
-    // User can't add the same task
+    // User can't add the same task, empty task or task if there are no lists
     if (
       !tasks.some((element) => element.title === capitalizedMessage) &&
-      capitalizedMessage !== ""
+      capitalizedMessage !== "" &&
+      lists.length !== 0
     ) {
       tasksService
         .addTask({
@@ -98,6 +99,11 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       addAlert({
         title: "This task already exists:",
         message: capitalizedMessage,
+      })
+    } else if (lists.length === 0) {
+      addAlert({
+        title: "There is no list",
+        message: "Add new list",
       })
     }
   }
