@@ -13,7 +13,7 @@ export default function Tasks(): JSX.Element {
         // Use "task.title" as a key attribute. Using "task" or "index" will create a bug
         <Task
           key={uuidv4()}
-          className={task.finished ? "selected-task" : "task"}
+          className={task.finished ? "task selected-task" : "task"}
           task={task}
           onEdit={updateTask}
           onComplete={completeTask}
