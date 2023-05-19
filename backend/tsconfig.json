@@ -106,5 +106,18 @@
       "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
       "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
       "strict": true,                                      /* Enable all strict type-checking options. */
+
+      /* NestJS */
+      "declaration": true,
+      "removeComments": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "baseUrl": "./",
+      "incremental": true,
+      "strictNullChecks": false,
+      "strictBindCallApply": false,
+      "noFallthroughCasesInSwitch": false
     }
   }
