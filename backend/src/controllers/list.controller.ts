@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from "@nestjs/common"
-import { ListService } from "src/services/list.service"
+import { ListService } from "../services/list.service"
 import { List } from "src/lib/interfaces/list.interface"
 
 @Controller("list/:listId")
