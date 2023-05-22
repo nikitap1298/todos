@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from "@nestjs/common"
-import { ListService } from "../services/list.service"
-import { ListInterface } from "../lib/interfaces/list.interface"
+import { ListService } from "./list.service"
+import { ListInterface } from "./list.interface"
 
 @Controller("list/:listId")
 export class ListController {
@@ -17,7 +17,10 @@ export class ListController {
   }
 
   @Put()
-  async updateList(@Param("listId") listId: string, @Body() update: Partial<ListInterface>): Promise<any> {
+  async updateList(
+    @Param("listId") listId: string,
+    @Body() update: Partial<ListInterface>
+  ): Promise<any> {
     return await this.listService.updateList(listId, update)
   }
 

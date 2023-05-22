@@ -7,3 +7,4 @@ export interface TaskInterface extends Document {
   finished: boolean
   finishedAt: Date | null
 }
+

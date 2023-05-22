@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from "@nestjs/common"
-import { TaskService } from "../services/task.service"
-import { TaskInterface } from "../lib/interfaces/task.interface"
+import { TaskService } from "./task.service"
+import { TaskInterface } from "./task.interface"
 
 @Controller("task/:taskId")
 export class TaskController {
@@ -17,7 +17,10 @@ export class TaskController {
   }
 
   @Put()
-  async updateTask(@Param("taskId") taskId: string, @Body() update: Partial<TaskInterface>): Promise<any> {
+  async updateTask(
+    @Param("taskId") taskId: string,
+    @Body() update: Partial<TaskInterface>
+  ): Promise<any> {
     return await this.taskService.updateTask(taskId, update)
   }
 

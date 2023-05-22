@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { ListInterface } from "../lib/interfaces/list.interface"
-import { TaskInterface } from "src/lib/interfaces/task.interface"
+import { ListInterface } from "./list.interface"
+import { TaskInterface } from "../task/task.interface"
 
 @Injectable()
 export class ListService {
