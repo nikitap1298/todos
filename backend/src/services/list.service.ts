@@ -8,19 +8,19 @@ export class ListService {
   constructor(@InjectModel("List") private readonly listModel: Model<List>) {}
 
   async getAllLists(): Promise<List[]> {
-    return this.listModel.find().exec()
+    return await this.listModel.find().exec()
   }
 
   async createList(list: List): Promise<List> {
     const newList = new this.listModel(list)
-    return newList.save()
+    return await newList.save()
   }
 
   async updateList(listId: string, update: Partial<List>): Promise<any> {
-    return this.listModel.updateOne({ _id: listId }, update)
+    return await this.listModel.updateOne({ _id: listId }, update)
   }
 
   async deleteList(listId: string): Promise<any> {
-    return this.listModel.deleteOne({ _id: listId })
+    return await this.listModel.deleteOne({ _id: listId })
   }
 }

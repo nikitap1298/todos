@@ -8,19 +8,19 @@ export class TaskService {
   constructor(@InjectModel("Task") private readonly taskModel: Model<Task>) {}
 
   async getAllTasks(): Promise<Task[]> {
-    return this.taskModel.find().exec()
+    return await this.taskModel.find().exec()
   }
 
   async createTask(task: Task): Promise<Task> {
     const newTask = new this.taskModel(task)
-    return newTask.save()
+    return await newTask.save()
   }
 
   async updateTask(taskId: string, update: Partial<Task>): Promise<any> {
-    return this.taskModel.updateOne({ _id: taskId }, update)
+    return await this.taskModel.updateOne({ _id: taskId }, update)
   }
 
   async deleteTask(taskId: string): Promise<any> {
-    return this.taskModel.deleteOne({ _id: taskId })
+    return await this.taskModel.deleteOne({ _id: taskId })
   }
 }

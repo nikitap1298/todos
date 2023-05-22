@@ -8,21 +8,21 @@ export class ListController {
 
   @Get()
   async getAllLists(): Promise<List[]> {
-    return this.listService.getAllLists()
+    return await this.listService.getAllLists()
   }
 
   @Post()
   async createList(@Body() list: List): Promise<List> {
-    return this.listService.createList(list)
+    return await this.listService.createList(list)
   }
 
   @Put()
   async updateList(@Param("listId") listId: string, @Body() update: Partial<List>): Promise<any> {
-    return this.listService.updateList(listId, update)
+    return await this.listService.updateList(listId, update)
   }
 
   @Delete()
   async deleteList(@Param("listId") listId: string): Promise<any> {
-    return this.listService.deleteList(listId)
+    return await this.listService.deleteList(listId)
   }
 }
