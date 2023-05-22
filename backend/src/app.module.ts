@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common"
-import { TodosModule } from "./todos/todos.module"
+import { MongooseModule } from "@nestjs/mongoose"
+import { ListModule } from "./list/list.module"
+import { TaskModule } from "./task/task.module"
 
 @Module({
-  imports: [TodosModule],
+  imports: [MongooseModule.forRoot("mongodb://localhost:27017/todos"), ListModule, TaskModule],
 })
-
 export class AppModule {}
