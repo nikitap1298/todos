@@ -1,26 +1,26 @@
 import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { List } from "../lib/interfaces/list.interface"
-import { Task } from "src/lib/interfaces/task.interface"
+import { ListInterface } from "../lib/interfaces/list.interface"
+import { TaskInterface } from "src/lib/interfaces/task.interface"
 
 @Injectable()
 export class ListService {
   constructor(
-    @InjectModel("List") private readonly listModel: Model<List>,
-    @InjectModel("Task") private readonly taskModel: Model<Task>
+    @InjectModel("List") private readonly listModel: Model<ListInterface>,
+    @InjectModel("Task") private readonly taskModel: Model<TaskInterface>
   ) {}
 
-  async getAllLists(): Promise<List[]> {
+  async getAllLists(): Promise<ListInterface[]> {
     return await this.listModel.find().exec()
   }
 
-  async createList(list: List): Promise<List> {
+  async createList(list: ListInterface): Promise<ListInterface> {
     const newList = new this.listModel(list)
     return await newList.save()
   }
 
-  async updateList(listId: string, update: Partial<List>): Promise<any> {
+  async updateList(listId: string, update: Partial<ListInterface>): Promise<any> {
     return await this.listModel.updateOne({ _id: listId }, update)
   }
 

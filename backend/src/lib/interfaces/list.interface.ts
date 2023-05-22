@@ -1,5 +1,5 @@
 import { Document } from "mongoose"
 
-export interface List extends Document {
+export interface ListInterface extends Document {
   title: string
 }

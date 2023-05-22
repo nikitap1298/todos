@@ -1,22 +1,22 @@
 import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { Task } from "../lib/interfaces/task.interface"
+import { TaskInterface } from "../lib/interfaces/task.interface"
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel("Task") private readonly taskModel: Model<Task>) {}
+  constructor(@InjectModel("Task") private readonly taskModel: Model<TaskInterface>) {}
 
-  async getAllTasks(): Promise<Task[]> {
+  async getAllTasks(): Promise<TaskInterface[]> {
     return await this.taskModel.find().exec()
   }
 
-  async createTask(task: Task): Promise<Task> {
+  async createTask(task: TaskInterface): Promise<TaskInterface> {
     const newTask = new this.taskModel(task)
     return await newTask.save()
   }
 
-  async updateTask(taskId: string, update: Partial<Task>): Promise<any> {
+  async updateTask(taskId: string, update: Partial<TaskInterface>): Promise<any> {
     return await this.taskModel.updateOne({ _id: taskId }, update)
   }
 
