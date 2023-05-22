@@ -11,7 +11,7 @@ export class APIService {
         method: "GET",
         headers: this.headers,
       })
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error(`Error during GET method: ${response.statusText}`)
       }
       const resultJSON = await response.json()
@@ -28,7 +28,7 @@ export class APIService {
         headers: this.headers,
         body: JSON.stringify(data),
       })
-      if (!response.ok) {
+      if (response.status !== 201) {
         throw new Error(`Error during POST method: ${response.statusText}`)
       }
       const resultJSON = await response.json()
@@ -45,7 +45,7 @@ export class APIService {
         headers: this.headers,
         body: JSON.stringify(data),
       })
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error(`Error during PUT method: ${response.statusText}`)
       }
       const resultJSON = await response.json()
