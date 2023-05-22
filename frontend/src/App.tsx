@@ -9,6 +9,7 @@ import CompletedTasksDropdown from "./components/completed-tasks-dropdown/Comple
 import Tasks from "./components/tasks/Tasks"
 import CreateNewTask from "./components/create-new-task/CreateNewTask"
 import "./App.scss"
+import Login from "./components/login/Login"
 
 export default function App(): JSX.Element {
   return (
@@ -27,6 +28,7 @@ export default function App(): JSX.Element {
               </TaskContextProvider>
             </AlertContextProvider>
           </div>
+          <Login />
         </div>
       </ListContextProvider>
     </div>
