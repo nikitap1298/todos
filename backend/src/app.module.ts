@@ -10,9 +10,7 @@ import cors from "cors"
 
 @Module({
   imports: [
-    MongooseModule.forRoot("mongodb://localhost:27017/todos", {
-      useNewUrlParser: true,
-    }),
+    MongooseModule.forRoot("mongodb://localhost:27017/todos"),
     MongooseModule.forFeature([{ name: "List", schema: ListSchema }]),
     MongooseModule.forFeature([{ name: "Task", schema: TaskSchema }]),
   ],
