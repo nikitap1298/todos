@@ -10,7 +10,7 @@ import { UserModule } from "./user/user.module"
     MongooseModule.forRoot("mongodb://localhost:27017/todos"),
     ListModule,
     TaskModule,
-    // AuthModule,
+    AuthModule,
     UserModule,
   ],
 })
