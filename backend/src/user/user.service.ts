@@ -18,3 +18,27 @@ export class UserService {
     return await newUser.save()
   }
 }
+
+// For test JWT token
+// This should be a real class/interface representing a user entity
+// export type User = any
+
+// @Injectable()
+// export class UserService {
+//   private readonly users = [
+//     {
+//       userId: 1,
+//       login: "john",
+//       password: "changeme",
+//     },
+//     {
+//       userId: 2,
+//       login: "maria",
+//       password: "guess",
+//     },
+//   ]
+
+//   async findUser(login: string): Promise<User | undefined> {
+//     return this.users.find((user) => user.login === login)
+//   }
+// }
