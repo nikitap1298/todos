@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
+import { localStorageUserInfoKey } from "../constants/constants"
 
 interface UserContextInterface {
   users: UserInterface[]
@@ -28,15 +29,19 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }, [])
 
   const checkUserAccess = (): void => {
-    userService
-      .checkUserAccess({ login: "nikitap1298", password: "qwerty" })
-      .then(() => {
-        setUserHasAccess(true)
-      })
-      .catch((error) => {
-        setUserHasAccess(false)
-        throw new Error(error)
-      })
+    const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
+    if (userInfoLocalStorage) {
+      const userInfo = JSON.parse(userInfoLocalStorage)
+      userService
+        .checkUserAccess(userInfo)
+        .then(() => {
+          setUserHasAccess(true)
+        })
+        .catch((error) => {
+          setUserHasAccess(false)
+          throw new Error(error)
+        })
+    }
   }
 
   const fetchUsersFromDB = (): void => {
