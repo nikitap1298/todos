@@ -5,7 +5,7 @@ import { useUserContext } from "../../context/UserContext"
 export default function Login(): JSX.Element {
   const { addNewUser } = useUserContext()
 
-  // addNewUser("konstantin", "123")
+  // addNewUser("nikita", "1298")
 
   return (
     <Form>
