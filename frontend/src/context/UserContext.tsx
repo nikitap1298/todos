@@ -9,12 +9,14 @@ interface UserContextInterface {
   users: UserInterface[]
   userHasAccess: boolean
   addNewUser: (login: string, password: string) => void
+  logOut: () => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
   users: [],
   userHasAccess: false,
   addNewUser: () => void {},
+  logOut: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
@@ -59,6 +61,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     userService
       .addUser({ login: login, password: password })
       .then(() => {
+        localStorage.setItem(localStorageUserInfoKey, JSON.stringify({ login, password }))
         setUserHasAccess(true)
       })
       .catch((error) => {
@@ -66,8 +69,13 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       })
   }
 
+  const logOut = (): void => {
+    localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
+    setUserHasAccess(false)
+  }
+
   return (
-    <UserContext.Provider value={{ users, userHasAccess, addNewUser }}>
+    <UserContext.Provider value={{ users, userHasAccess, addNewUser, logOut }}>
       {children}
     </UserContext.Provider>
   )

@@ -6,7 +6,7 @@
   width: 25%;
   min-height: 100vh;
 
-  .side-bar-plus-button {
+  .side-bar-button {
     margin: 5px 0 0 5px;
     background-color: $colorBlue;
     border: none;
@@ -15,5 +15,12 @@
     font-size: 16px;
     border-radius: 15px;
     text-align: center;
+
+    &.logout {
+      margin: 40px 0 0 5px;
+      background-color: $colorRed;
+      font-family: $dongleLight;
+      font-size: 1.3rem;
+    }
   }
 }

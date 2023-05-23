@@ -37,7 +37,6 @@ export default function Register(): JSX.Element {
       setPasswordPlaceholdert("Password non-secure")
       setHasPasswordError(true)
     } else if (login !== "" && password !== "") {
-      localStorage.setItem(localStorageUserInfoKey, JSON.stringify({ login, password }))
       addNewUser(login, password)
       setLoginPlaceholder("Enter username")
       setHasLoginError(false)
