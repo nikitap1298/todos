@@ -1,7 +1,7 @@
 import { UserInterface } from "../lib/interfaces/user.interface"
 import { APIService } from "./api-service"
 
-export class AuthenticationService extends APIService {
+export class UserService extends APIService {
   async readUsers(): Promise<UserInterface[]> {
     return (await this.methodGET(`/user/_id`)) as UserInterface[]
   }

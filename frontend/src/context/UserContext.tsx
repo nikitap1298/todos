@@ -1,25 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import { AuthenticationService } from "../services/authentication-service"
+import { UserService } from "../services/user-service"
 
-interface AuthenticationContextInterface {
+interface UserContextInterface {
   addNewUser: (login: string, password: string) => void
 }
 
-const AuthenticationContext = React.createContext<AuthenticationContextInterface>({
+const UserContext = React.createContext<UserContextInterface>({
   addNewUser: () => void {},
 })
 
-export const AuthenticationContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const authenticationService = new AuthenticationService()
+export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
+  const userService = new UserService()
 
   useEffect(() => {
-    fetchUsersFromDB()
+    // fetchUsersFromDB()
   }, [])
 
   const fetchUsersFromDB = (): void => {
-    authenticationService
+    userService
       .readUsers()
       .then((users) => {
         console.log(users)
@@ -29,7 +29,9 @@ export const AuthenticationContextProvider = ({ children }: ContextProviderProps
       })
   }
   const addNewUser = (login: string, password: string): void => {
-    authenticationService
+    console.log(login);
+    
+    userService
       .addUser({ login: login, password: password })
       .then((newUser) => {
         console.log(newUser)
@@ -39,8 +41,7 @@ export const AuthenticationContextProvider = ({ children }: ContextProviderProps
       })
   }
 
-  return <AuthenticationContext.Provider value={{ addNewUser }}></AuthenticationContext.Provider>
+  return <UserContext.Provider value={{ addNewUser }}>{children}</UserContext.Provider>
 }
 
-export const useAuthenticationContext = (): AuthenticationContextInterface =>
-  useContext(AuthenticationContext)
+export const useUserContext = (): UserContextInterface => useContext(UserContext)

@@ -1,8 +1,12 @@
 import React from "react"
-import Button from "react-bootstrap/Button"
-import Form from "react-bootstrap/Form"
+import { Button, Form } from "react-bootstrap"
+import { useUserContext } from "../../context/UserContext"
 
 export default function Login(): JSX.Element {
+  const { addNewUser } = useUserContext()
+
+  addNewUser("nikitap1298", "123")
+
   return (
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
