@@ -7,6 +7,10 @@ import { UserInterface } from "./user.interface"
 export class UserService {
   constructor(@InjectModel("User") private readonly userModel: Model<UserInterface>) {}
 
+  async getAllUsers(): Promise<UserInterface[]> {
+    return await this.userModel.find().exec()
+  }
+
   async findUser(login: string): Promise<UserInterface> {
     // .exec() - execute the query and return a promise
     const user = await this.userModel.findOne({ login }).exec()
