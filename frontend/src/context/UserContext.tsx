@@ -2,45 +2,70 @@
 import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { UserService } from "../services/user-service"
+import { UserInterface } from "../lib/interfaces/user.interface"
 
 interface UserContextInterface {
+  users: UserInterface[]
+  userHasAccess: boolean
   addNewUser: (login: string, password: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
+  users: [],
+  userHasAccess: false,
   addNewUser: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
+  const [users, setUsers] = useState<UserInterface[]>([])
+  const [userHasAccess, setUserHasAccess] = useState(false)
+
   const userService = new UserService()
 
   useEffect(() => {
     checkUserAccess()
+    fetchUsersFromDB()
   }, [])
 
   const checkUserAccess = (): void => {
     userService
-      .checkUserAccess({ login: "nikita", password: "1298" })
-      .then((data) => {
-        console.log(data)
+      .checkUserAccess({ login: "nikitap1298", password: "qwerty" })
+      .then(() => {
+        setUserHasAccess(true)
       })
       .catch((error) => {
-        console.log(`Don't have access because of the error: ${error}`)
+        setUserHasAccess(false)
+        throw new Error(error)
       })
   }
 
-  const addNewUser = (login: string, password: string): void => {
+  const fetchUsersFromDB = (): void => {
     userService
-      .addUser({ login: login, password: password })
-      .then((newUser) => {
-        console.log(newUser)
+      .readUsers()
+      .then((users) => {
+        setUsers(users as UserInterface[])
       })
       .catch((error) => {
         throw new Error(error)
       })
   }
 
-  return <UserContext.Provider value={{ addNewUser }}>{children}</UserContext.Provider>
+  const addNewUser = (login: string, password: string): void => {
+    userService
+      .addUser({ login: login, password: password })
+      .then(() => {
+        setUserHasAccess(true)
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  }
+
+  return (
+    <UserContext.Provider value={{ users, userHasAccess, addNewUser }}>
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 export const useUserContext = (): UserContextInterface => useContext(UserContext)

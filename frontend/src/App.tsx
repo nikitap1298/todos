@@ -9,7 +9,7 @@ import CompletedTasksDropdown from "./components/completed-tasks-dropdown/Comple
 import Tasks from "./components/tasks/Tasks"
 import CreateNewTask from "./components/create-new-task/CreateNewTask"
 import "./App.scss"
-import Login from "./components/login/Login"
+import Register from "./components/authentification/Register"
 import { UserContextProvider } from "./context/UserContext"
 
 export default function App(): JSX.Element {
@@ -30,7 +30,7 @@ export default function App(): JSX.Element {
             </AlertContextProvider>
           </div>
           <UserContextProvider>
-            <Login />
+            <Register />
           </UserContextProvider>
         </div>
       </ListContextProvider>
