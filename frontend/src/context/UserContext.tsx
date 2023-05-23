@@ -15,22 +15,21 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const userService = new UserService()
 
   useEffect(() => {
-    // fetchUsersFromDB()
+    checkUserAccess()
   }, [])
 
-  const fetchUsersFromDB = (): void => {
+  const checkUserAccess = (): void => {
     userService
-      .readUsers()
-      .then((users) => {
-        console.log(users)
+      .checkUserAccess({ login: "nikita", password: "1298" })
+      .then((data) => {
+        console.log(data)
       })
       .catch((error) => {
-        throw new Error(error)
+        console.log(`Don't have access because of the error: ${error}`)
       })
   }
+
   const addNewUser = (login: string, password: string): void => {
-    console.log(login);
-    
     userService
       .addUser({ login: login, password: password })
       .then((newUser) => {
