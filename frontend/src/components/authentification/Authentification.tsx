@@ -52,13 +52,13 @@ export default function Authentification(): JSX.Element {
   const handleLogInClick = (event: MouseFormEvent): void => {
     event.preventDefault()
 
-    if (users.some((user) => user.login === login)) {
-      setLoginPlaceholder("Wrong username")
-      setHasLoginError(true)
-    } else if (login !== "" && password !== "") {
+    if (login !== "" && password !== "" && users.some((user) => user.login === login)) {
       checkUserAccess(login, password)
       setLoginPlaceholder("Enter username")
       setHasLoginError(false)
+    } else if (users.some((user) => user.login !== login)) {
+      setLoginPlaceholder("Wrong username")
+      setHasLoginError(true)
     }
 
     checkUserAccess(login, password)

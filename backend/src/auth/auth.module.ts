@@ -15,7 +15,7 @@ import { TaskModule } from "../task/task.module"
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: "86400s" },
+      signOptions: { expiresIn: "60s" },
     }),
   ],
   controllers: [AuthController],
