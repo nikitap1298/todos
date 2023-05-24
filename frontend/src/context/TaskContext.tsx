@@ -70,7 +70,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
     // User can't add the same task, empty task or task if there are no lists
     if (
-      !tasks.some((element) => element.title === capitalizedMessage) &&
+      !tasks.some((element) => element.title === capitalizedMessage && element.listId === selectedListId) &&
       capitalizedMessage !== "" &&
       selectedList
     ) {

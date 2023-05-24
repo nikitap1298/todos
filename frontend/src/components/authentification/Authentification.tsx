@@ -61,6 +61,8 @@ export default function Authentification(): JSX.Element {
       setHasLoginError(false)
     }
 
+    checkUserAccess(login, password)
+
     setLogin("")
     setPassword("")
   }

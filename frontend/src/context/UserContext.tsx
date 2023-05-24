@@ -39,15 +39,27 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const checkUserAccess = (login?: string, password?: string): void => {
     const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
     if (userInfoLocalStorage) {
-      let userInfo = JSON.parse(userInfoLocalStorage)
+      let userId = JSON.parse(userInfoLocalStorage).userId
+      let userLogin = JSON.parse(userInfoLocalStorage).userLogin
+      let userPassword = JSON.parse(userInfoLocalStorage).userPassword
 
       if (typeof login === "string" && typeof password === "string") {
-        userInfo = { login, password }
-        localStorage.setItem(localStorageUserInfoKey, JSON.stringify({ login, password }))
+        userId = users.find((element) => element.login === login)?._id
+        userLogin = login
+        userPassword = password
+        localStorage.setItem(
+          localStorageUserInfoKey,
+          JSON.stringify({ userId, userLogin, userPassword })
+        )
+      } else {
+        localStorage.setItem(
+          localStorageUserInfoKey,
+          JSON.stringify({ userId, userLogin, userPassword })
+        )
       }
 
       userService
-        .checkUserAccess(userInfo)
+        .checkUserAccess({ login: userLogin, password: userPassword })
         .then((jwt) => {
           const accessToken = (jwt as { access_token: string }).access_token
           localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
@@ -74,8 +86,12 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const addNewUser = (login: string, password: string): void => {
     userService
       .addUser({ login: login, password: password })
-      .then(() => {
-        localStorage.setItem(localStorageUserInfoKey, JSON.stringify({ login, password }))
+      .then((user) => {
+        const userId = user._id
+        localStorage.setItem(
+          localStorageUserInfoKey,
+          JSON.stringify({ userId, userLogin: login, userPassword: password })
+        )
         setUserHasAccess(true)
       })
       .catch((error) => {
