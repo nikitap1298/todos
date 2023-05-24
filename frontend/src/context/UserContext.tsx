@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import { APIService } from "../services/api-service"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
 import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"

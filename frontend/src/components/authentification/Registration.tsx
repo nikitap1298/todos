@@ -2,10 +2,9 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
-import { localStorageUserInfoKey } from "../../constants/constants"
-import "./Register.scss"
+import "./Registration.scss"
 
-export default function Register(): JSX.Element {
+export default function Registration(): JSX.Element {
   const { users, addNewUser } = useUserContext()
 
   const [login, setLogin] = useState("")
@@ -49,7 +48,8 @@ export default function Register(): JSX.Element {
   }
 
   return (
-    <div className="register">
+    <div className="registration">
+      <h1>Registration</h1>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
