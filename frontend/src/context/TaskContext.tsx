@@ -7,6 +7,7 @@ import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
 import { useListContext } from "./ListContext"
+import { APIService } from "../services/api-service"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
@@ -35,14 +36,13 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const tasksService = new TasksService()
+  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
+  if (accessTokenLocalStorage) {
+    tasksService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
+  }
 
   // Load tasksArray from localStorage
   useEffect(() => {
-    const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
-    if (accessTokenLocalStorage) {
-      tasksService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
-    }
-
     fetchTasksFromDB()
 
     const showCompletedTasksLocalStorage = localStorage.getItem(localStorageShowCompletedTasksKey)

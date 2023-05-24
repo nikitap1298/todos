@@ -9,7 +9,7 @@ import Tasks from "../tasks/Tasks"
 import AlertsComponent from "../alert/AlertsComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { useUserContext } from "../../context/UserContext"
-import Registration from "../authentification/Registration"
+import Authentification from "../authentification/Authentification"
 import "./Todos.scss"
 
 export default function Todos(): JSX.Element {
@@ -33,6 +33,6 @@ export default function Todos(): JSX.Element {
       </div>
     </ListContextProvider>
   ) : (
-    <Registration />
+    <Authentification />
   )
 }

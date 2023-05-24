@@ -8,6 +8,7 @@ import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/c
 interface UserContextInterface {
   users: UserInterface[]
   userHasAccess: boolean
+  checkUserAccess: (login?: string, password?: string) => void
   addNewUser: (login: string, password: string) => void
   logOut: () => void
 }
@@ -15,6 +16,7 @@ interface UserContextInterface {
 const UserContext = React.createContext<UserContextInterface>({
   users: [],
   userHasAccess: false,
+  checkUserAccess: () => void {},
   addNewUser: () => void {},
   logOut: () => void {},
 })
@@ -24,21 +26,26 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [userHasAccess, setUserHasAccess] = useState(false)
 
   const userService = new UserService()
+  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
+  if (accessTokenLocalStorage) {
+    userService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
+  }
 
   useEffect(() => {
-    const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
-    if (accessTokenLocalStorage) {
-      userService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
-    }
-
     checkUserAccess()
     fetchUsersFromDB()
   }, [])
 
-  const checkUserAccess = (): void => {
+  const checkUserAccess = (login?: string, password?: string): void => {
     const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
     if (userInfoLocalStorage) {
-      const userInfo = JSON.parse(userInfoLocalStorage)
+      let userInfo = JSON.parse(userInfoLocalStorage)
+
+      if (typeof login === "string" && typeof password === "string") {
+        userInfo = { login, password }
+        localStorage.setItem(localStorageUserInfoKey, JSON.stringify({ login, password }))
+      }
+
       userService
         .checkUserAccess(userInfo)
         .then((jwt) => {
@@ -82,7 +89,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   return (
-    <UserContext.Provider value={{ users, userHasAccess, addNewUser, logOut }}>
+    <UserContext.Provider value={{ users, userHasAccess, checkUserAccess, addNewUser, logOut }}>
       {children}
     </UserContext.Provider>
   )

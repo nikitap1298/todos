@@ -27,13 +27,12 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [selectedListId, setSelectedListId] = useState<string | undefined>("")
 
   const listsService = new ListsService()
-
-  useEffect(() => {
-    const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
+  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
     if (accessTokenLocalStorage) {
       listsService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
     }
 
+  useEffect(() => {
     fetchListsFromDB()
 
     const selectedListIdLocalStorage = localStorage.getItem(localStorageSelectedListIdKey)

@@ -13,6 +13,7 @@ export class UserController {
     return await this.userService.getAllUsers()
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   async createUser(@Body() user: UserInterface): Promise<UserInterface> {
     return await this.userService.createUser(user)
