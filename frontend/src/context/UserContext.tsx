@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
+import { APIService } from "../services/api-service"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
-import { localStorageUserInfoKey } from "../constants/constants"
+import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"
 
 interface UserContextInterface {
   users: UserInterface[]
@@ -26,6 +27,11 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const userService = new UserService()
 
   useEffect(() => {
+    const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
+    if (accessTokenLocalStorage) {
+      userService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
+    }
+
     checkUserAccess()
     fetchUsersFromDB()
   }, [])
@@ -36,7 +42,9 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       const userInfo = JSON.parse(userInfoLocalStorage)
       userService
         .checkUserAccess(userInfo)
-        .then(() => {
+        .then((jwt) => {
+          const accessToken = (jwt as { access_token: string }).access_token
+          localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
           setUserHasAccess(true)
         })
         .catch((error) => {

@@ -1,8 +1,13 @@
 import { backendServerURL } from "../constants/constants"
 
 export class APIService {
-  private headers = {
+  headers = {
     "Content-Type": "application/json",
+    Authorization: "",
+  }
+
+  setAuthorizationToken(token: string): void {
+    this.headers.Authorization = token
   }
 
   protected async methodGET(path: string): Promise<unknown> {

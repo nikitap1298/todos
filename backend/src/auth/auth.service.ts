@@ -21,3 +21,8 @@ export class AuthService {
     }
   }
 }
+
+/* 
+To get access_token
+curl -X POST http://localhost:8000/auth/login -d '{"login": "user1", "password": "123456"}' -H "Content-Type: application/json"
+*/
