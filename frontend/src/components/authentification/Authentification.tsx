@@ -51,7 +51,23 @@ export default function Authentification(): JSX.Element {
 
   const handleLogInClick = (event: MouseFormEvent): void => {
     event.preventDefault()
-    checkUserAccess(login, password)
+
+    if (users.some((user) => user.login !== login)) {
+      setLoginPlaceholder("Wrong username")
+      setHasLoginError(true)
+    } else if (login !== "" && password !== "") {
+      checkUserAccess(login, password)
+      setLoginPlaceholder("Enter username")
+      setHasLoginError(false)
+    }
+
+    setLogin("")
+    setPassword("")
+  }
+
+  const handleDontHaveAccountClick = (event: MouseFormEvent): void => {
+    event.preventDefault()
+    setRegisterComponentIsActive(true)
   }
 
   return (
@@ -109,9 +125,18 @@ export default function Authentification(): JSX.Element {
                 onChange={handlePasswordInputChange}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={handleLogInClick}>
-              Log In
-            </Button>
+            <div className="login-buttons">
+              <Button variant="primary" type="submit" onClick={handleLogInClick}>
+                Log In
+              </Button>
+              <button
+                className="dont-have-account"
+                type="submit"
+                onClick={handleDontHaveAccountClick}
+              >
+                Don't have an account?
+              </button>
+            </div>
           </Form>
         </>
       )}

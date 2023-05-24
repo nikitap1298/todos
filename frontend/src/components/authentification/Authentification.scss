@@ -44,4 +44,23 @@
       background-color: $colorBlue;
     }
   }
+
+  .login-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    .dont-have-account {
+      border: none;
+      text-align: center;
+      width: 200px;
+      background-color: transparent;
+      font-family: $dongleRegular;
+      font-size: 1.5rem;
+      color: $colorBlue;
+
+      &:hover {
+        color: $colorGray;
+      }
+    }
+  }
 }

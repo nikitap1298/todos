@@ -7,7 +7,6 @@ import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
 import { useListContext } from "./ListContext"
-import { APIService } from "../services/api-service"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
