@@ -3,7 +3,7 @@ import { TaskService } from "./task.service"
 import { TaskInterface } from "./task.interface"
 import { AuthGuard } from "../auth/auth.guard"
 
-@Controller("task/:taskId")
+@Controller("task/:id")
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
@@ -21,16 +21,13 @@ export class TaskController {
 
   @UseGuards(AuthGuard)
   @Put()
-  async updateTask(
-    @Param("taskId") taskId: string,
-    @Body() update: Partial<TaskInterface>
-  ): Promise<any> {
-    return await this.taskService.updateTask(taskId, update)
+  async updateTask(@Param("id") id: string, @Body() update: Partial<TaskInterface>): Promise<any> {
+    return await this.taskService.updateTask(id, update)
   }
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteTask(@Param("taskId") taskId: string): Promise<any> {
-    return await this.taskService.deleteTask(taskId)
+  async deleteTask(@Param("id") id: string): Promise<any> {
+    return await this.taskService.deleteTask(id)
   }
 }

@@ -3,7 +3,7 @@ import { ListService } from "./list.service"
 import { ListInterface } from "./list.interface"
 import { AuthGuard } from "../auth/auth.guard"
 
-@Controller("list/:listId")
+@Controller("list/:id")
 export class ListController {
   constructor(private readonly listService: ListService) {}
 
@@ -21,16 +21,13 @@ export class ListController {
 
   @UseGuards(AuthGuard)
   @Put()
-  async updateList(
-    @Param("listId") listId: string,
-    @Body() update: Partial<ListInterface>
-  ): Promise<any> {
-    return await this.listService.updateList(listId, update)
+  async updateList(@Param("id") id: string, @Body() update: Partial<ListInterface>): Promise<any> {
+    return await this.listService.updateList(id, update)
   }
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteList(@Param("listId") listId: string): Promise<any> {
-    return await this.listService.deleteList(listId)
+  async deleteList(@Param("id") id: string): Promise<any> {
+    return await this.listService.deleteList(id)
   }
 }

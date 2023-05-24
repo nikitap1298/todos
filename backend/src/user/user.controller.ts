@@ -3,7 +3,7 @@ import { UserService } from "./user.service"
 import { UserInterface } from "./user.interface"
 import { AuthGuard } from "../auth/auth.guard"
 
-@Controller("user/:userId")
+@Controller("user/:id")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
