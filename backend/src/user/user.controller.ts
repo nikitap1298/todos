@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common"
+import { Controller, Get, Post, Body, UseGuards, Delete, Param } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { UserInterface } from "./user.interface"
 import { AuthGuard } from "../auth/auth.guard"
@@ -17,5 +17,11 @@ export class UserController {
   @Post()
   async createUser(@Body() user: UserInterface): Promise<UserInterface> {
     return await this.userService.createUser(user)
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete()
+  async deleteUser(@Param("id") id: string): Promise<any> {
+    return await this.userService.deleteUser(id)
   }
 }

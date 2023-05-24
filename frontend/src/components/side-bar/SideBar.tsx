@@ -6,9 +6,10 @@ import { useListContext } from "../../context/ListContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./SideBar.scss"
 import { useUserContext } from "../../context/UserContext"
+import { localStorageUserInfoKey } from "../../constants/constants"
 
 export default function SideBar(): JSX.Element {
-  const { logOut } = useUserContext()
+  const { logOut, deleteUser } = useUserContext()
   const { addNewList } = useListContext()
 
   const [showModal, setShowModal] = useState(false)
@@ -37,6 +38,13 @@ export default function SideBar(): JSX.Element {
 
   const handleLogOutClick = (): void => {
     logOut()
+  }
+
+  const handleDeleteAccountClick = (): void => {
+    const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
+    if (userInfoLocalStorage) {
+      deleteUser(JSON.parse(userInfoLocalStorage).userId)
+    }
   }
 
   return (
@@ -69,6 +77,9 @@ export default function SideBar(): JSX.Element {
       </Modal>
       <button className="logout side-bar-button" onClick={handleLogOutClick}>
         Log Out
+      </button>
+      <button className="logout side-bar-button" onClick={handleDeleteAccountClick}>
+        Delete account
       </button>
     </div>
   )

@@ -2,10 +2,14 @@ import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { UserInterface } from "./user.interface"
+import { ListInterface } from "../list/list.interface"
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel("User") private readonly userModel: Model<UserInterface>) {}
+  constructor(
+    @InjectModel("User") private readonly userModel: Model<UserInterface>,
+    @InjectModel("List") private readonly listModel: Model<ListInterface>
+  ) {}
 
   async getAllUsers(): Promise<UserInterface[]> {
     return await this.userModel.find().exec()
@@ -20,6 +24,11 @@ export class UserService {
   async createUser(user: UserInterface): Promise<UserInterface> {
     const newUser = new this.userModel(user)
     return await newUser.save()
+  }
+
+  async deleteUser(userId: string): Promise<any> {
+    await this.listModel.deleteMany({ userId: userId })
+    return await this.userModel.deleteOne({ _id: userId })
   }
 }
 

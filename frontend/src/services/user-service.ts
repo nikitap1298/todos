@@ -15,6 +15,6 @@ export class UserService extends APIService {
   }
 
   async deleteUser(user: UserInterface): Promise<UserInterface> {
-    return (await this.methodDELETE(`user/${user._id}`, user)) as UserInterface
+    return (await this.methodDELETE(`/user/${user._id}`, user)) as UserInterface
   }
 }

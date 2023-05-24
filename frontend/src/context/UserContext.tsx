@@ -11,6 +11,7 @@ interface UserContextInterface {
   checkUserAccess: (login?: string, password?: string) => void
   addNewUser: (login: string, password: string) => void
   logOut: () => void
+  deleteUser: (userId: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -19,6 +20,7 @@ const UserContext = React.createContext<UserContextInterface>({
   checkUserAccess: () => void {},
   addNewUser: () => void {},
   logOut: () => void {},
+  deleteUser: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
@@ -92,6 +94,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin: login, userPassword: password })
         )
+        setUsers((oldArray) => [...oldArray, user])
         setUserHasAccess(true)
       })
       .catch((error) => {
@@ -104,8 +107,21 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     setUserHasAccess(false)
   }
 
+  const deleteUser = (userId: string): void => {
+    const deletedUser = users.find((element) => element._id === userId) as UserInterface
+    const newUsers = users.filter((element) => element._id !== userId)
+
+    userService.deleteUser(deletedUser).then(() => {
+      setUsers(newUsers)
+      localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
+      setUserHasAccess(false)
+    })
+  }
+
   return (
-    <UserContext.Provider value={{ users, userHasAccess, checkUserAccess, addNewUser, logOut }}>
+    <UserContext.Provider
+      value={{ users, userHasAccess, checkUserAccess, addNewUser, logOut, deleteUser }}
+    >
       {children}
     </UserContext.Provider>
   )
