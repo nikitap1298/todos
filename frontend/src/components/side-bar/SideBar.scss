@@ -23,4 +23,27 @@
       font-size: 1.3rem;
     }
   }
+
+  .side-bar-user-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin: 5px 5px 0 5px;
+      background-color: $colorRed;
+      border: none;
+      color: $colorVanilla;
+      padding: 3px 15px;
+      font-family: $dongleLight;
+      font-size: 25px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .delete-account-button {
+      background-color: transparent;
+      color: $colorRed;
+    }
+  }
 }

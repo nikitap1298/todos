@@ -75,12 +75,14 @@ export default function SideBar(): JSX.Element {
           </Button>
         </Modal.Footer>
       </Modal>
-      <button className="logout side-bar-button" onClick={handleLogOutClick}>
-        Log Out
-      </button>
-      <button className="logout side-bar-button" onClick={handleDeleteAccountClick}>
-        Delete account
-      </button>
+      <div className="side-bar-user-buttons">
+        <button onClick={handleLogOutClick}>
+          Log Out
+        </button>
+        <button className="delete-account-button" onClick={handleDeleteAccountClick}>
+          Delete account
+        </button>
+      </div>
     </div>
   )
 }
