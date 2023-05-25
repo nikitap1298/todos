@@ -20,7 +20,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteUser(@Param("id") id: string): Promise<any> {
+  async deleteUser(@Param("id") id: string): Promise<unknown> {
     return await this.userService.deleteUser(id)
   }
 }

@@ -26,7 +26,7 @@ export class UserService {
     return await newUser.save()
   }
 
-  async deleteUser(userId: string): Promise<any> {
+  async deleteUser(userId: string): Promise<unknown> {
     await this.listModel.deleteMany({ userId: userId })
     return await this.userModel.deleteOne({ _id: userId })
   }

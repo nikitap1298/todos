@@ -16,11 +16,11 @@ export class TaskService {
     return await newTask.save()
   }
 
-  async updateTask(taskId: string, update: Partial<TaskInterface>): Promise<any> {
+  async updateTask(taskId: string, update: Partial<TaskInterface>): Promise<unknown> {
     return await this.taskModel.updateOne({ _id: taskId }, update)
   }
 
-  async deleteTask(taskId: string): Promise<any> {
+  async deleteTask(taskId: string): Promise<unknown> {
     return await this.taskModel.deleteOne({ _id: taskId })
   }
 }

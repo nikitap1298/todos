@@ -21,13 +21,13 @@ export class ListController {
 
   @UseGuards(AuthGuard)
   @Put()
-  async updateList(@Param("id") id: string, @Body() update: Partial<ListInterface>): Promise<any> {
+  async updateList(@Param("id") id: string, @Body() update: Partial<ListInterface>): Promise<unknown> {
     return await this.listService.updateList(id, update)
   }
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteList(@Param("id") id: string): Promise<any> {
+  async deleteList(@Param("id") id: string): Promise<unknown> {
     return await this.listService.deleteList(id)
   }
 }

@@ -21,13 +21,13 @@ export class TaskController {
 
   @UseGuards(AuthGuard)
   @Put()
-  async updateTask(@Param("id") id: string, @Body() update: Partial<TaskInterface>): Promise<any> {
+  async updateTask(@Param("id") id: string, @Body() update: Partial<TaskInterface>): Promise<unknown> {
     return await this.taskService.updateTask(id, update)
   }
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteTask(@Param("id") id: string): Promise<any> {
+  async deleteTask(@Param("id") id: string): Promise<unknown> {
     return await this.taskService.deleteTask(id)
   }
 }
