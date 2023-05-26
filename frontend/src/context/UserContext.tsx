@@ -8,7 +8,7 @@ import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/c
 interface UserContextInterface {
   users: UserInterface[]
   userHasAccess: boolean
-  checkUserAccess: (login?: string, password?: string) => void
+  logIn: (login?: string, password?: string) => void
   addNewUser: (login: string, password: string) => void
   logOut: () => void
   deleteUser: (userId: string) => void
@@ -17,7 +17,7 @@ interface UserContextInterface {
 const UserContext = React.createContext<UserContextInterface>({
   users: [],
   userHasAccess: false,
-  checkUserAccess: () => void {},
+  logIn: () => void {},
   addNewUser: () => void {},
   logOut: () => void {},
   deleteUser: () => void {},
@@ -34,11 +34,25 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   useEffect(() => {
-    checkUserAccess()
+    logIn()
     fetchUsersFromDB()
   }, [])
 
-  const checkUserAccess = (login?: string, password?: string): void => {
+  const checkAccess = (userLogin: string, userPassword: string): void => {
+    userService
+      .checkUserAccess({ login: userLogin, password: userPassword })
+      .then((jwt) => {
+        const accessToken = (jwt as { access_token: string }).access_token
+        localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
+        setUserHasAccess(true)
+      })
+      .catch((error) => {
+        setUserHasAccess(false)
+        throw new Error(error)
+      })
+  }
+
+  const logIn = (login?: string, password?: string): void => {
     const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
     if (userInfoLocalStorage) {
       let userId = JSON.parse(userInfoLocalStorage).userId
@@ -60,17 +74,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         )
       }
 
-      userService
-        .checkUserAccess({ login: userLogin, password: userPassword })
-        .then((jwt) => {
-          const accessToken = (jwt as { access_token: string }).access_token
-          localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-          setUserHasAccess(true)
-        })
-        .catch((error) => {
-          setUserHasAccess(false)
-          throw new Error(error)
-        })
+      checkAccess(userLogin, userPassword)
     }
   }
 
@@ -95,7 +99,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           JSON.stringify({ userId, userLogin: login, userPassword: password })
         )
         setUsers((oldArray) => [...oldArray, user])
-        setUserHasAccess(true)
+        checkAccess(login, password)
       })
       .catch((error) => {
         throw new Error(error)
@@ -103,6 +107,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const logOut = (): void => {
+    localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
     setUserHasAccess(false)
   }
@@ -113,15 +118,14 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
     userService.deleteUser(deletedUser).then(() => {
       setUsers(newUsers)
+      localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
       localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
       setUserHasAccess(false)
     })
   }
 
   return (
-    <UserContext.Provider
-      value={{ users, userHasAccess, checkUserAccess, addNewUser, logOut, deleteUser }}
-    >
+    <UserContext.Provider value={{ users, userHasAccess, logIn, addNewUser, logOut, deleteUser }}>
       {children}
     </UserContext.Provider>
   )

@@ -5,7 +5,7 @@ import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
-  const { users, checkUserAccess, addNewUser } = useUserContext()
+  const { users, logIn: checkUserAccess, addNewUser } = useUserContext()
 
   const [login, setLogin] = useState("")
   const [loginPlaceholder, setLoginPlaceholder] = useState("Enter username")
