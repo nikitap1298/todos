@@ -50,6 +50,7 @@
 
   input {
     margin-top: -2px;
+    cursor: pointer;
   }
 
   hr {
@@ -62,6 +63,7 @@
   &.selected-task {
     h1 {
       color: $colorRed;
+      cursor: default;
       &:hover {
         border-left: none;
         padding-left: 0px;
