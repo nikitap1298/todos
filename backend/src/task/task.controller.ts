@@ -7,7 +7,6 @@ import { AuthGuard } from "../auth/auth.guard"
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @UseGuards(AuthGuard)
   @Get()
   async getAllTasks(): Promise<TaskInterface[]> {
     return await this.taskService.getAllTasks()

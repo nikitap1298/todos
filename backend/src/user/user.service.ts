@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { UserInterface } from "./user.interface"
+import { CreateUserDTO, UserInterface } from "./user.interface"
 import { ListInterface } from "../list/list.interface"
 
 @Injectable()
@@ -15,13 +15,17 @@ export class UserService {
     return await this.userModel.find().exec()
   }
 
+  async getUserById(id: string): Promise<UserInterface> {
+    // .exec() - execute the query and return a promise
+    return await this.userModel.findOne({ _id:id }).exec()    
+  }
   async findUser(login: string): Promise<UserInterface> {
     // .exec() - execute the query and return a promise
     const user = await this.userModel.findOne({ login }).exec()
     return user
   }
 
-  async createUser(user: UserInterface): Promise<UserInterface> {
+  async createUser(user: CreateUserDTO): Promise<UserInterface> {
     const newUser = new this.userModel(user)
     return await newUser.save()
   }

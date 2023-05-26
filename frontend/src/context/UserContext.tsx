@@ -15,9 +15,11 @@ interface UserContextInterface {
 }
 
 const UserContext = React.createContext<UserContextInterface>({
+  // TODO: we only need the current user, not all users, so this should be user or currentUser
   users: [],
   userHasAccess: false,
   logIn: () => void {},
+  // TODO:: this should be registerUser
   addNewUser: () => void {},
   logOut: () => void {},
   deleteUser: () => void {},
@@ -28,6 +30,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [userHasAccess, setUserHasAccess] = useState(false)
 
   const userService = new UserService()
+  // TODO: to not douplicate your code whenever you need the token you can implement this directly in the Api Service, 
+  // the all the services that extends the Api Service will have access to the token
   const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
   if (accessTokenLocalStorage) {
     userService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
@@ -78,6 +82,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     }
   }
 
+  // todo: only get current user, and you are not fetching from DB but from the api, so you should name it fetchCurrentUser
   const fetchUsersFromDB = (): void => {
     userService
       .readUsers()

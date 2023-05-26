@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Body, UseGuards, Delete, Param } from "@nestjs/common"
+import { Controller, Get, Post, Body, UseGuards, Delete, Param, UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common"
 import { UserService } from "./user.service"
-import { UserInterface } from "./user.interface"
+import { CreateUserDTO, UserDTO, UserInterface } from "./user.interface"
 import { AuthGuard } from "../auth/auth.guard"
+import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
-@Controller("user/:id")
+@Controller("user")
+@ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(AuthGuard)
+  @ApiResponse({ status: 200, description: 'The found record', type: [UserDTO] })
   @Get()
-  async getAllUsers(): Promise<UserInterface[]> {
-    return await this.userService.getAllUsers()
+  async getAllUsers(): Promise<UserDTO[]> {
+    return await this.userService.getAllUsers() as UserDTO[]
   }
 
   @Post()
-  async createUser(@Body() user: UserInterface): Promise<UserInterface> {
+  async createUser(@Body() user: CreateUserDTO): Promise<UserInterface> {
     return await this.userService.createUser(user)
   }
 

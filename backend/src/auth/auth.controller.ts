@@ -25,6 +25,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Request() req: RequestWithUser) {
+    // FIXME: return user profile form DB
     return req.user
   }
 }

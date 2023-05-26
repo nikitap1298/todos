@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from "@nestjs/common"
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request, UnauthorizedException } from "@nestjs/common"
 import { ListService } from "./list.service"
 import { ListInterface } from "./list.interface"
 import { AuthGuard } from "../auth/auth.guard"
+import { RequestWithUser } from "src/user/user.interface";
+import { UserService } from "../user/user.service";
 
 @Controller("list/:id")
 export class ListController {
-  constructor(private readonly listService: ListService) {}
+  constructor(private readonly listService: ListService, private userService: UserService) {}
 
   @UseGuards(AuthGuard)
   @Get()
-  async getAllLists(): Promise<ListInterface[]> {
+  async getAllLists(@Request() req:RequestWithUser): Promise<ListInterface[]> {
     return await this.listService.getAllLists()
   }
 
@@ -27,7 +29,11 @@ export class ListController {
 
   @UseGuards(AuthGuard)
   @Delete()
-  async deleteList(@Param("id") id: string): Promise<unknown> {
+  async deleteList(@Param("id") id: string, @Request() req: RequestWithUser): Promise<unknown> {
+    const list = await this.listService.getList(id);
+    if(list.userId!=req.user.userId){
+      throw new UnauthorizedException();
+    }
     return await this.listService.deleteList(id)
   }
 }

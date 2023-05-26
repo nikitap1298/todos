@@ -27,7 +27,10 @@ export default function Authentification(): JSX.Element {
   const handleRegisterClick = (event: MouseFormEvent): void => {
     event.preventDefault()
 
+    // FIXME: you never pass all existing to to the frontend, if this is not an admin!!! 
+    // let the api return an error and handle this error in the frontend (409 Conflict)
     if (users.some((user) => user.login === login)) {
+      // FIXME: user alert context and component to show the error
       setLoginPlaceholder("Username unavailable")
       setHasLoginError(true)
       setPasswordPlaceholdert("Password")
