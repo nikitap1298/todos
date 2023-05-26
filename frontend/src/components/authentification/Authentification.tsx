@@ -5,7 +5,7 @@ import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
-  const { users, logIn: checkUserAccess, addNewUser } = useUserContext()
+  const { users, logIn, addNewUser } = useUserContext()
 
   const [login, setLogin] = useState("")
   const [loginPlaceholder, setLoginPlaceholder] = useState("Enter username")
@@ -53,7 +53,7 @@ export default function Authentification(): JSX.Element {
     event.preventDefault()
 
     if (login !== "" && password !== "" && users.some((user) => user.login === login)) {
-      checkUserAccess(login, password)
+      logIn(login, password)
       setLoginPlaceholder("Enter username")
       setHasLoginError(false)
     } else if (users.some((user) => user.login !== login)) {
@@ -61,7 +61,7 @@ export default function Authentification(): JSX.Element {
       setHasLoginError(true)
     }
 
-    checkUserAccess(login, password)
+    logIn(login, password)
 
     setLogin("")
     setPassword("")
