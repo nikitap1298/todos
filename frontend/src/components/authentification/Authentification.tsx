@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
-import "./Authentification.scss"
 import AlertsComponent from "../alert/AlertsComponent"
+import { useAlertContext } from "../../context/AlertContext"
+import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
+  const { addAlert, deleteAllAlerts } = useAlertContext()
   const { logIn, registerUser } = useUserContext()
 
   const [login, setLogin] = useState("")
@@ -27,9 +29,17 @@ export default function Authentification(): JSX.Element {
     event.preventDefault()
 
     if (login.includes("@") && login.includes(".") && password !== "") {
-      registerUser(login, password)
-      setLoginPlaceholder("Enter email")
-      setPasswordPlaceholdert("Password")
+      if (password.length < 6) {
+        addAlert({
+          title: "Password is not safe",
+          message: "Password must be longer than 6 characters",
+        })
+      } else {
+        registerUser(login, password)
+        setLoginPlaceholder("Enter email")
+        setPasswordPlaceholdert("Password")
+        deleteAllAlerts()
+      }
     }
 
     setLogin("")
