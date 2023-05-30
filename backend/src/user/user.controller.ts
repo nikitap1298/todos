@@ -11,7 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(AuthGuard)
-  @ApiResponse({ status: 200, description: "Found users", type: [UserDTO] })
+  @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
   @Get()
   async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
     return await this.userService.getUserById(req.user.userId)

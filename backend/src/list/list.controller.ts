@@ -17,8 +17,8 @@ import { UserService } from "../user/user.service"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { ListDTO } from "./list.dto"
 
-@Controller("list")
-@ApiTags("list")
+@Controller("lists")
+@ApiTags("lists")
 export class ListController {
   constructor(private readonly listService: ListService, private userService: UserService) {}
 

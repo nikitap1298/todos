@@ -17,8 +17,8 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { TaskDTO } from "./task.dto"
 import { RequestWithUser } from "src/user/user.interface"
 
-@Controller("task")
-@ApiTags("task")
+@Controller("tasks")
+@ApiTags("tasks")
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
