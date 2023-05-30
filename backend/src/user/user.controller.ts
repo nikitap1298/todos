@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, UseGuards, Request } from "@nestjs/common"
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  ConflictException,
+  Res,
+} from "@nestjs/common"
 import { UserService } from "./user.service"
 import { AuthGuard } from "../auth/auth.guard"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
@@ -19,7 +28,12 @@ export class UserController {
 
   @Post("/:id")
   @ApiResponse({ status: 201, description: "User to POST", type: UserDTO })
+  @ApiResponse({ status: 409, description: "Conflick during registration", type: UserDTO })
   async registerUser(@Body() user: UserInterface): Promise<UserInterface> {
+    const existingUser = await this.userService.findUser(user.login)
+    if (existingUser) {
+      throw new ConflictException()
+    }
     return await this.userService.registerUser(user)
   }
 }

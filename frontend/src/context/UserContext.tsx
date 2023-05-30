@@ -4,6 +4,7 @@ import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
 import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"
+import { useAlertContext } from "./AlertContext"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
@@ -22,6 +23,7 @@ const UserContext = React.createContext<UserContextInterface>({
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
+  const { addAlert, deleteAllAlerts } = useAlertContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
   const [userHasAccess, setUserHasAccess] = useState(false)
 
@@ -46,9 +48,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
         setUserHasAccess(true)
       })
-      .catch((error) => {
+      .catch(() => {
         setUserHasAccess(false)
-        throw new Error(error)
       })
   }
 
@@ -79,15 +80,10 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const fetchCurrentUser = (): void => {
-    userService
-      .readUser()
-      .then((user) => {
-        console.log(user)
-        setCurrentUser(user)
-      })
-      .catch((error) => {
-        throw new Error(error)
-      })
+    userService.readUser().then((user) => {
+      console.log(user)
+      setCurrentUser(user)
+    })
   }
 
   const registerUser = (login: string, password: string): void => {
@@ -101,9 +97,13 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         )
         setCurrentUser(user)
         checkAccess(login, password)
+        deleteAllAlerts()
       })
-      .catch((error) => {
-        throw new Error(error)
+      .catch(() => {
+        addAlert({
+          title: "Error with registration",
+          message: "Can't register",
+        })
       })
   }
 

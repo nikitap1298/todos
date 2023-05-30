@@ -3,16 +3,15 @@ import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./Authentification.scss"
+import AlertsComponent from "../alert/AlertsComponent"
 
 export default function Authentification(): JSX.Element {
-  const { currentUser, logIn, registerUser } = useUserContext()
+  const { logIn, registerUser } = useUserContext()
 
   const [login, setLogin] = useState("")
-  const [loginPlaceholder, setLoginPlaceholder] = useState("Enter username")
-  const [hasLoginError, setHasLoginError] = useState(false)
+  const [loginPlaceholder, setLoginPlaceholder] = useState("Enter email")
   const [password, setPassword] = useState("")
   const [passwordPlaceholder, setPasswordPlaceholdert] = useState("Password")
-  const [hasPasswordError, setHasPasswordError] = useState(false)
 
   const [registerComponentIsActive, setRegisterComponentIsActive] = useState(false)
 
@@ -27,14 +26,10 @@ export default function Authentification(): JSX.Element {
   const handleRegisterClick = (event: MouseFormEvent): void => {
     event.preventDefault()
 
-    // FIXME: you never pass all existing to to the frontend, if this is not an admin!!! 
-    // let the api return an error and handle this error in the frontend (409 Conflict)
-    if (login !== "" && password !== "") {
+    if (login.includes("@") && login.includes(".") && password !== "") {
       registerUser(login, password)
-      setLoginPlaceholder("Enter username")
-      setHasLoginError(false)
+      setLoginPlaceholder("Enter email")
       setPasswordPlaceholdert("Password")
-      setHasPasswordError(false)
     }
 
     setLogin("")
@@ -43,7 +38,7 @@ export default function Authentification(): JSX.Element {
 
   const handleLogInClick = (event: MouseFormEvent): void => {
     event.preventDefault()
-    
+
     logIn(login, password)
 
     setLogin("")
@@ -60,12 +55,12 @@ export default function Authentification(): JSX.Element {
       {registerComponentIsActive ? (
         <>
           <h1>Registration</h1>
+          <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
-                style={hasLoginError ? { borderColor: "red" } : { borderColor: "none" }}
-                type="text"
+                type="email"
                 placeholder={loginPlaceholder}
                 value={login}
                 onChange={handleLoginInputChange}
@@ -74,14 +69,18 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                style={hasPasswordError ? { borderColor: "red" } : { borderColor: "none" }}
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}
                 onChange={handlePasswordInputChange}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={handleRegisterClick}>
+            <Button
+              className="authentification-button"
+              variant="primary"
+              type="submit"
+              onClick={handleRegisterClick}
+            >
               Register
             </Button>
           </Form>
@@ -89,12 +88,12 @@ export default function Authentification(): JSX.Element {
       ) : (
         <>
           <h1>Log In</h1>
+          <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
-                style={hasLoginError ? { borderColor: "red" } : { borderColor: "none" }}
-                type="text"
+                type="email"
                 placeholder={loginPlaceholder}
                 value={login}
                 onChange={handleLoginInputChange}
@@ -103,7 +102,6 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                style={hasPasswordError ? { borderColor: "red" } : { borderColor: "none" }}
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}
@@ -111,7 +109,12 @@ export default function Authentification(): JSX.Element {
               />
             </Form.Group>
             <div className="login-buttons">
-              <Button variant="primary" type="submit" onClick={handleLogInClick}>
+              <Button
+                className="authentification-button"
+                variant="primary"
+                type="submit"
+                onClick={handleLogInClick}
+              >
                 Log In
               </Button>
               <button
