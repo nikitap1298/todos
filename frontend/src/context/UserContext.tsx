@@ -36,8 +36,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   useEffect(() => {
-    logIn()
     fetchCurrentUser()
+    logIn()
   }, [userHasAccess])
 
   const checkAccess = (userLogin: string, userPassword: string): void => {
@@ -53,6 +53,12 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       })
   }
 
+  const fetchCurrentUser = (): void => {
+    userService.readUser().then((user) => {
+      setCurrentUser(user)
+    })
+  }
+
   const logIn = (login?: string, password?: string): void => {
     const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
     if (userInfoLocalStorage) {
@@ -60,7 +66,11 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       let userLogin = JSON.parse(userInfoLocalStorage).userLogin
       let userPassword = JSON.parse(userInfoLocalStorage).userPassword
 
-      if (typeof login === "string" && typeof password === "string") {
+      if (
+        typeof login === "string" &&
+        typeof password === "string" &&
+        (accessTokenLocalStorage?.length as number) <= 4
+      ) {
         userId = currentUser?._id
         userLogin = login
         userPassword = password
@@ -68,22 +78,15 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin, userPassword })
         )
-      } else {
+        checkAccess(userLogin, userPassword)
+      } else if ((accessTokenLocalStorage?.length as number) >= 5) {
         localStorage.setItem(
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin, userPassword })
         )
+        setUserHasAccess(true)
       }
-
-      checkAccess(userLogin, userPassword)
     }
-  }
-
-  const fetchCurrentUser = (): void => {
-    userService.readUser().then((user) => {
-      console.log(user)
-      setCurrentUser(user)
-    })
   }
 
   const registerUser = (login: string, password: string): void => {
