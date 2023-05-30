@@ -4,11 +4,8 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
-import {
-  localStorageAccessToken,
-  localStorageSelectedListIdKey,
-  localStorageUserInfoKey,
-} from "../constants/constants"
+import { localStorageAccessToken, localStorageSelectedListIdKey } from "../constants/constants"
+import { useUserContext } from "./UserContext"
 
 interface ListContextInterface {
   lists: ListInterface[]
@@ -27,7 +24,7 @@ const ListContext = React.createContext<ListContextInterface>({
 })
 
 export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const [userId, setUserId] = useState("")
+  const { currentUser } = useUserContext()
   const [lists, setLists] = useState<ListInterface[]>([])
   const [selectedListId, setSelectedListId] = useState<string | undefined>("")
 
@@ -39,11 +36,6 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   useEffect(() => {
     fetchListsFromDB()
-
-    const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
-    if (userInfoLocalStorage) {
-      setUserId(JSON.parse(userInfoLocalStorage).userId)
-    }
 
     const selectedListIdLocalStorage = localStorage.getItem(localStorageSelectedListIdKey)
     if (typeof selectedListIdLocalStorage === "string") {
@@ -66,7 +58,7 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     const capitalizedMessage = newListTitle.charAt(0).toUpperCase() + newListTitle.slice(1).trim()
 
     listsService
-      .addList({ userId: userId, title: capitalizedMessage })
+      .addList({ userId: currentUser?._id, title: capitalizedMessage })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
       })
@@ -91,7 +83,7 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     })
   }
 
-  const filteredLists = lists.filter((element) => element.userId === userId)
+  const filteredLists = lists.filter((element) => element.userId === currentUser?._id)
 
   return (
     <ListContext.Provider

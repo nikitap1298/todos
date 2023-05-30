@@ -5,7 +5,7 @@ import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
-  const { users, logIn, addNewUser } = useUserContext()
+  const { currentUser, logIn, registerUser } = useUserContext()
 
   const [login, setLogin] = useState("")
   const [loginPlaceholder, setLoginPlaceholder] = useState("Enter username")
@@ -29,19 +29,8 @@ export default function Authentification(): JSX.Element {
 
     // FIXME: you never pass all existing to to the frontend, if this is not an admin!!! 
     // let the api return an error and handle this error in the frontend (409 Conflict)
-    if (users.some((user) => user.login === login)) {
-      // FIXME: user alert context and component to show the error
-      setLoginPlaceholder("Username unavailable")
-      setHasLoginError(true)
-      setPasswordPlaceholdert("Password")
-      setHasPasswordError(false)
-    } else if (password.length < 6) {
-      setLoginPlaceholder("Enter username")
-      setHasLoginError(false)
-      setPasswordPlaceholdert("Password non-secure")
-      setHasPasswordError(true)
-    } else if (login !== "" && password !== "") {
-      addNewUser(login, password)
+    if (login !== "" && password !== "") {
+      registerUser(login, password)
       setLoginPlaceholder("Enter username")
       setHasLoginError(false)
       setPasswordPlaceholdert("Password")
@@ -54,16 +43,7 @@ export default function Authentification(): JSX.Element {
 
   const handleLogInClick = (event: MouseFormEvent): void => {
     event.preventDefault()
-
-    if (login !== "" && password !== "" && users.some((user) => user.login === login)) {
-      logIn(login, password)
-      setLoginPlaceholder("Enter username")
-      setHasLoginError(false)
-    } else if (users.some((user) => user.login !== login)) {
-      setLoginPlaceholder("Wrong username")
-      setHasLoginError(true)
-    }
-
+    
     logIn(login, password)
 
     setLogin("")

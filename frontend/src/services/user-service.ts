@@ -6,15 +6,11 @@ export class UserService extends APIService {
     return await this.methodPOST(`/auth/login`, user)
   }
 
-  async readUsers(): Promise<UserInterface[]> {
-    return (await this.methodGET(`/user/_id`)) as UserInterface[]
+  async readUser(): Promise<UserInterface> {
+    return (await this.methodGET(`/user`)) as UserInterface
   }
 
-  async addUser(user: UserInterface): Promise<UserInterface> {
+  async registerUser(user: UserInterface): Promise<UserInterface> {
     return (await this.methodPOST(`/user/${user._id}`, user)) as UserInterface
-  }
-
-  async deleteUser(user: UserInterface): Promise<UserInterface> {
-    return (await this.methodDELETE(`/user/${user._id}`, user)) as UserInterface
   }
 }

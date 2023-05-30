@@ -11,8 +11,8 @@ export class ListService {
     @InjectModel("Task") private readonly taskModel: Model<TaskInterface>
   ) {}
 
-  async getList(id:string): Promise<ListInterface> {
-    return await this.listModel.findOne({_id:id})
+  getList(id: string): Promise<ListInterface> {
+    return this.listModel.findOne({ _id: id })
   }
 
   async getAllLists(): Promise<ListInterface[]> {
@@ -22,10 +22,6 @@ export class ListService {
   async createList(list: ListInterface): Promise<ListInterface> {
     const newList = new this.listModel(list)
     return await newList.save()
-  }
-
-  async updateList(listId: string, update: Partial<ListInterface>): Promise<unknown> {
-    return await this.listModel.updateOne({ _id: listId }, update)
   }
 
   async deleteList(listId: string): Promise<unknown> {

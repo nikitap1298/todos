@@ -3,7 +3,7 @@ import { APIService } from "./api-service"
 
 export class ListsService extends APIService {
   async readLists(): Promise<ListInterface[]> {
-    return (await this.methodGET(`/list/_id`)) as ListInterface[]
+    return (await this.methodGET(`/list`)) as ListInterface[]
   }
 
   async addList(list: ListInterface): Promise<ListInterface> {

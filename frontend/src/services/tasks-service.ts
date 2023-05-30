@@ -3,7 +3,7 @@ import { APIService } from "./api-service"
 
 export class TasksService extends APIService {
   async readTasks(): Promise<TaskInterface[]> {
-    return (await this.methodGET(`/task/_id`)) as TaskInterface[]
+    return (await this.methodGET(`/task`)) as TaskInterface[]
   }
 
   async addTask(task: TaskInterface): Promise<TaskInterface> {
