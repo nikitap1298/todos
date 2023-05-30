@@ -2,6 +2,9 @@ import { ApiProperty } from "@nestjs/swagger"
 
 export class TaskDTO {
   @ApiProperty()
+  readonly userId: string
+  
+  @ApiProperty()
   readonly listId: string
 
   @ApiProperty()

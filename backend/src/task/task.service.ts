@@ -7,6 +7,10 @@ import { TaskInterface } from "./task.interface"
 export class TaskService {
   constructor(@InjectModel("Task") private readonly taskModel: Model<TaskInterface>) {}
 
+  async getTask(id: string): Promise<TaskInterface> {
+    return await this.taskModel.findOne({ _id: id })
+  }
+
   async getAllTasks(): Promise<TaskInterface[]> {
     return await this.taskModel.find().exec()
   }

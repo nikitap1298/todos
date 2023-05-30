@@ -36,10 +36,6 @@ export class ListController {
     @Body() list: ListInterface,
     @Request() req: RequestWithUser
   ): Promise<ListInterface> {
-    console.log(req.user.userId);
-    console.log(list.userId);
-    
-    
     if (list.userId !== req.user.userId) {
       throw new UnauthorizedException()
     }

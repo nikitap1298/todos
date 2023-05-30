@@ -11,8 +11,8 @@ export class ListService {
     @InjectModel("Task") private readonly taskModel: Model<TaskInterface>
   ) {}
 
-  getList(id: string): Promise<ListInterface> {
-    return this.listModel.findOne({ _id: id })
+  async getList(id: string): Promise<ListInterface> {
+    return await this.listModel.findOne({ _id: id })
   }
 
   async getAllLists(): Promise<ListInterface[]> {

@@ -1,6 +1,6 @@
 export interface TaskInterface {
   _id?: string
-  // userId?: string
+  userId?: string
   listId?: string
   title: string
   createdAt: Date
