@@ -13,7 +13,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @ApiResponse({ status: 200, description: "Found users", type: [UserDTO] })
   @Get()
-  async getAllUsers(@Request() req: RequestWithUser): Promise<UserInterface> {
+  async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
     return await this.userService.getUserById(req.user.userId)
   }
 
@@ -21,7 +21,7 @@ export class UserController {
   @ApiResponse({ status: 201, description: "User to POST", type: UserDTO })
   @ApiResponse({ status: 409, description: "Conflick during registration", type: UserDTO })
   async registerUser(@Body() user: UserInterface): Promise<UserInterface> {
-    const existingUser = await this.userService.findUser(user.login)
+    const existingUser = await this.userService.getUser(user.login)
     if (existingUser) {
       throw new ConflictException()
     }

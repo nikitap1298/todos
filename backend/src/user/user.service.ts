@@ -11,7 +11,7 @@ export class UserService {
     return await this.userModel.findOne({ _id: id }).exec()
   }
 
-  async findUser(login: string): Promise<UserInterface> {
+  async getUser(login: string): Promise<UserInterface> {
     const user = await this.userModel.findOne({ login }).exec()
     return user
   }
