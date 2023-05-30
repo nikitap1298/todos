@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
-import { localStorageAccessToken, localStorageSelectedListIdKey } from "../constants/constants"
+import { localStorageSelectedListIdKey } from "../constants/constants"
 import { useUserContext } from "./UserContext"
 
 interface ListContextInterface {
@@ -29,10 +29,6 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [selectedListId, setSelectedListId] = useState<string | undefined>("")
 
   const listsService = new ListsService()
-  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
-  if (accessTokenLocalStorage) {
-    listsService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
-  }
 
   useEffect(() => {
     fetchListsFromDB()

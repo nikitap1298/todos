@@ -1,13 +1,9 @@
-import { backendServerURL } from "../constants/constants"
+import { backendServerURL, localStorageAccessToken } from "../constants/constants"
 
 export class APIService {
   headers = {
     "Content-Type": "application/json",
-    Authorization: "",
-  }
-
-  setAuthorizationToken(token: string): void {
-    this.headers.Authorization = token
+    Authorization: `Bearer ${JSON.parse(localStorage.getItem(localStorageAccessToken) as string)}`,
   }
 
   protected async methodGET(path: string): Promise<unknown> {

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
-import { localStorageAccessToken, localStorageShowCompletedTasksKey } from "../constants/constants"
+import { localStorageShowCompletedTasksKey } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
@@ -37,10 +37,6 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
 
   const tasksService = new TasksService()
-  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
-  if (accessTokenLocalStorage) {
-    tasksService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
-  }
 
   // Load tasksArray from localStorage
   useEffect(() => {

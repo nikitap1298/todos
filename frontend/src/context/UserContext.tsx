@@ -28,12 +28,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const [userHasAccess, setUserHasAccess] = useState(false)
 
   const userService = new UserService()
-  // TODO: to not douplicate your code whenever you need the token you can implement this directly in the Api Service,
-  // the all the services that extends the Api Service will have access to the token
   const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
-  if (accessTokenLocalStorage) {
-    userService.setAuthorizationToken(`Bearer ${JSON.parse(accessTokenLocalStorage)}`)
-  }
 
   useEffect(() => {
     fetchCurrentUser()
