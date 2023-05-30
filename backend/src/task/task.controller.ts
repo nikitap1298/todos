@@ -22,10 +22,12 @@ import { RequestWithUser } from "src/user/user.interface"
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({ status: 200, description: "Found tasks", type: [TaskDTO] })
-  async getAllTasks(): Promise<TaskInterface[]> {
-    return await this.taskService.getAllTasks()
+  async getTasks(@Request() req: RequestWithUser): Promise<TaskInterface[]> {
+    const userId = req.user.userId
+    return await this.taskService.getTasks(userId)
   }
 
   @UseGuards(AuthGuard)

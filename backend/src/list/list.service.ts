@@ -15,8 +15,8 @@ export class ListService {
     return await this.listModel.findOne({ _id: id })
   }
 
-  async getAllLists(): Promise<ListInterface[]> {
-    return await this.listModel.find().exec()
+  async getLists(userId: string): Promise<ListInterface[]> {
+    return await this.listModel.find({ userId: userId })
   }
 
   async createList(list: ListInterface): Promise<ListInterface> {

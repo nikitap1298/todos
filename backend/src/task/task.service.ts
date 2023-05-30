@@ -11,8 +11,8 @@ export class TaskService {
     return await this.taskModel.findOne({ _id: id })
   }
 
-  async getAllTasks(): Promise<TaskInterface[]> {
-    return await this.taskModel.find().exec()
+  async getTasks(userId: string): Promise<TaskInterface[]> {
+    return await this.taskModel.find({ userId: userId })
   }
 
   async createTask(task: TaskInterface): Promise<TaskInterface> {

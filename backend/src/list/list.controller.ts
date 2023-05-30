@@ -25,8 +25,9 @@ export class ListController {
   @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({ status: 200, description: "Found lists", type: [ListDTO] })
-  async getAllLists(): Promise<ListInterface[]> {  
-    return await this.listService.getAllLists()
+  async getLists(@Request() req: RequestWithUser): Promise<ListInterface[]> {
+    const userId = req.user.userId
+    return await this.listService.getLists(userId)
   }
 
   @UseGuards(AuthGuard)
