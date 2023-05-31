@@ -51,6 +51,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const fetchCurrentUser = (): void => {
     userService.readUser().then((user) => {
       setCurrentUser(user)
+    }).catch(() => {
+      logOut()
     })
   }
 
