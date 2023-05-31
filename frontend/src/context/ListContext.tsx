@@ -45,9 +45,6 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .then((lists) => {
         setLists(lists as ListInterface[])
       })
-      .catch((error) => {
-        throw new Error(error)
-      })
   }
 
   const addNewList = (newListTitle: string): void => {
@@ -57,9 +54,6 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .addList({ userId: currentUser?._id, title: capitalizedMessage })
       .then((newList) => {
         setLists((oldArray) => [...oldArray, newList])
-      })
-      .catch((error) => {
-        throw new Error(error)
       })
   }
 
@@ -79,11 +73,9 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     })
   }
 
-  const filteredLists = lists.filter((element) => element.userId === currentUser?._id)
-
   return (
     <ListContext.Provider
-      value={{ lists: filteredLists, addNewList, selectedListId, selectList, deleteList }}
+      value={{ lists, addNewList, selectedListId, selectList, deleteList }}
     >
       {children}
     </ListContext.Provider>

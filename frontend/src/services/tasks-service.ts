@@ -6,8 +6,8 @@ export class TasksService extends APIService {
     return (await this.methodGET(`/tasks`)) as TaskInterface[]
   }
 
-  async addTask(task: TaskInterface): Promise<TaskInterface> {
-    return (await this.methodPOST(`/tasks/${task._id}`, task)) as TaskInterface
+  async addTask(listId: string, task: TaskInterface): Promise<TaskInterface> {
+    return (await this.methodPOST(`/tasks/${listId}/${task._id}`, task)) as TaskInterface
   }
 
   async updateTask(task: TaskInterface): Promise<TaskInterface> {

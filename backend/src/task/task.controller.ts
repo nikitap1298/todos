@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   UnauthorizedException,
+  NotFoundException,
 } from "@nestjs/common"
 import { TaskService } from "./task.service"
 import { TaskInterface } from "./task.interface"
@@ -31,13 +32,15 @@ export class TaskController {
   }
 
   @UseGuards(AuthGuard)
-  @Post("/:id")
+  @Post("/:listId/:id")
   @ApiResponse({ status: 201, description: "Task to POST", type: TaskDTO })
+  @ApiResponse({ status: 401, description: "Wrong user or list", type: TaskDTO })
   async createTask(
+    @Param("listId") listId: string,
     @Body() task: TaskInterface,
     @Request() req: RequestWithUser
   ): Promise<TaskInterface> {
-    if (task.userId !== req.user.userId) {
+    if (task.userId !== req.user.userId || task.listId !== listId) {
       throw new UnauthorizedException()
     }
     return await this.taskService.createTask(task)
@@ -46,6 +49,8 @@ export class TaskController {
   @UseGuards(AuthGuard)
   @Put("/:id")
   @ApiResponse({ status: 200, description: "Task to PUT", type: TaskDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: TaskDTO })
+  @ApiResponse({ status: 404, description: "Task not found", type: TaskDTO })
   async updateTask(
     @Param("id") id: string,
     @Body() update: Partial<TaskInterface>,
@@ -55,16 +60,24 @@ export class TaskController {
     if (task.userId.toString() !== req.user.userId) {
       throw new UnauthorizedException()
     }
+    if (task.id !== id) {
+      throw new NotFoundException()
+    }
     return await this.taskService.updateTask(id, update)
   }
 
   @UseGuards(AuthGuard)
   @Delete("/:id")
   @ApiResponse({ status: 200, description: "Task to DELETE", type: TaskDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to DELETE", type: TaskDTO })
+  @ApiResponse({ status: 404, description: "Task not found", type: TaskDTO })
   async deleteTask(@Param("id") id: string, @Request() req: RequestWithUser): Promise<unknown> {
     const task = await this.taskService.getTask(id)
     if (task.userId.toString() !== req.user.userId) {
       throw new UnauthorizedException()
+    }
+    if (task.id !== id) {
+      throw new NotFoundException()
     }
     return await this.taskService.deleteTask(id)
   }

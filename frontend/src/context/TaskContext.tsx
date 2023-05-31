@@ -75,7 +75,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       selectedList
     ) {
       tasksService
-        .addTask({
+        .addTask(selectedList._id as string, {
           userId: currentUser?._id,
           listId: selectedList?._id,
           title: capitalizedMessage,

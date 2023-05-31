@@ -8,6 +8,7 @@ import {
   UseGuards,
   Request,
   UnauthorizedException,
+  NotFoundException,
 } from "@nestjs/common"
 import { ListService } from "./list.service"
 import { ListInterface } from "./list.interface"
@@ -33,6 +34,7 @@ export class ListController {
   @UseGuards(AuthGuard)
   @Post("/:id")
   @ApiResponse({ status: 201, description: "List to POST", type: ListDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to POST", type: ListDTO })
   async createList(
     @Body() list: ListInterface,
     @Request() req: RequestWithUser
@@ -46,10 +48,15 @@ export class ListController {
   @UseGuards(AuthGuard)
   @Delete("/:id")
   @ApiResponse({ status: 200, description: "List to DELETE", type: ListDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to DELETE", type: ListDTO })
+  @ApiResponse({ status: 404, description: "List not found", type: ListDTO })
   async deleteList(@Param("id") id: string, @Request() req: RequestWithUser): Promise<unknown> {
     const list = await this.listService.getList(id)
     if (list.userId.toString() !== req.user.userId) {
       throw new UnauthorizedException()
+    }
+    if (list.id !== id) {
+      throw new NotFoundException()
     }
     return await this.listService.deleteList(id)
   }
