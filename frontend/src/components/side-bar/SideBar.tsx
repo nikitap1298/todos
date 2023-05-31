@@ -5,8 +5,10 @@ import { Button, Form, Modal } from "react-bootstrap"
 import { useListContext } from "../../context/ListContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./SideBar.scss"
+import { useUserContext } from "../../context/UserContext"
 
 export default function SideBar(): JSX.Element {
+  const { logOut } = useUserContext()
   const { addNewList } = useListContext()
 
   const [showModal, setShowModal] = useState(false)
@@ -33,9 +35,13 @@ export default function SideBar(): JSX.Element {
     setShowModal(false)
   }
 
+  const handleLogOutClick = (): void => {
+    logOut()
+  }
+
   return (
     <div className="side-bar">
-      <button className="side-bar-plus-button" onClick={handleOpenClick}>
+      <button className="side-bar-button" onClick={handleOpenClick}>
         +
       </button>
       <Lists />
@@ -61,6 +67,11 @@ export default function SideBar(): JSX.Element {
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="side-bar-user-buttons">
+        <button onClick={handleLogOutClick}>
+          Log Out
+        </button>
+      </div>
     </div>
   )
 }
