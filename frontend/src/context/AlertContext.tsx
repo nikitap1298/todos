@@ -1,9 +1,13 @@
 import React, { useContext, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
-import {
-  AlertContextInterface,
-  AlertInterface,
-} from "../lib/interfaces/alert.interface"
+import { AlertInterface } from "../lib/interfaces/alert.interface"
+
+interface AlertContextInterface {
+  alerts: AlertInterface[]
+  addAlert: (newAlert: AlertInterface) => void
+  deleteAlert: (index: number) => void
+  deleteAllAlerts: () => void
+}
 
 const AlertContext = React.createContext<AlertContextInterface>({
   alerts: [],

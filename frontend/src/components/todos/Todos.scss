@@ -1,0 +1,11 @@
+@import "/src/styles/variables";
+
+.todos {
+  min-height: 100vh;
+  background-color: $colorVanilla;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+}
