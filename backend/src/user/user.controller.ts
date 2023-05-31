@@ -14,6 +14,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
   @Get()
   async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
+    // req.user.userId comes from auth.service -> payload -> userId
     return await this.userService.getUserById(req.user.userId)
   }
 
