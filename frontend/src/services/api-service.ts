@@ -1,8 +1,9 @@
-import { backendServerURL } from "../constants/constants"
+import { backendServerURL, localStorageAccessToken } from "../constants/constants"
 
 export class APIService {
-  private headers = {
+  headers = {
     "Content-Type": "application/json",
+    Authorization: `Bearer ${JSON.parse(localStorage.getItem(localStorageAccessToken) as string)}`,
   }
 
   protected async methodGET(path: string): Promise<unknown> {
@@ -28,7 +29,7 @@ export class APIService {
         headers: this.headers,
         body: JSON.stringify(data),
       })
-      if (response.status !== 201) {
+      if (response.status !== 200 && response.status !== 201) {
         throw new Error(`Error during POST method: ${response.statusText}`)
       }
       const resultJSON = await response.json()

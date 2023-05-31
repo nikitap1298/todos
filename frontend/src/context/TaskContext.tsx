@@ -7,6 +7,7 @@ import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
 import { useListContext } from "./ListContext"
+import { useUserContext } from "./UserContext"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
@@ -29,6 +30,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 })
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
+  const { currentUser } = useUserContext()
   const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
   const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
@@ -66,12 +68,15 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
     // User can't add the same task, empty task or task if there are no lists
     if (
-      !tasks.some((element) => element.title === capitalizedMessage) &&
+      !tasks.some(
+        (element) => element.title === capitalizedMessage && element.listId === selectedListId
+      ) &&
       capitalizedMessage !== "" &&
       selectedList
     ) {
       tasksService
-        .addTask({
+        .addTask(selectedList._id as string, {
+          userId: currentUser?._id,
           listId: selectedList?._id,
           title: capitalizedMessage,
           createdAt: new Date(),

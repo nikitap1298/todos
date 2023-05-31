@@ -1,31 +1,63 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from "@nestjs/common"
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+  NotFoundException,
+} from "@nestjs/common"
 import { ListService } from "./list.service"
 import { ListInterface } from "./list.interface"
+import { AuthGuard } from "../auth/auth.guard"
+import { RequestWithUser } from "src/user/user.interface"
+import { UserService } from "../user/user.service"
+import { ApiResponse, ApiTags } from "@nestjs/swagger"
+import { ListDTO } from "./list.dto"
 
-@Controller("list/:listId")
+@Controller("lists")
+@ApiTags("lists")
 export class ListController {
-  constructor(private readonly listService: ListService) {}
+  constructor(private readonly listService: ListService, private userService: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
-  async getAllLists(): Promise<ListInterface[]> {
-    return await this.listService.getAllLists()
+  @ApiResponse({ status: 200, description: "Found lists", type: [ListDTO] })
+  async getLists(@Request() req: RequestWithUser): Promise<ListInterface[]> {
+    const userId = req.user.userId
+    return await this.listService.getLists(userId)
   }
 
-  @Post()
-  async createList(@Body() list: ListInterface): Promise<ListInterface> {
+  @UseGuards(AuthGuard)
+  @Post("/:id")
+  @ApiResponse({ status: 201, description: "List to POST", type: ListDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to POST", type: ListDTO })
+  async createList(
+    @Body() list: ListInterface,
+    @Request() req: RequestWithUser
+  ): Promise<ListInterface> {
+    if (list.userId !== req.user.userId) {
+      throw new UnauthorizedException()
+    }
     return await this.listService.createList(list)
   }
 
-  @Put()
-  async updateList(
-    @Param("listId") listId: string,
-    @Body() update: Partial<ListInterface>
-  ): Promise<any> {
-    return await this.listService.updateList(listId, update)
-  }
-
-  @Delete()
-  async deleteList(@Param("listId") listId: string): Promise<any> {
-    return await this.listService.deleteList(listId)
+  @UseGuards(AuthGuard)
+  @Delete("/:id")
+  @ApiResponse({ status: 200, description: "List to DELETE", type: ListDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to DELETE", type: ListDTO })
+  @ApiResponse({ status: 404, description: "List not found", type: ListDTO })
+  async deleteList(@Param("id") id: string, @Request() req: RequestWithUser): Promise<unknown> {
+    const list = await this.listService.getList(id)
+    if (list.userId.toString() !== req.user.userId) {
+      throw new UnauthorizedException()
+    }
+    if (list.id !== id) {
+      throw new NotFoundException()
+    }
+    return await this.listService.deleteList(id)
   }
 }

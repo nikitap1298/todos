@@ -11,8 +11,12 @@ export class ListService {
     @InjectModel("Task") private readonly taskModel: Model<TaskInterface>
   ) {}
 
-  async getAllLists(): Promise<ListInterface[]> {
-    return await this.listModel.find().exec()
+  async getList(id: string): Promise<ListInterface> {
+    return await this.listModel.findOne({ _id: id })
+  }
+
+  async getLists(userId: string): Promise<ListInterface[]> {
+    return await this.listModel.find({ userId: userId })
   }
 
   async createList(list: ListInterface): Promise<ListInterface> {
@@ -20,11 +24,7 @@ export class ListService {
     return await newList.save()
   }
 
-  async updateList(listId: string, update: Partial<ListInterface>): Promise<any> {
-    return await this.listModel.updateOne({ _id: listId }, update)
-  }
-
-  async deleteList(listId: string): Promise<any> {
+  async deleteList(listId: string): Promise<unknown> {
     await this.taskModel.deleteMany({ listId: listId })
     return await this.listModel.deleteOne({ _id: listId })
   }
