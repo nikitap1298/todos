@@ -4,6 +4,7 @@ import { ListModule } from "./list/list.module"
 import { TaskModule } from "./task/task.module"
 import { AuthModule } from "./auth/auth.module"
 import { UserModule } from "./user/user.module"
+import { MailModule } from "./mail/mail.module"
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserModule } from "./user/user.module"
     UserModule,
     ListModule,
     TaskModule,
+    MailModule,
   ],
 })
 export class AppModule {}

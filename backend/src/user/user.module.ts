@@ -5,6 +5,7 @@ import { UserService } from "./user.service"
 import { UserSchema } from "./user.schema"
 import { UserController } from "./user.controller"
 import { ListSchema } from "../list/list.schema"
+import { MailService } from "../mail/mail.service"
 import bcrypt from "bcrypt"
 
 @Module({
@@ -34,7 +35,7 @@ import bcrypt from "bcrypt"
     ]),
     MongooseModule.forFeature([{ name: "List", schema: ListSchema }]),
   ],
-  providers: [UserService],
+  providers: [UserService, MailService],
   exports: [UserService],
   controllers: [UserController],
 })

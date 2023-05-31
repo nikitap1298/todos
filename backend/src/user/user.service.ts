@@ -2,10 +2,14 @@ import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { UserInterface } from "./user.interface"
+import { MailService } from "../mail/mail.service"
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel("User") private readonly userModel: Model<UserInterface>) {}
+  constructor(
+    @InjectModel("User") private readonly userModel: Model<UserInterface>,
+    private mailService: MailService
+  ) {}
 
   async getUserById(id: string): Promise<UserInterface> {
     return await this.userModel.findOne({ _id: id }).exec()
@@ -18,6 +22,7 @@ export class UserService {
 
   async registerUser(user: UserInterface): Promise<UserInterface> {
     const newUser = new this.userModel(user)
+    await this.mailService.sendUserConfirmation(newUser, "")
     return await newUser.save()
   }
 }
