@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:6.0
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - 27017:27017  
+
+  mailhog:
+    image: jcalonso/mailhog
+    ports:
+      - 8025:8025
+      - 1025:1025
+
+volumes:
+  mongo-data:
