@@ -13,7 +13,7 @@ interface UserContextInterface {
   logIn: (login?: string, password?: string) => void
   registerUser: (login: string, password: string) => void
   logOut: () => void
-  confirmEmail: (userId: string) => void
+  confirmEmail: (userId: string, token: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -121,10 +121,10 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     setUserHasAccess(false)
   }
 
-  const confirmEmail = (userId: string): void => {
+  const confirmEmail = (userId: string, token: string): void => {
     // localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     userService
-      .verifyUser(userId)
+      .verifyUser(userId, token)
       .then(() => {
         deleteAllAlerts()
         logOut()

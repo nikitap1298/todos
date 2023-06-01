@@ -7,6 +7,8 @@ import { UserController } from "./user.controller"
 import { ListSchema } from "../list/list.schema"
 import { MailService } from "../mail/mail.service"
 import bcrypt from "bcrypt"
+import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
+import { ConfirmationTokenSchema } from "../confirmation.token/confirmation.token.schema"
 
 @Module({
   imports: [
@@ -34,8 +36,9 @@ import bcrypt from "bcrypt"
       },
     ]),
     MongooseModule.forFeature([{ name: "List", schema: ListSchema }]),
+    MongooseModule.forFeature([{ name: "ConfirmationToken", schema: ConfirmationTokenSchema }])
   ],
-  providers: [UserService, MailService],
+  providers: [UserService, MailService, ConfirmationTokenService],
   exports: [UserService],
   controllers: [UserController],
 })

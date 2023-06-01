@@ -5,6 +5,7 @@ import { TaskModule } from "./task/task.module"
 import { AuthModule } from "./auth/auth.module"
 import { UserModule } from "./user/user.module"
 import { MailModule } from "./mail/mail.module"
+import { ConfirmationTokenModule } from './confirmation.token/confirmation.token.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MailModule } from "./mail/mail.module"
     ListModule,
     TaskModule,
     MailModule,
+    ConfirmationTokenModule,
   ],
 })
 export class AppModule {}

@@ -13,7 +13,7 @@ export default function App(): JSX.Element {
         <UserContextProvider>
           <Routes>
             <Route path="/todos" element={<Todos />} />
-            <Route path="/auth/confirm/:id" element={<EmailConfirmation />} />
+            <Route path="/auth/confirm/:id/:token" element={<EmailConfirmation />} />
           </Routes>
         </UserContextProvider>
       </AlertContextProvider>
