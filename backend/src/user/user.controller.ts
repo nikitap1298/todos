@@ -8,7 +8,6 @@ import {
   ConflictException,
   Put,
   Param,
-  UnauthorizedException,
   NotFoundException,
 } from "@nestjs/common"
 import { UserService } from "./user.service"
@@ -41,23 +40,14 @@ export class UserController {
     return await this.userService.registerUser(user)
   }
 
-  @UseGuards(AuthGuard)
   @Put("/:id")
   @ApiResponse({ status: 200, description: "User to PUT", type: UserDTO })
-  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
-  async verifyUser(
-    @Param("id") id: string,
-    @Body() update: Partial<UserInterface>,
-    @Request() req: RequestWithUser
-  ): Promise<unknown> {
+  async verifyUser(@Param("id") id: string): Promise<unknown> {
     const user = await this.userService.getUserById(id)
-    if (user.id !== req.user.userId) {
-      throw new UnauthorizedException()
-    }
     if (user.id !== id) {
       throw new NotFoundException()
     }
-    return await this.userService.verifyUser(id, update)
+    return await this.userService.verifyUser(id)
   }
 }

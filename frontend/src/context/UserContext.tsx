@@ -13,7 +13,7 @@ interface UserContextInterface {
   logIn: (login?: string, password?: string) => void
   registerUser: (login: string, password: string) => void
   logOut: () => void
-  confirmEmail: () => void
+  confirmEmail: (userId: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -121,12 +121,21 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     setUserHasAccess(false)
   }
 
-  const confirmEmail = (): void => {
-    const confirmedUser = currentUser as UserInterface
-    confirmedUser.verified = true
-    userService.verifyUser(confirmedUser).then(() => {
-      navigate("/todos")
-    })
+  const confirmEmail = (userId: string): void => {
+    // localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
+    userService
+      .verifyUser(userId)
+      .then(() => {
+        deleteAllAlerts()
+        logOut()
+        navigate("/todos")
+      })
+      .catch(() => {
+        addAlert({
+          title: "Error with email confirmation",
+          message: "Can't verify",
+        })
+      })
   }
 
   return (

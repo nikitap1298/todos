@@ -22,12 +22,12 @@ export class UserService {
 
   async registerUser(user: UserInterface): Promise<UserInterface> {
     const newUser = new this.userModel(user)
-    await this.mailService.sendUserConfirmation(newUser, "")
+    await this.mailService.sendUserConfirmation(newUser, newUser.id)
     return await newUser.save()
   }
 
-  async verifyUser(userId: string, update: Partial<UserInterface>): Promise<unknown> {
-    return await this.userModel.updateOne({ _id: userId }, update)
+  async verifyUser(userId: string): Promise<unknown> {
+    return await this.userModel.updateOne({ _id: userId }, { $set: { verified: true } })
   }
 }
 

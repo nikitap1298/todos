@@ -14,7 +14,7 @@ export class UserService extends APIService {
     return (await this.methodPOST(`/user/${user._id}`, user)) as UserInterface
   }
 
-  async verifyUser(user: UserInterface): Promise<UserInterface> {
-    return (await this.methodPUT(`/user/${user._id}`, user)) as UserInterface
+  async verifyUser(userId: string): Promise<unknown> {
+    return await this.methodPUT(`/user/${userId}`, { userId })
   }
 }
