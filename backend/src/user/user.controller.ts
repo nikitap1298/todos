@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, UseGuards, Request, ConflictException } from "@nestjs/common"
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  ConflictException,
+  Put,
+  Param,
+  UnauthorizedException,
+  NotFoundException,
+} from "@nestjs/common"
 import { UserService } from "./user.service"
 import { AuthGuard } from "../auth/auth.guard"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
@@ -27,5 +39,25 @@ export class UserController {
       throw new ConflictException()
     }
     return await this.userService.registerUser(user)
+  }
+
+  @UseGuards(AuthGuard)
+  @Put("/:id")
+  @ApiResponse({ status: 200, description: "User to PUT", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
+  @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
+  async verifyUser(
+    @Param("id") id: string,
+    @Body() update: Partial<UserInterface>,
+    @Request() req: RequestWithUser
+  ): Promise<unknown> {
+    const user = await this.userService.getUserById(id)
+    if (user.id !== req.user.userId) {
+      throw new UnauthorizedException()
+    }
+    if (user.id !== id) {
+      throw new NotFoundException()
+    }
+    return await this.userService.verifyUser(id, update)
   }
 }

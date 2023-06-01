@@ -25,6 +25,10 @@ export class UserService {
     await this.mailService.sendUserConfirmation(newUser, "")
     return await newUser.save()
   }
+
+  async verifyUser(userId: string, update: Partial<UserInterface>): Promise<unknown> {
+    return await this.userModel.updateOne({ _id: userId }, update)
+  }
 }
 
 // For test JWT token
