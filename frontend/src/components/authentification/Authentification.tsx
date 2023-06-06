@@ -60,6 +60,11 @@ export default function Authentification(): JSX.Element {
     setRegisterComponentIsActive(true)
   }
 
+  const handleForgotPasswordClick = (event: MouseFormEvent): void => {
+    event.preventDefault()
+    console.log("Forgot Password Click")
+  }
+
   return (
     <div className="authentification">
       {registerComponentIsActive ? (
@@ -127,13 +132,14 @@ export default function Authentification(): JSX.Element {
               >
                 Log In
               </Button>
-              <button
-                className="dont-have-account"
-                type="submit"
-                onClick={handleDontHaveAccountClick}
-              >
-                Don't have an account?
-              </button>
+              <div>
+                <button type="submit" onClick={handleDontHaveAccountClick}>
+                  Don't have an account?
+                </button>
+                <button type="submit" onClick={handleForgotPasswordClick}>
+                  Forgot your password?
+                </button>
+              </div>
             </div>
           </Form>
         </>
