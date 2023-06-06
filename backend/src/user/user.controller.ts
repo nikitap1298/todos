@@ -50,7 +50,7 @@ export class UserController {
   @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
   async verifyUser(@Param("id") id: string, @Param("token") token: string): Promise<unknown> {
-    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)    
+    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)
     if (tokenObject.userId !== id) {
       throw new UnauthorizedException()
     }
@@ -58,6 +58,7 @@ export class UserController {
     if (user.id !== id) {
       throw new NotFoundException()
     }
+    await this.confirmationTokenService.deleteConfirmationToken(tokenObject._id)
     return await this.userService.verifyUser(id)
   }
 }

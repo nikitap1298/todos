@@ -20,4 +20,8 @@ export class ConfirmationTokenService {
     const newConfirmationToken = new this.confirmationTokenModel(token)
     return await newConfirmationToken.save()
   }
+
+  async deleteConfirmationToken(tokenId: string): Promise<unknown> {
+    return await this.confirmationTokenModel.deleteOne({ _id: tokenId })
+  }
 }
