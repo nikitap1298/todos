@@ -41,9 +41,9 @@ export default function SideBar(): JSX.Element {
 
   return (
     <div className="side-bar">
-      <button className="side-bar-button" onClick={handleOpenClick}>
+      <Button variant="secondary" size="lg" onClick={handleOpenClick}>
         +
-      </button>
+      </Button>
       <Lists />
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
@@ -68,9 +68,9 @@ export default function SideBar(): JSX.Element {
         </Modal.Footer>
       </Modal>
       <div className="side-bar-user-buttons">
-        <button onClick={handleLogOutClick}>
+        <Button variant="secondary" size="lg" onClick={handleLogOutClick}>
           Log Out
-        </button>
+        </Button>
       </div>
     </div>
   )
