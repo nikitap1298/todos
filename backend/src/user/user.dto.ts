@@ -9,4 +9,7 @@ export class UserDTO {
 
   @ApiProperty()
   readonly password: string
+
+  @ApiProperty()
+  readonly verified: boolean
 }

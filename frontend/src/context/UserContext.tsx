@@ -5,6 +5,7 @@ import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
 import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
+import { useNavigate } from "react-router-dom"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
@@ -12,6 +13,7 @@ interface UserContextInterface {
   logIn: (login?: string, password?: string) => void
   registerUser: (login: string, password: string) => void
   logOut: () => void
+  confirmEmail: (userId: string, token: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -20,12 +22,15 @@ const UserContext = React.createContext<UserContextInterface>({
   logIn: () => void {},
   registerUser: () => void {},
   logOut: () => void {},
+  confirmEmail: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { addAlert, deleteAllAlerts } = useAlertContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
   const [userHasAccess, setUserHasAccess] = useState(false)
+
+  const navigate = useNavigate()
 
   const userService = new UserService()
   const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
@@ -49,11 +54,14 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const fetchCurrentUser = (): void => {
-    userService.readUser().then((user) => {
-      setCurrentUser(user)
-    }).catch(() => {
-      logOut()
-    })
+    userService
+      .readUser()
+      .then((user) => {
+        setCurrentUser(user)
+      })
+      .catch(() => {
+        logOut()
+      })
   }
 
   const logIn = (login?: string, password?: string): void => {
@@ -88,7 +96,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   const registerUser = (login: string, password: string): void => {
     userService
-      .registerUser({ login: login, password: password })
+      .registerUser({ login: login, password: password, verified: false })
       .then((user) => {
         const userId = user._id
         localStorage.setItem(
@@ -113,8 +121,27 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     setUserHasAccess(false)
   }
 
+  const confirmEmail = (userId: string, token: string): void => {
+    // localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
+    userService
+      .verifyUser(userId, token)
+      .then(() => {
+        deleteAllAlerts()
+        logOut()
+        navigate("/todos")
+      })
+      .catch(() => {
+        addAlert({
+          title: "Error with email confirmation",
+          message: "Can't verify",
+        })
+      })
+  }
+
   return (
-    <UserContext.Provider value={{ currentUser, userHasAccess, logIn, registerUser, logOut }}>
+    <UserContext.Provider
+      value={{ currentUser, userHasAccess, logIn, registerUser, logOut, confirmEmail }}
+    >
       {children}
     </UserContext.Provider>
   )

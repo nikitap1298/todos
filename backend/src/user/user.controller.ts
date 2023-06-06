@@ -1,14 +1,30 @@
-import { Controller, Get, Post, Body, UseGuards, Request, ConflictException } from "@nestjs/common"
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  ConflictException,
+  Put,
+  Param,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common"
 import { UserService } from "./user.service"
 import { AuthGuard } from "../auth/auth.guard"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { UserDTO } from "./user.dto"
 import { RequestWithUser, UserInterface } from "./user.interface"
+import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
 
 @Controller("user")
 @ApiTags("user")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly confirmationTokenService: ConfirmationTokenService
+  ) {}
 
   @UseGuards(AuthGuard)
   @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
@@ -27,5 +43,21 @@ export class UserController {
       throw new ConflictException()
     }
     return await this.userService.registerUser(user)
+  }
+
+  @Put("/:id/:token")
+  @ApiResponse({ status: 200, description: "User to PUT", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
+  @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
+  async verifyUser(@Param("id") id: string, @Param("token") token: string): Promise<unknown> {
+    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)    
+    if (tokenObject.userId !== id) {
+      throw new UnauthorizedException()
+    }
+    const user = await this.userService.getUserById(id)
+    if (user.id !== id) {
+      throw new NotFoundException()
+    }
+    return await this.userService.verifyUser(id)
   }
 }
