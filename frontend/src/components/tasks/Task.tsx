@@ -26,9 +26,7 @@ export default function Task(props: TaskProps): JSX.Element {
     }
   }, [showTitleEditor, task.title])
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ): void => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === "Escape") {
       event.currentTarget.value = ""
       event.currentTarget.blur()
@@ -50,6 +48,11 @@ export default function Task(props: TaskProps): JSX.Element {
     }
   }
 
+  // Replace input with h1 when user pressed any place on the screen
+  const handleBlur = (): void => {
+    setShowTitleEditor(false)
+  }
+
   return (
     <div className={className}>
       <div>
@@ -64,6 +67,7 @@ export default function Task(props: TaskProps): JSX.Element {
               placeholder={task.title}
               onKeyDown={handleKeyDown}
               onChange={handleChange}
+              onBlur={handleBlur}
               ref={inputRef}
             />
           )}
@@ -75,11 +79,7 @@ export default function Task(props: TaskProps): JSX.Element {
               : dayjs(task.createdAt).format("D MMM H:mm")}
           </p>
           <Form>
-            <Form.Check
-              type="checkbox"
-              label=""
-              onChange={(): void => onComplete(taskId)}
-            />
+            <Form.Check type="checkbox" label="" onChange={(): void => onComplete(taskId)} />
           </Form>
         </div>
       </div>

@@ -9,16 +9,16 @@
 
   h1 {
     margin: 0;
+    padding: 2px;
     font-family: $dongleLight;
     font-size: 2.5rem;
     color: $colorGray;
-    background-color: transparenti;
-    border-style: none;
     min-height: 50px;
+    border-left: 4px solid transparent;
+    cursor: pointer;
 
     &:hover {
-      border-left: 4.5px solid $colorBlue;
-      padding-left: 2.5px;
+      border-left-color: $colorBlue;
     }
   }
 
@@ -46,6 +46,7 @@
     font-family: $dongleLight;
     font-size: 1.5rem;
     color: $colorGreen;
+    cursor: default;
   }
 
   input {

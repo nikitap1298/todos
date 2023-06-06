@@ -31,7 +31,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { currentUser } = useUserContext()
-  const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
+  const { addAlert, deleteAllAlerts } = useAlertContext()
   const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
