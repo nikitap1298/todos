@@ -10,8 +10,9 @@
     margin: 5px 0 0 5px;
     background-color: $colorBlue;
     color: $colorVanilla;
-    padding: 6px 24px;
-    font-size: 16px;
+    padding: 3px 15px;
+    font-family: $dongleLight;
+    font-size: 25px;
     border: none;
 
     &:hover {
@@ -28,10 +29,7 @@
       background-color: $colorRed;
 
       color: $colorVanilla;
-      padding: 3px 15px;
       font-family: $dongleLight;
-      font-size: 25px;
-      border: none;
     }
   }
 }

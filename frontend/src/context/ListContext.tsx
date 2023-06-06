@@ -4,7 +4,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { ListInterface } from "../lib/interfaces/list.interface"
 import { ListsService } from "../services/lists-service"
-import { localStorageSelectedListIdKey } from "../constants/constants"
+import {
+  localStorageSelectedListIdKey,
+  localStorageSelectedListTitleKey,
+} from "../constants/constants"
 import { useUserContext } from "./UserContext"
 
 interface ListContextInterface {
@@ -40,11 +43,9 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }, [])
 
   const fetchListsFromDB = (): void => {
-    listsService
-      .readLists()
-      .then((lists) => {
-        setLists(lists as ListInterface[])
-      })
+    listsService.readLists().then((lists) => {
+      setLists(lists as ListInterface[])
+    })
   }
 
   const addNewList = (newListTitle: string): void => {
@@ -60,8 +61,11 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const selectList = (listId: string): void => {
     console.log(`Selected list with Id: ${listId}`)
 
+    const selectedListTitle = lists.find((element) => element._id === listId)?.title
+
     setSelectedListId(listId)
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(listId))
+    localStorage.setItem(localStorageSelectedListTitleKey, JSON.stringify(selectedListTitle))
   }
 
   const deleteList = (listId: string): void => {
@@ -70,13 +74,12 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
     listsService.deleteList(deletedList).then(() => {
       setLists(newLists)
+      localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
     })
   }
 
   return (
-    <ListContext.Provider
-      value={{ lists, addNewList, selectedListId, selectList, deleteList }}
-    >
+    <ListContext.Provider value={{ lists, addNewList, selectedListId, selectList, deleteList }}>
       {children}
     </ListContext.Provider>
   )

@@ -42,7 +42,7 @@ export default function SideBar(): JSX.Element {
   return (
     <div className="side-bar">
       <Button variant="secondary" size="lg" onClick={handleOpenClick}>
-        +
+        Add new list
       </Button>
       <Lists />
       <Modal show={showModal} onHide={handleCloseModal}>

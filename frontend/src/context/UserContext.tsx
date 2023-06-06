@@ -3,7 +3,11 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
-import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"
+import {
+  localStorageAccessToken,
+  localStorageSelectedListIdKey,
+  localStorageUserInfoKey,
+} from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 import { useNavigate } from "react-router-dom"
 
@@ -118,6 +122,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const logOut = (): void => {
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
+    localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
     setUserHasAccess(false)
   }
 
