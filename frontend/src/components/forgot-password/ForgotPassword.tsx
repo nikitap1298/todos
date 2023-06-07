@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { Button, Form } from "react-bootstrap"
+import { useUserContext } from "../../context/UserContext"
 import "./ForgotPassword.scss"
 
 export default function ForgotPassword(): JSX.Element {
+  const { sendResetPasswordMail } = useUserContext()
   const [loginValue, setLoginValue] = useState("")
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -14,8 +16,7 @@ export default function ForgotPassword(): JSX.Element {
     event.preventDefault()
 
     if (loginValue.includes("@") && loginValue.includes(".")) {
-      console.log(loginValue)
-
+      sendResetPasswordMail(loginValue)
       setLoginValue("")
     }
   }

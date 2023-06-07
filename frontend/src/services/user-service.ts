@@ -18,7 +18,7 @@ export class UserService extends APIService {
     return await this.methodPUT(`/user/${userId}/${token}`, { userId, token })
   }
 
-  // async restorePassword(userLogin: string): Promise<unknown> {
-  //   return await this.methodPUT(`/user/${userLogin}`, { userLogin })
-  // }
+  async sendResetPasswordMail(userLogin: string): Promise<void> {
+    await this.methodPOST(`/user/send-reset-password-mail/${userLogin}`, { userLogin })
+  }
 }

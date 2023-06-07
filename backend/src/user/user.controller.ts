@@ -17,18 +17,22 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { UserDTO } from "./user.dto"
 import { RequestWithUser, UserInterface } from "./user.interface"
 import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
+import { MailService } from "../mail/mail.service"
+import { v4 as uuidv4 } from "uuid"
+import { ConfirmationTokenInterface } from "../confirmation.token/confirmation.token.interface"
 
 @Controller("user")
 @ApiTags("user")
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly confirmationTokenService: ConfirmationTokenService
+    private readonly confirmationTokenService: ConfirmationTokenService,
+    private readonly mailService: MailService
   ) {}
 
   @UseGuards(AuthGuard)
-  @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
   @Get()
+  @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
   async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
     // req.user.userId comes from auth.service -> payload -> userId
     return await this.userService.getUserById(req.user.userId)
@@ -60,5 +64,26 @@ export class UserController {
     }
     await this.confirmationTokenService.deleteConfirmationToken(tokenObject._id)
     return await this.userService.verifyUser(id)
+  }
+
+  @Post("/send-reset-password-mail/:login")
+  @ApiResponse({ status: 201, description: "Send reset password mail", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to POST", type: UserDTO })
+  @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
+  async sendResetPasswordMail(@Param("login") login: string): Promise<void> {
+    const user = await this.userService.getUser(login)
+
+    if (!user) {
+      throw new NotFoundException()
+    } else if (user.login !== login) {
+      throw new UnauthorizedException()
+    }
+
+    const token = uuidv4()
+    await this.confirmationTokenService.createConfirmationToken({
+      token: token,
+      userId: user.id,
+    } as ConfirmationTokenInterface)
+    await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
   }
 }

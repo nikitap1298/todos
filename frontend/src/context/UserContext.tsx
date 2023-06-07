@@ -18,6 +18,7 @@ interface UserContextInterface {
   registerUser: (login: string, password: string) => void
   logOut: () => void
   confirmEmail: (userId: string, token: string) => void
+  sendResetPasswordMail: (login: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -27,6 +28,7 @@ const UserContext = React.createContext<UserContextInterface>({
   registerUser: () => void {},
   logOut: () => void {},
   confirmEmail: () => void {},
+  sendResetPasswordMail: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
@@ -143,9 +145,23 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       })
   }
 
+  const sendResetPasswordMail = (login: string): void => {
+    userService.sendResetPasswordMail(login).then((data) => {
+      console.log(data)
+    })
+  }
+
   return (
     <UserContext.Provider
-      value={{ currentUser, userHasAccess, logIn, registerUser, logOut, confirmEmail }}
+      value={{
+        currentUser,
+        userHasAccess,
+        logIn,
+        registerUser,
+        logOut,
+        confirmEmail,
+        sendResetPasswordMail,
+      }}
     >
       {children}
     </UserContext.Provider>
