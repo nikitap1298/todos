@@ -5,6 +5,9 @@
   background-color: white;
   width: 25%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .btn {
     margin: 5px 0 0 5px;
@@ -21,9 +24,7 @@
   }
 
   .side-bar-user-buttons {
-    margin-top: 40px;
-    display: flex;
-    justify-content: space-between;
+    margin-bottom: 5px;
 
     .btn {
       background-color: $colorRed;
