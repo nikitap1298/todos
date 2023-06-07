@@ -16,10 +16,10 @@ import { AuthGuard } from "../auth/auth.guard"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { UserDTO } from "./user.dto"
 import { RequestWithUser, UserInterface } from "./user.interface"
-import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
+import { EmailTokenService } from "../email.token/email.token.service"
 import { MailService } from "../mail/mail.service"
 import { v4 as uuidv4 } from "uuid"
-import { ConfirmationTokenInterface } from "../confirmation.token/confirmation.token.interface"
+import { EmailTokenInterface } from "../email.token/email.token.interface"
 import bcrypt from "bcrypt"
 
 @Controller("user")
@@ -27,7 +27,7 @@ import bcrypt from "bcrypt"
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly confirmationTokenService: ConfirmationTokenService,
+    private readonly confirmationTokenService: EmailTokenService,
     private readonly mailService: MailService
   ) {}
 
@@ -55,7 +55,7 @@ export class UserController {
   @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
   async verifyUser(@Param("id") id: string, @Param("token") token: string): Promise<unknown> {
-    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)
+    const tokenObject = await this.confirmationTokenService.getEmailToken(token)
     if (tokenObject.userId !== id) {
       throw new UnauthorizedException()
     }
@@ -63,7 +63,7 @@ export class UserController {
     if (user.id !== id) {
       throw new NotFoundException()
     }
-    await this.confirmationTokenService.deleteConfirmationToken(tokenObject._id)
+    await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
     return await this.userService.verifyUser(id)
   }
 
@@ -81,10 +81,10 @@ export class UserController {
     }
 
     const token = uuidv4()
-    await this.confirmationTokenService.createConfirmationToken({
+    await this.confirmationTokenService.createEmailToken({
       token: token,
       userId: user.id,
-    } as ConfirmationTokenInterface)
+    } as EmailTokenInterface)
     await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
   }
 
@@ -102,7 +102,7 @@ export class UserController {
       throw new NotFoundException()
     }
 
-    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)
+    const tokenObject = await this.confirmationTokenService.getEmailToken(token)
     if (!tokenObject || tokenObject.userId !== userId) {
       throw new UnauthorizedException()
     }
@@ -110,7 +110,7 @@ export class UserController {
     const salt = await bcrypt.genSalt()
     const hash = await bcrypt.hash(newPassword, salt)
 
-    await this.confirmationTokenService.deleteConfirmationToken(tokenObject._id)
+    await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
     return await this.userService.resetPassword(userId, hash)
   }
 }

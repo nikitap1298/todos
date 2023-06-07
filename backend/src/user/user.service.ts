@@ -4,15 +4,15 @@ import { Model } from "mongoose"
 import { UserInterface } from "./user.interface"
 import { MailService } from "../mail/mail.service"
 import { v4 as uuidv4 } from "uuid"
-import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
-import { ConfirmationTokenInterface } from "../confirmation.token/confirmation.token.interface"
+import { EmailTokenService } from "../email.token/email.token.service"
+import { EmailTokenInterface } from "../email.token/email.token.interface"
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel("User") private readonly userModel: Model<UserInterface>,
     private mailService: MailService,
-    private confirmationTokenService: ConfirmationTokenService
+    private emailTokenService: EmailTokenService
   ) {}
 
   async getUserById(id: string): Promise<UserInterface> {
@@ -27,10 +27,10 @@ export class UserService {
   async registerUser(user: UserInterface): Promise<UserInterface> {
     const newUser = new this.userModel(user)
     const token = uuidv4()
-    await this.confirmationTokenService.createConfirmationToken({
+    await this.emailTokenService.createEmailToken({
       token: token,
       userId: newUser.id,
-    } as ConfirmationTokenInterface)
+    } as EmailTokenInterface)
     await this.mailService.sendUserConfirmation(newUser, `${newUser.id}/${token}`)
     return await newUser.save()
   }

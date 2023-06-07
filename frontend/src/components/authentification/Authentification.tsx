@@ -66,7 +66,6 @@ export default function Authentification(): JSX.Element {
   const handleForgotPasswordClick = (event: MouseFormEvent): void => {
     event.preventDefault()
     navigate("/password/reset")
-    console.log(`Forgot Password Click. Email: ${login}`)
   }
 
   return (

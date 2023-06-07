@@ -148,9 +148,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const sendResetPasswordMail = (login: string): void => {
-    userService.sendResetPasswordMail(login).then((data) => {
-      console.log(data)
-    })
+    userService.sendResetPasswordMail(login)
+    navigate("/todos")
   }
 
   const resetPassword = (userId: string, token: string, newPassword: string): void => {
