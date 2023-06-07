@@ -38,6 +38,10 @@ export class UserService {
   async verifyUser(userId: string): Promise<unknown> {
     return await this.userModel.updateOne({ _id: userId }, { $set: { verified: true } })
   }
+
+  async resetPassword(userId: string, newPassword: string): Promise<unknown> {
+    return await this.userModel.updateOne({ _id: userId }, { $set: { password: newPassword } })
+  }
 }
 
 // For test JWT token

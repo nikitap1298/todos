@@ -21,4 +21,18 @@ export class MailService {
       },
     })
   }
+
+  async sendResetPassword(user: UserInterface, idAndToken: string) {
+    const url = `${process.env.RESET_PASSWORD_URL}${idAndToken}`
+
+    await this.mailerService.sendMail({
+      to: user.login,
+      subject: "Reset your Password",
+      template: "./resetpassword",
+      context: {
+        name: user.login,
+        url,
+      },
+    })
+  }
 }

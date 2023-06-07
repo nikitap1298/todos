@@ -4,6 +4,7 @@ import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import AlertsComponent from "../alert/AlertsComponent"
 import { useAlertContext } from "../../context/AlertContext"
+import { useNavigate } from "react-router-dom"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
@@ -16,6 +17,8 @@ export default function Authentification(): JSX.Element {
   const [passwordPlaceholder, setPasswordPlaceholdert] = useState("Password")
 
   const [registerComponentIsActive, setRegisterComponentIsActive] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleLoginInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLogin(event.target.value)
@@ -62,7 +65,8 @@ export default function Authentification(): JSX.Element {
 
   const handleForgotPasswordClick = (event: MouseFormEvent): void => {
     event.preventDefault()
-    console.log("Forgot Password Click")
+    navigate("/password/reset")
+    console.log(`Forgot Password Click. Email: ${login}`)
   }
 
   return (
