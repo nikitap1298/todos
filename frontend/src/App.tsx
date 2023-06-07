@@ -17,7 +17,7 @@ export default function App(): JSX.Element {
             <Route path="/todos" element={<Todos />} />
             <Route path="/auth/confirm/:id/:token" element={<EmailConfirmation />} />
             <Route path="/password/reset" element={<ForgotPassword />} />
-            <Route path="/password/reset/:id/:token" element={<NewPassword />} />
+            <Route path="/password/new/:id/:token" element={<NewPassword />} />
           </Routes>
         </UserContextProvider>
       </AlertContextProvider>
