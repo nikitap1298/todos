@@ -3,10 +3,12 @@ import { Button, Form } from "react-bootstrap"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { useParams } from "react-router-dom"
 import AlertsComponent from "../alert/AlertsComponent"
+import { useUserContext } from "../../context/UserContext"
 import { useAlertContext } from "../../context/AlertContext"
 import "./NewPassword.scss"
 
 export default function NewPassword(): JSX.Element {
+  const { resetPassword } = useUserContext()
   const { addAlert, deleteAllAlerts } = useAlertContext()
   const { id, token } = useParams()
 
@@ -35,7 +37,7 @@ export default function NewPassword(): JSX.Element {
         message: "Different passwords",
       })
     } else if (newPasswordValue === confirmPasswordValue && newPasswordValue.length >= 6) {
-      console.log(`Confirm password. id: ${id}; token: ${token}`)
+      resetPassword(id as string, token as string, newPasswordValue)
       deleteAllAlerts()
       setNewPasswordValue("")
       setConfirmPasswordValue("")

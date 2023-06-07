@@ -19,6 +19,7 @@ interface UserContextInterface {
   logOut: () => void
   confirmEmail: (userId: string, token: string) => void
   sendResetPasswordMail: (login: string) => void
+  resetPassword: (userId: string, token: string, newPassword: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -29,6 +30,7 @@ const UserContext = React.createContext<UserContextInterface>({
   logOut: () => void {},
   confirmEmail: () => void {},
   sendResetPasswordMail: () => void {},
+  resetPassword: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
@@ -151,6 +153,12 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     })
   }
 
+  const resetPassword = (userId: string, token: string, newPassword: string): void => {
+    userService.resetPassword(userId, token, newPassword).then(() => {
+      navigate("/todos")
+    })
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -161,6 +169,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         logOut,
         confirmEmail,
         sendResetPasswordMail,
+        resetPassword,
       }}
     >
       {children}

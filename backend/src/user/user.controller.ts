@@ -20,6 +20,7 @@ import { ConfirmationTokenService } from "../confirmation.token/confirmation.tok
 import { MailService } from "../mail/mail.service"
 import { v4 as uuidv4 } from "uuid"
 import { ConfirmationTokenInterface } from "../confirmation.token/confirmation.token.interface"
+import bcrypt from "bcrypt"
 
 @Controller("user")
 @ApiTags("user")
@@ -66,7 +67,7 @@ export class UserController {
     return await this.userService.verifyUser(id)
   }
 
-  @Post("/send-reset-password-mail/:login")
+  @Post("/reset-password-mail/:login")
   @ApiResponse({ status: 201, description: "Send reset password mail", type: UserDTO })
   @ApiResponse({ status: 401, description: "You are not authorized to POST", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
@@ -85,5 +86,31 @@ export class UserController {
       userId: user.id,
     } as ConfirmationTokenInterface)
     await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
+  }
+
+  @Put("/new-password")
+  @ApiResponse({ status: 200, description: "User to PUT", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: UserDTO })
+  @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
+  async resetPassword(
+    @Body() data: { userId: string; token: string; newPassword: string }
+  ): Promise<unknown> {
+    const { userId, token, newPassword } = data
+
+    const user = await this.userService.getUserById(userId)
+    if (!user) {
+      throw new NotFoundException()
+    }
+
+    const tokenObject = await this.confirmationTokenService.getConfirmationToken(token)
+    if (!tokenObject || tokenObject.userId !== userId) {
+      throw new UnauthorizedException()
+    }
+
+    const salt = await bcrypt.genSalt()
+    const hash = await bcrypt.hash(newPassword, salt)
+
+    await this.confirmationTokenService.deleteConfirmationToken(tokenObject._id)
+    return await this.userService.resetPassword(userId, hash)
   }
 }
