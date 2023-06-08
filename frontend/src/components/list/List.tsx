@@ -66,8 +66,14 @@ export default function List(props: ListProps): JSX.Element {
           ref={inputRef}
         />
       )}
-      <button onClick={handleEditClick}>Edit</button>
-      <button onClick={(): void => onDelete(listId as string)}>Delete</button>
+      <div>
+        <button className="edit-btn" onClick={handleEditClick}>
+          Edit
+        </button>
+        <button className="delete-btn" onClick={(): void => onDelete(listId as string)}>
+          Delete
+        </button>
+      </div>
     </div>
   )
 }
