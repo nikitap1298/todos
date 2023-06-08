@@ -4,14 +4,14 @@ import "./Header.scss"
 import { useListContext } from "../../context/ListContext"
 
 export default function Header(): JSX.Element {
-  const { selectedListId } = useListContext()
+  const { selectedListId, editList } = useListContext()
   const [selectedListTitle, setSelectedListTitle] = useState("")
   useEffect(() => {
     const selectedListTitleLocalStorage = localStorage.getItem(localStorageSelectedListTitleKey)
     if (typeof selectedListTitleLocalStorage === "string") {
       setSelectedListTitle(JSON.parse(selectedListTitleLocalStorage))
     }
-  }, [selectedListId])
+  }, [selectedListId, editList])
 
   return (
     <div className="header">

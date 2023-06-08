@@ -71,9 +71,6 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const editList = (listId: string, updatedListTitle: string): void => {
-    console.log(listId)
-    console.log(updatedListTitle)
-
     const newLists: ListInterface[] = [...lists]
     const newListTitle = updatedListTitle.charAt(0).toUpperCase() + updatedListTitle.slice(1).trim()
 
@@ -84,6 +81,10 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     updatedList.title = newListTitle
     listsService.updateList(updatedList).then(() => {
       setLists([...newLists])
+
+      if (selectedListId === listId) {
+        localStorage.setItem(localStorageSelectedListTitleKey, JSON.stringify(newListTitle))
+      }
     })
   }
 
