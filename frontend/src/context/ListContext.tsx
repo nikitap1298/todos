@@ -15,6 +15,7 @@ interface ListContextInterface {
   addNewList: (newListTitle: string) => void
   selectedListId: string | undefined
   selectList: (listId: string) => void
+  editList: (listId: string, updatedListTitle: string) => void
   deleteList: (listId: string) => void
 }
 
@@ -23,6 +24,7 @@ const ListContext = React.createContext<ListContextInterface>({
   addNewList: () => void {},
   selectedListId: "",
   selectList: () => void {},
+  editList: () => void {},
   deleteList: () => void {},
 })
 
@@ -68,6 +70,23 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     localStorage.setItem(localStorageSelectedListTitleKey, JSON.stringify(selectedListTitle))
   }
 
+  const editList = (listId: string, updatedListTitle: string): void => {
+    console.log(listId)
+    console.log(updatedListTitle)
+
+    const newLists: ListInterface[] = [...lists]
+    const newListTitle = updatedListTitle.charAt(0).toUpperCase() + updatedListTitle.slice(1).trim()
+
+    const updatedList = newLists.find(
+      (element: ListInterface) => element._id === listId
+    ) as ListInterface
+
+    updatedList.title = newListTitle
+    listsService.updateList(updatedList).then(() => {
+      setLists([...newLists])
+    })
+  }
+
   const deleteList = (listId: string): void => {
     const deletedList = lists.find((element) => element._id === listId) as ListInterface
     const newLists = lists.filter((element) => element._id !== listId)
@@ -79,7 +98,9 @@ export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   return (
-    <ListContext.Provider value={{ lists, addNewList, selectedListId, selectList, deleteList }}>
+    <ListContext.Provider
+      value={{ lists, addNewList, selectedListId, selectList, editList, deleteList }}
+    >
       {children}
     </ListContext.Provider>
   )
