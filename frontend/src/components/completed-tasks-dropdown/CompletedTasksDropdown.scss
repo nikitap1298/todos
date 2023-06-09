@@ -1,12 +1,13 @@
 @import "/src/styles/variables";
 
 .completed-tasks-dropdown {
-  margin: 5px 0;
+  margin: 5px 0 20px 0; 
+  display: flex;
+  justify-content: end;
 
   button {
     padding: 2px 4px 0 8px;
     border: none;
-    border-radius: 6px;
     background-color: $colorBlue;
     font-family: $dongleRegular;
     font-size: 1.5rem;

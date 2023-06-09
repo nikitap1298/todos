@@ -31,7 +31,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { currentUser } = useUserContext()
-  const { alerts, addAlert, deleteAllAlerts } = useAlertContext()
+  const { addAlert, deleteAllAlerts } = useAlertContext()
   const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
@@ -66,14 +66,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const addNewTask = (newTaskTitle: string): void => {
     const capitalizedMessage = newTaskTitle.charAt(0).toUpperCase() + newTaskTitle.slice(1).trim()
 
-    // User can't add the same task, empty task or task if there are no lists
-    if (
-      !tasks.some(
-        (element) => element.title === capitalizedMessage && element.listId === selectedListId
-      ) &&
-      capitalizedMessage !== "" &&
-      selectedList
-    ) {
+    if (capitalizedMessage !== "" && selectedList) {
       tasksService
         .addTask(selectedList._id as string, {
           userId: currentUser?._id,
@@ -89,14 +82,6 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         .catch((error) => {
           throw new Error(error)
         })
-    } else if (
-      tasks.some((element) => element.title === capitalizedMessage) &&
-      !alerts.some((element) => element.message === capitalizedMessage)
-    ) {
-      addAlert({
-        title: "This task already exists:",
-        message: capitalizedMessage,
-      })
     } else if (!selectedList) {
       addAlert({
         title: "List is not selected",

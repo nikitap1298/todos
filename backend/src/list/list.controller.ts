@@ -9,6 +9,7 @@ import {
   Request,
   UnauthorizedException,
   NotFoundException,
+  Put,
 } from "@nestjs/common"
 import { ListService } from "./list.service"
 import { ListInterface } from "./list.interface"
@@ -43,6 +44,26 @@ export class ListController {
       throw new UnauthorizedException()
     }
     return await this.listService.createList(list)
+  }
+
+  @UseGuards(AuthGuard)
+  @Put("/:id")
+  @ApiResponse({ status: 200, description: "Task to PUT", type: ListDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to PUT", type: ListDTO })
+  @ApiResponse({ status: 404, description: "Task not found", type: ListDTO })
+  async updateTask(
+    @Param("id") id: string,
+    @Body() update: Partial<ListInterface>,
+    @Request() req: RequestWithUser
+  ): Promise<unknown> {
+    const list = await this.listService.getList(id)
+    if (list.userId.toString() !== req.user.userId) {
+      throw new UnauthorizedException()
+    }
+    if (list.id !== id) {
+      throw new NotFoundException()
+    }
+    return await this.listService.updateList(id, update)
   }
 
   @UseGuards(AuthGuard)

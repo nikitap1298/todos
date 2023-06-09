@@ -24,6 +24,10 @@ export class ListService {
     return await newList.save()
   }
 
+  async updateList(listId: string, update: Partial<ListInterface>): Promise<unknown> {
+    return await this.listModel.updateOne({ _id: listId }, update)
+  }
+
   async deleteList(listId: string): Promise<unknown> {
     await this.taskModel.deleteMany({ listId: listId })
     return await this.listModel.deleteOne({ _id: listId })

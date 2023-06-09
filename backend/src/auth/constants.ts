@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("dotenv").config()
+
 export const jwtConstants = {
-  secret: "De0Rb6egCDqH64XHtuDDvtSe2EF1eG",
+  secret: process.env.JWT_SHARED_SECRET,
 }

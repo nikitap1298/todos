@@ -48,18 +48,25 @@
   .login-buttons {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 
-    .dont-have-account {
-      border: none;
-      text-align: center;
-      width: 200px;
-      background-color: transparent;
-      font-family: $dongleRegular;
-      font-size: 1.5rem;
-      color: $colorBlue;
+    div {
+      display: flex;
+      flex-direction: column;
 
-      &:hover {
-        color: $colorGray;
+      button {
+        margin-bottom: 10px;
+        border: none;
+        text-align: center;
+        width: 200px;
+        background-color: transparent;
+        font-family: $dongleRegular;
+        font-size: 1.5rem;
+        color: $colorBlue;
+
+        &:hover {
+          color: $colorGray;
+        }
       }
     }
   }

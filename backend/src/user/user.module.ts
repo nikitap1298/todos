@@ -6,9 +6,9 @@ import { UserSchema } from "./user.schema"
 import { UserController } from "./user.controller"
 import { ListSchema } from "../list/list.schema"
 import { MailService } from "../mail/mail.service"
-import bcrypt from "bcrypt"
-import { ConfirmationTokenService } from "../confirmation.token/confirmation.token.service"
-import { ConfirmationTokenSchema } from "../confirmation.token/confirmation.token.schema"
+import argon2 from "argon2"
+import { EmailTokenService } from "../email.token/email.token.service"
+import { EmailTokenSchema } from "../email.token/email.token.schema"
 
 @Module({
   imports: [
@@ -23,8 +23,7 @@ import { ConfirmationTokenSchema } from "../confirmation.token/confirmation.toke
             if (!user.isModified("password")) return next()
 
             try {
-              const salt = await bcrypt.genSalt()
-              const hash = await bcrypt.hash(user.password, salt)
+              const hash = await argon2.hash(user.password)
               user.password = hash
               next()
             } catch (error) {
@@ -36,9 +35,9 @@ import { ConfirmationTokenSchema } from "../confirmation.token/confirmation.toke
       },
     ]),
     MongooseModule.forFeature([{ name: "List", schema: ListSchema }]),
-    MongooseModule.forFeature([{ name: "ConfirmationToken", schema: ConfirmationTokenSchema }])
+    MongooseModule.forFeature([{ name: "EmailToken", schema: EmailTokenSchema }]),
   ],
-  providers: [UserService, MailService, ConfirmationTokenService],
+  providers: [UserService, MailService, EmailTokenService],
   exports: [UserService],
   controllers: [UserController],
 })

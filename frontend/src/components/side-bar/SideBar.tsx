@@ -41,36 +41,38 @@ export default function SideBar(): JSX.Element {
 
   return (
     <div className="side-bar">
-      <button className="side-bar-button" onClick={handleOpenClick}>
-        +
-      </button>
-      <Lists />
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add List</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleAddClick}>
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              maxLength={15}
-              type="text"
-              placeholder="Example list"
-              onChange={handleNewListInputChange}
-              autoFocus
-            />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleAddClick}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <div>
+        <Button variant="secondary" size="lg" onClick={handleOpenClick}>
+          Add new list
+        </Button>
+        <Lists />
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add List</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleAddClick}>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                maxLength={15}
+                type="text"
+                placeholder="Example list"
+                onChange={handleNewListInputChange}
+                autoFocus
+              />
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleAddClick}>
+              Save
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
       <div className="side-bar-user-buttons">
-        <button onClick={handleLogOutClick}>
+        <Button variant="secondary" size="lg" onClick={handleLogOutClick}>
           Log Out
-        </button>
+        </Button>
       </div>
     </div>
   )

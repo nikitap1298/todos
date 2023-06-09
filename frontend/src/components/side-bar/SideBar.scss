@@ -5,45 +5,32 @@
   background-color: white;
   width: 25%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  .side-bar-button {
+  .btn {
     margin: 5px 0 0 5px;
     background-color: $colorBlue;
-    border: none;
     color: $colorVanilla;
-    padding: 6px 24px;
-    font-size: 16px;
-    border-radius: 15px;
-    text-align: center;
+    padding: 3px 15px;
+    font-family: $dongleLight;
+    font-size: 25px;
+    border: none;
 
-    &.logout {
-      margin: 40px 0 0 5px;
-      background-color: $colorRed;
-      font-family: $dongleLight;
-      font-size: 1.3rem;
+    &:hover {
+      background-color: $colorBlue;
     }
   }
 
   .side-bar-user-buttons {
-    margin-top: 40px;
-    display: flex;
-    justify-content: space-between;
+    margin-bottom: 5px;
 
-    button {
-      margin: 5px 5px 0 5px;
+    .btn {
       background-color: $colorRed;
-      border: none;
-      color: $colorVanilla;
-      padding: 3px 15px;
-      font-family: $dongleLight;
-      font-size: 25px;
-      border-radius: 15px;
-      text-align: center;
-    }
 
-    .delete-account-button {
-      background-color: transparent;
-      color: $colorRed;
+      color: $colorVanilla;
+      font-family: $dongleLight;
     }
   }
 }
