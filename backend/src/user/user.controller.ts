@@ -20,7 +20,7 @@ import { EmailTokenService } from "../email.token/email.token.service"
 import { MailService } from "../mail/mail.service"
 import { v4 as uuidv4 } from "uuid"
 import { EmailTokenInterface } from "../email.token/email.token.interface"
-import bcrypt from "bcrypt"
+import argon2 from "argon2"
 
 @Controller("user")
 @ApiTags("user")
@@ -123,8 +123,7 @@ export class UserController {
       throw new UnauthorizedException()
     }
 
-    const salt = await bcrypt.genSalt()
-    const hash = await bcrypt.hash(newPassword, salt)
+    const hash = await argon2.hash(newPassword)
 
     await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
     return await this.userService.resetPassword(userId, hash)
