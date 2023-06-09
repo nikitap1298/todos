@@ -5,7 +5,7 @@ import { useListContext } from "../../context/ListContext"
 import { ListInterface } from "../../lib/interfaces/list.interface"
 
 export default function Lists(): JSX.Element {
-  const { lists, selectedListId, selectList, deleteList } = useListContext()
+  const { lists, selectedListId, selectList, editList, deleteList } = useListContext()
 
   return (
     <div>
@@ -15,6 +15,7 @@ export default function Lists(): JSX.Element {
           className={list._id === selectedListId ? "list selected-list" : "list"}
           list={list}
           onSelect={selectList}
+          onEdit={editList}
           onDelete={deleteList}
           listId={list._id}
         />

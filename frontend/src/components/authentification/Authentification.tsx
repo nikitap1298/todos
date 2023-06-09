@@ -4,6 +4,7 @@ import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import AlertsComponent from "../alert/AlertsComponent"
 import { useAlertContext } from "../../context/AlertContext"
+import { useNavigate } from "react-router-dom"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
@@ -16,6 +17,8 @@ export default function Authentification(): JSX.Element {
   const [passwordPlaceholder, setPasswordPlaceholdert] = useState("Password")
 
   const [registerComponentIsActive, setRegisterComponentIsActive] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleLoginInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLogin(event.target.value)
@@ -58,6 +61,11 @@ export default function Authentification(): JSX.Element {
   const handleDontHaveAccountClick = (event: MouseFormEvent): void => {
     event.preventDefault()
     setRegisterComponentIsActive(true)
+  }
+
+  const handleForgotPasswordClick = (event: MouseFormEvent): void => {
+    event.preventDefault()
+    navigate("/password/reset")
   }
 
   return (
@@ -127,13 +135,14 @@ export default function Authentification(): JSX.Element {
               >
                 Log In
               </Button>
-              <button
-                className="dont-have-account"
-                type="submit"
-                onClick={handleDontHaveAccountClick}
-              >
-                Don't have an account?
-              </button>
+              <div>
+                <button type="submit" onClick={handleDontHaveAccountClick}>
+                  Don't have an account?
+                </button>
+                <button type="submit" onClick={handleForgotPasswordClick}>
+                  Forgot your password?
+                </button>
+              </div>
             </div>
           </Form>
         </>

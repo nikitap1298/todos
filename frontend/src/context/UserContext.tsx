@@ -3,7 +3,11 @@ import React, { useContext, useEffect, useState } from "react"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { UserService } from "../services/user-service"
 import { UserInterface } from "../lib/interfaces/user.interface"
-import { localStorageAccessToken, localStorageUserInfoKey } from "../constants/constants"
+import {
+  localStorageAccessToken,
+  localStorageSelectedListIdKey,
+  localStorageUserInfoKey,
+} from "../constants/constants"
 import { useAlertContext } from "./AlertContext"
 import { useNavigate } from "react-router-dom"
 
@@ -14,6 +18,8 @@ interface UserContextInterface {
   registerUser: (login: string, password: string) => void
   logOut: () => void
   confirmEmail: (userId: string, token: string) => void
+  sendResetPasswordMail: (login: string) => void
+  resetPassword: (userId: string, token: string, newPassword: string) => void
 }
 
 const UserContext = React.createContext<UserContextInterface>({
@@ -23,6 +29,8 @@ const UserContext = React.createContext<UserContextInterface>({
   registerUser: () => void {},
   logOut: () => void {},
   confirmEmail: () => void {},
+  sendResetPasswordMail: () => void {},
+  resetPassword: () => void {},
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
@@ -118,6 +126,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const logOut = (): void => {
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
+    localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
     setUserHasAccess(false)
   }
 
@@ -138,9 +147,29 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       })
   }
 
+  const sendResetPasswordMail = (login: string): void => {
+    userService.sendResetPasswordMail(login)
+    navigate("/todos")
+  }
+
+  const resetPassword = (userId: string, token: string, newPassword: string): void => {
+    userService.resetPassword(userId, token, newPassword).then(() => {
+      navigate("/todos")
+    })
+  }
+
   return (
     <UserContext.Provider
-      value={{ currentUser, userHasAccess, logIn, registerUser, logOut, confirmEmail }}
+      value={{
+        currentUser,
+        userHasAccess,
+        logIn,
+        registerUser,
+        logOut,
+        confirmEmail,
+        sendResetPasswordMail,
+        resetPassword,
+      }}
     >
       {children}
     </UserContext.Provider>

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { UserService } from "../user/user.service"
 import { JwtService } from "@nestjs/jwt"
-import bcrypt from "bcrypt"
+import argon2 from "argon2"
 
 @Injectable()
 export class AuthService {
@@ -9,7 +9,7 @@ export class AuthService {
 
   async signIn(login: string, pass: string): Promise<any> {
     const user = await this.userService.getUser(login)
-    const isPasswordValid = await bcrypt.compare(pass, user.password)
+    const isPasswordValid = await argon2.verify(user.password, pass)
 
     if (!isPasswordValid) {
       throw new UnauthorizedException()
