@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { ListInterface } from "../../lib/interfaces/list.interface"
+import ModalDelete from "../modal-delete/ModalDelete"
+import { useModalDeleteContext } from "../../context/ModalDeleteContext"
 import "./List.scss"
 
 interface ListProps {
@@ -13,6 +15,8 @@ interface ListProps {
 
 export default function List(props: ListProps): JSX.Element {
   const { className, list, onSelect, onEdit, onDelete, listId } = props
+
+  const { showModal } = useModalDeleteContext()
 
   const [editedValue, setEditedValue] = useState("")
   const [showListEditor, setShowListEditor] = useState(false)
@@ -50,6 +54,10 @@ export default function List(props: ListProps): JSX.Element {
     setShowListEditor(true)
   }
 
+  const handleDeleteClick = (): void => {
+    showModal()
+  }
+
   return (
     <div className={className}>
       {!showListEditor ? (
@@ -70,9 +78,14 @@ export default function List(props: ListProps): JSX.Element {
         <button className="edit-btn" onClick={handleEditClick}>
           Edit
         </button>
-        <button className="delete-btn" onClick={(): void => onDelete(listId as string)}>
+        <button className="delete-btn" onClick={handleDeleteClick}>
           Delete
         </button>
+        <ModalDelete
+          modalBodyTitle="Are you sure you want to delete this list?"
+          onDelete={(): void => onDelete(listId as string)}
+          listId={listId}
+        />
       </div>
     </div>
   )

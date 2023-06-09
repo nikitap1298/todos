@@ -10,6 +10,7 @@ import AlertsComponent from "../alert/AlertsComponent"
 import CreateNewTask from "../create-new-task/CreateNewTask"
 import { useUserContext } from "../../context/UserContext"
 import Authentification from "../authentification/Authentification"
+import { ModalDeleteContextProvider } from "../../context/ModalDeleteContext"
 import "./Todos.scss"
 
 export default function Todos(): JSX.Element {
@@ -17,20 +18,22 @@ export default function Todos(): JSX.Element {
 
   return userHasAccess ? (
     <ListContextProvider>
-      <SideBar />
-      <div className="todos">
-        <div style={{ width: "55%", marginBottom: "25px" }}>
-          <Header />
-          <AlertContextProvider>
-            <TaskContextProvider>
-              <CompletedTasksDropdown />
-              <Tasks />
-              <AlertsComponent />
-              <CreateNewTask />
-            </TaskContextProvider>
-          </AlertContextProvider>
+      <ModalDeleteContextProvider>
+        <SideBar />
+        <div className="todos">
+          <div style={{ width: "55%", marginBottom: "25px" }}>
+            <Header />
+            <AlertContextProvider>
+              <TaskContextProvider>
+                <CompletedTasksDropdown />
+                <Tasks />
+                <AlertsComponent />
+                <CreateNewTask />
+              </TaskContextProvider>
+            </AlertContextProvider>
+          </div>
         </div>
-      </div>
+      </ModalDeleteContextProvider>
     </ListContextProvider>
   ) : (
     <Authentification />
