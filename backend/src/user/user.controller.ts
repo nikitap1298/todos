@@ -63,6 +63,12 @@ export class UserController {
     if (user.id !== id) {
       throw new NotFoundException()
     }
+
+    const currentTime = Math.floor(new Date().getTime()) / 1000
+    if (tokenObject.validUntil <= currentTime) {
+      await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
+      throw new UnauthorizedException()
+    }
     await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
     return await this.userService.verifyUser(id)
   }
@@ -81,9 +87,14 @@ export class UserController {
     }
 
     const token = uuidv4()
+
+    const currentTime = new Date()
+    const validUntil = Math.floor((currentTime.getTime() + 1 * 60 * 60 * 1000) / 1000)
+
     await this.confirmationTokenService.createEmailToken({
       token: token,
       userId: user.id,
+      validUntil: validUntil,
     } as EmailTokenInterface)
     await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
   }
@@ -103,7 +114,12 @@ export class UserController {
     }
 
     const tokenObject = await this.confirmationTokenService.getEmailToken(token)
+    const currentTime = Math.floor(new Date().getTime()) / 1000
+
     if (!tokenObject || tokenObject.userId !== userId) {
+      throw new UnauthorizedException()
+    } else if (tokenObject.validUntil <= currentTime) {
+      await this.confirmationTokenService.deleteEmailToken(tokenObject._id)
       throw new UnauthorizedException()
     }
 

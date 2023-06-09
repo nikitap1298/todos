@@ -27,9 +27,13 @@ export class UserService {
   async registerUser(user: UserInterface): Promise<UserInterface> {
     const newUser = new this.userModel(user)
     const token = uuidv4()
+
+    const currentTime = new Date()
+    const validUntil = Math.floor((currentTime.getTime() + 72 * 60 * 60 * 1000) / 1000)
     await this.emailTokenService.createEmailToken({
       token: token,
       userId: newUser.id,
+      validUntil: validUntil,
     } as EmailTokenInterface)
     await this.mailService.sendUserConfirmation(newUser, `${newUser.id}/${token}`)
     return await newUser.save()
