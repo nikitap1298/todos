@@ -1,5 +1,6 @@
 @import "/src/styles/variables";
 @import "/src/styles/ButtonBootstrap";
+@import "/src/styles/h1HTML";
 
 .email-confirmation {
   display: flex;
@@ -8,10 +9,7 @@
   align-items: center;
 
   h1 {
-    font-family: $dongleRegular;
-    font-size: 4.5rem;
-    color: $colorBlue;
-    text-align: center;
+    @extend .h1-header-html;
   }
 
   button {

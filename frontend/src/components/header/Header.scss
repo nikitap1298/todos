@@ -1,11 +1,8 @@
 @import "/src/styles/variables";
+@import "/src/styles/h1HTML";
 
 .header {
   h1 {
-    font-family: $dongleRegular;
-    font-size: 4.5rem;
-    color: $colorBlue;
-    text-align: center;
-    cursor: default;
+    @extend .h1-header-html;
   }
 }

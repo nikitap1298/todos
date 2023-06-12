@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { localStorageSelectedListTitleKey } from "../../constants/constants"
-import "./Header.scss"
 import { useListContext } from "../../context/ListContext"
+import "./Header.scss"
 
 export default function Header(): JSX.Element {
   const { selectedListId, editList } = useListContext()

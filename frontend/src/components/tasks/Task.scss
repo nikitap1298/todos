@@ -1,4 +1,5 @@
 @import "/src/styles/variables";
+@import "/src/styles/inputHTML";
 
 .task {
   div {
@@ -23,22 +24,7 @@
   }
 
   .task-editable-input {
-    margin: 0;
-    font-family: $dongleLight;
-    font-size: 2.5rem;
-    background-color: transparent;
-    border-style: none;
-    height: 50px;
-
-    &::placeholder {
-      color: $colorGray;
-    }
-
-    &::focus {
-      border: none;
-      border: 2.5px solid $colorBlue;
-      border-radius: 15px;
-    }
+    @extend .input-html;
   }
 
   p {
