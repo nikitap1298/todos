@@ -9,7 +9,7 @@ export default function CompletedTasksDropdown(): JSX.Element {
 
   return (
     <div className="completed-tasks-dropdown">
-      <DropdownButton variant="secondary" title="Edit" size="sm">
+      <DropdownButton variant="primary" title="Edit" size="sm">
         <Dropdown.Item eventKey="1" onClick={showOrHideCompletedTasks}>
           {showCompletedTasks ? "Hide completed tasks" : "Show completed tasks"}
         </Dropdown.Item>

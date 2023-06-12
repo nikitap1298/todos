@@ -1,4 +1,5 @@
 @import "/src/styles/variables";
+@import "/src/styles/ButtonBootstrap";
 
 .side-bar {
   margin: 0;
@@ -9,28 +10,21 @@
   flex-direction: column;
   justify-content: space-between;
 
-  .btn {
+  button {
+    @extend .confirm-button-bootstrap;
     margin: 5px 0 0 5px;
-    background-color: $colorBlue;
-    color: $colorVanilla;
     padding: 3px 15px;
     font-family: $dongleLight;
-    font-size: 25px;
-    border: none;
-
-    &:hover {
-      background-color: $colorBlue;
-    }
+    width: auto;
   }
 
   .side-bar-user-buttons {
     margin-bottom: 5px;
 
-    .btn {
-      background-color: $colorRed;
-
-      color: $colorVanilla;
-      font-family: $dongleLight;
+    button {
+      &:hover {
+        background-color: $colorRed;
+      }
     }
   }
 }

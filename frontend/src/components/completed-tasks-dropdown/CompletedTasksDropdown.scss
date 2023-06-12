@@ -1,4 +1,5 @@
 @import "/src/styles/variables";
+@import "/src/styles/ButtonBootstrap";
 
 .completed-tasks-dropdown {
   margin: 5px 0 20px 0; 
@@ -6,19 +7,8 @@
   justify-content: end;
 
   button {
-    padding: 2px 4px 0 8px;
-    border: none;
-    background-color: $colorBlue;
-    font-family: $dongleRegular;
-    font-size: 1.5rem;
-
-    &:hover {
-      background-color: $colorBlue;
-    }
-
-    .show {
-      background-color: $colorBlue;
-    }
+    @extend .confirm-button-bootstrap;
+    width: auto;
   }
 
   .dropdown-item {

@@ -17,7 +17,6 @@
   button {
     @extend .confirm-button-bootstrap;
     width: auto;
-    background-color: $colorGreen;
 
     &:hover {
       background-color: $colorGray;
