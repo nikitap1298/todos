@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
+import { Button } from "react-bootstrap"
 import { ListInterface } from "../../lib/interfaces/list.interface"
 import ModalDelete from "../modal-delete/ModalDelete"
 import { useModalDeleteContext } from "../../context/ModalDeleteContext"
@@ -75,12 +76,12 @@ export default function List(props: ListProps): JSX.Element {
         />
       )}
       <div>
-        <button className="edit-btn" onClick={handleEditClick}>
+        <Button className="edit-btn" onClick={handleEditClick}>
           Edit
-        </button>
-        <button className="delete-btn" onClick={handleDeleteClick}>
+        </Button>
+        <Button className="delete-btn" onClick={handleDeleteClick}>
           Delete
-        </button>
+        </Button>
         <ModalDelete
           modalBodyTitle="Are you sure you want to delete this list?"
           onDelete={(): void => onDelete(listId as string)}

@@ -136,12 +136,12 @@ export default function Authentification(): JSX.Element {
                 Log In
               </Button>
               <div>
-                <button type="submit" onClick={handleDontHaveAccountClick}>
+                <Button type="submit" onClick={handleDontHaveAccountClick}>
                   Don't have an account?
-                </button>
-                <button type="submit" onClick={handleForgotPasswordClick}>
+                </Button>
+                <Button type="submit" onClick={handleForgotPasswordClick}>
                   Forgot your password?
-                </button>
+                </Button>
               </div>
             </div>
           </Form>

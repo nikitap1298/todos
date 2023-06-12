@@ -65,12 +65,7 @@ export default function NewPassword(): JSX.Element {
             onChange={handleConfirmPasswordChange}
           />
         </Form.Group>
-        <Button
-          className="confirm-button"
-          variant="primary"
-          type="submit"
-          onClick={handleConfirmClick}
-        >
+        <Button type="submit" onClick={handleConfirmClick}>
           Confirm
         </Button>
       </Form>

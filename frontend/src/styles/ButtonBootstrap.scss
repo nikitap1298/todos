@@ -1,0 +1,31 @@
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+.confirm-button-bootstrap {
+  border: none;
+  text-align: center;
+  width: 100px;
+  background-color: $colorBlue;
+  font-family: $dongleRegular;
+  font-size: 1.5rem;
+
+  &:hover {
+    background-color: $colorBlue;
+    color: $colorGray;
+  }
+}
+
+.confirm-button-bootstrap-no-bg {
+  @extend .confirm-button-bootstrap;
+  text-align: right;
+  width: 200px;
+  background-color: transparent;
+  color: $colorBlue;
+
+  &:hover {
+    background-color: transparent;
+    color: $colorGray;
+  }
+}
