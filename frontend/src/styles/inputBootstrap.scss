@@ -1,0 +1,10 @@
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+.default-input-bootstrap {
+  border-radius: 15px;
+  font-family: $dongleRegular;
+  font-size: 1.5rem;
+}

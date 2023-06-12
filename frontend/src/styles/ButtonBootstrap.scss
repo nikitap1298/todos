@@ -6,10 +6,11 @@
 .confirm-button-bootstrap {
   border: none;
   text-align: center;
-  width: 100px;
+  border-radius: 15px;
   font-family: $dongleRegular;
   font-size: 1.5rem;
   color: $colorVanilla;
+  width: 100px;
 
   &:hover {
     background-color: $colorBlue;
@@ -20,9 +21,9 @@
 .confirm-button-bootstrap-no-bg {
   @extend .confirm-button-bootstrap;
   text-align: right;
-  width: 200px;
   background-color: transparent;
   color: $colorBlue;
+  width: 200px;
 
   &:hover {
     background-color: transparent;
