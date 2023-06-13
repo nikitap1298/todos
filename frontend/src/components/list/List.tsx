@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
+import { Button } from "react-bootstrap"
 import { ListInterface } from "../../lib/interfaces/list.interface"
 import ModalDelete from "../modal-delete/ModalDelete"
 import { useModalDeleteContext } from "../../context/ModalDeleteContext"
@@ -64,7 +65,7 @@ export default function List(props: ListProps): JSX.Element {
         <h1 onClick={(): void => onSelect(listId as string)}>{list.title}</h1>
       ) : (
         <input
-          className="task-editable-input"
+          className="inline-edit"
           type="text"
           value={editedValue}
           placeholder={list.title}
@@ -75,12 +76,12 @@ export default function List(props: ListProps): JSX.Element {
         />
       )}
       <div>
-        <button className="edit-btn" onClick={handleEditClick}>
+        <Button className="edit-btn confirm-no-bg" variant="light" onClick={handleEditClick}>
           Edit
-        </button>
-        <button className="delete-btn" onClick={handleDeleteClick}>
+        </Button>
+        <Button className="delete-btn confirm-no-bg" variant="light" onClick={handleDeleteClick}>
           Delete
-        </button>
+        </Button>
         <ModalDelete
           modalBodyTitle="Are you sure you want to delete this list?"
           onDelete={(): void => onDelete(listId as string)}

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
-import "./Task.scss"
 import dayjs from "dayjs"
+import "./Task.scss"
 
 interface TaskProps {
   className: string
@@ -61,7 +61,7 @@ export default function Task(props: TaskProps): JSX.Element {
             <h1 onClick={handleTriggerInputClick}>{task.title}</h1>
           ) : (
             <input
-              className="task-editable-input"
+              className="inline-edit"
               type="text"
               value={editedValue}
               placeholder={task.title}

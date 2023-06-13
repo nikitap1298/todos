@@ -1,0 +1,21 @@
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+input {
+  &.inline-edit {
+    margin: 0;
+    font-family: $openSansRegular;
+    font-size: 1.5rem;
+    background-color: transparent;
+    border-style: none;
+    border-left: 4px solid transparent;
+    min-height: 30px;
+    width: auto;
+
+    &::placeholder {
+      color: $colorGray;
+    }
+  }
+}

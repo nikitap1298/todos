@@ -1,0 +1,14 @@
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+h1 {
+  &.header {
+    font-family: $openSansSemiBold;
+    font-size: 2.5rem;
+    color: $colorBlue;
+    text-align: center;
+    cursor: default;
+  }
+}

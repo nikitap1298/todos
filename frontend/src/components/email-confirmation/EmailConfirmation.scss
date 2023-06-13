@@ -1,29 +1,8 @@
-@import "/src/styles/variables";
+@import "../../styles/variables";
 
 .email-confirmation {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  h1 {
-    font-family: $dongleRegular;
-    font-size: 4.5rem;
-    color: $colorBlue;
-    text-align: center;
-  }
-
-  .confirmation-button {
-    border: none;
-    text-align: center;
-    border-radius: 6px;
-    background-color: $colorGreen;
-    font-family: $dongleRegular;
-    font-size: 2rem;
-    color: $colorVanilla;
-
-    &:hover {
-      background-color: $colorGray;
-    }
-  }
 }

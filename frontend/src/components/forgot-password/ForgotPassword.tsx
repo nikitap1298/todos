@@ -23,22 +23,18 @@ export default function ForgotPassword(): JSX.Element {
 
   return (
     <div className="forgot-password">
-      <h1>Forgot Password</h1>
+      <h1 className="header">Forgot Password</h1>
       <Form>
         <Form.Group className="mb-3">
           <Form.Control
+            className="input"
             type="email"
             placeholder="Enter email"
             value={loginValue}
             onChange={handleLoginChange}
           />
         </Form.Group>
-        <Button
-          className="confirm-button"
-          variant="primary"
-          type="submit"
-          onClick={handleConfirmClick}
-        >
+        <Button className="confirm" type="submit" onClick={handleConfirmClick}>
           Confirm
         </Button>
       </Form>

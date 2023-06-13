@@ -19,13 +19,38 @@
   src: url("fonts/Dongle-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "OpenSansLight";
+  src: url("fonts/OpenSans-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "OpenSansRegular";
+  src: url("fonts/OpenSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "OpenSansSemiBold";
+  src: url("fonts/OpenSans-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "OpenSansBold";
+  src: url("fonts/OpenSans-Bold.ttf") format("truetype");
+}
+
 $dongleLight: "DongleLight", sans-serif;
 $dongleRegular: "DongleRegular", sans-serif;
 $dongleBold: "DongleBold", sans-serif;
 
+$openSansLight: "OpenSansLight", sans-serif;
+$openSansRegular: "OpenSansRegular", sans-serif;
+$openSansSemiBold: "OpenSansSemiBold", sans-serif;
+$openSansBold: "OpenSansBold", sans-serif;
+
 // Colors
 $colorBlue: #0078bc;
 $colorGray: #495057;
-$colorGreen: #B1CD90;
-$colorRed: #F85638;
+$colorGreen: #b1cd90;
+$colorRed: #f85638;
 $colorVanilla: #fff8eb;

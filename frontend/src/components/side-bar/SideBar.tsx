@@ -3,9 +3,9 @@ import React, { useState } from "react"
 import Lists from "../list/Lists"
 import { Button, Form, Modal } from "react-bootstrap"
 import { useListContext } from "../../context/ListContext"
+import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import "./SideBar.scss"
-import { useUserContext } from "../../context/UserContext"
 
 export default function SideBar(): JSX.Element {
   const { logOut } = useUserContext()
@@ -42,7 +42,7 @@ export default function SideBar(): JSX.Element {
   return (
     <div className="side-bar">
       <div>
-        <Button variant="secondary" size="lg" onClick={handleOpenClick}>
+        <Button className="confirm" variant="primary" size="lg" onClick={handleOpenClick}>
           Add new list
         </Button>
         <Lists />
@@ -54,6 +54,7 @@ export default function SideBar(): JSX.Element {
             <Form onSubmit={handleAddClick}>
               <Form.Label>Title</Form.Label>
               <Form.Control
+                style={{ borderRadius: "15px" }}
                 maxLength={15}
                 type="text"
                 placeholder="Example list"
@@ -63,14 +64,18 @@ export default function SideBar(): JSX.Element {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleAddClick}>
+            <Button
+              style={{ borderRadius: "15px", width: "100px" }}
+              variant="primary"
+              onClick={handleAddClick}
+            >
               Save
             </Button>
           </Modal.Footer>
         </Modal>
       </div>
       <div className="side-bar-user-buttons">
-        <Button variant="secondary" size="lg" onClick={handleLogOutClick}>
+        <Button className="confirm" variant="danger" size="lg" onClick={handleLogOutClick}>
           Log Out
         </Button>
       </div>

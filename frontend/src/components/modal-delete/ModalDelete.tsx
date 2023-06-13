@@ -1,6 +1,7 @@
 import React from "react"
 import { Modal, Button } from "react-bootstrap"
 import { useModalDeleteContext } from "../../context/ModalDeleteContext"
+import "./ModalDelete.scss"
 
 interface ModalDeleteProps {
   modalBodyTitle: string
@@ -23,7 +24,7 @@ export default function ModalDelete(props: ModalDeleteProps): JSX.Element {
   }
 
   return (
-    <div className="modal-delete">
+    <div className="modal-content">
       <Modal show={modalIsDisplayed} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Delete</Modal.Title>
@@ -34,10 +35,15 @@ export default function ModalDelete(props: ModalDeleteProps): JSX.Element {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button className="confirm-no-bg" variant="light" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDeleteClick}>
+          <Button
+            className="confirm-no-bg f"
+            style={{ color: "red" }}
+            variant="light"
+            onClick={handleDeleteClick}
+          >
             Delete
           </Button>
         </Modal.Footer>

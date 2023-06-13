@@ -1,4 +1,4 @@
-@import "/src/styles/variables";
+@import "../../styles/variables";
 
 .create-new-task {
   form {
@@ -6,23 +6,8 @@
     flex-direction: row;
   }
 
-  input {
-    font-family: $dongleRegular;
-    font-size: 1.5rem;
-  }
-
   button {
-    margin-left: 25px;
-    border: none;
-    text-align: center;
-    border-radius: 6px;
+    margin: 15px 0 0 25px;
     width: 100px;
-    background-color: $colorBlue;
-    font-family: $dongleRegular;
-    font-size: 1.5rem;
-
-    &:hover {
-      background-color: $colorBlue;
-    }
   }
 }
