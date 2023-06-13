@@ -1,0 +1,20 @@
+@import "/src/styles/variables";
+@import "/src/styles/buttonBootstrap";
+
+.modal-content {
+  font-family: $dongleLight;
+  font-size: 1.5rem;
+  color: $colorGray;
+
+  .cancel-button {
+    @extend .confirm-button-bootstrap-no-bg;
+  }
+
+  .delete-button {
+    @extend .confirm-button-bootstrap;
+
+    &:hover {
+      background-color: $colorRed;
+    }
+  }
+}

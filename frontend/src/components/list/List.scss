@@ -6,7 +6,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // background-color: red;
   margin: 10px 10px 0 10px;
 
   h1 {
@@ -31,11 +30,6 @@
 
   button {
     @extend .confirm-button-bootstrap;
-    // border: none;
-    // background: transparent;
-    // color: $colorBlue;
-    // font-family: $dongleLight;
-    // font-size: 1.75rem;
 
     &.edit-btn {
       @extend .confirm-button-bootstrap-no-bg;
