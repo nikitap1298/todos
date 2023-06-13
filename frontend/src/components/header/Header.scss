@@ -1,8 +1,0 @@
-@import "../../styles/variables";
-@import "/src/styles/h1-html";
-
-.header {
-  h1 {
-    @extend .h1-header-html;
-  }
-}

@@ -1,5 +1,4 @@
 @import "../../styles/variables";
-@import "/src/styles/h1-html";
 @import "/src/styles/input-bootstrap";
 
 .authentification {
@@ -8,10 +7,6 @@
   justify-content: center;
   align-items: center;
   width: 40%;
-
-  h1 {
-    @extend .h1-header-html;
-  }
 
   form {
     width: 100%;

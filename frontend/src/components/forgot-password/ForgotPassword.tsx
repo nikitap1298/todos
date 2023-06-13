@@ -23,7 +23,7 @@ export default function ForgotPassword(): JSX.Element {
 
   return (
     <div className="forgot-password">
-      <h1>Forgot Password</h1>
+      <h1 className="header">Forgot Password</h1>
       <Form>
         <Form.Group className="mb-3">
           <Form.Control

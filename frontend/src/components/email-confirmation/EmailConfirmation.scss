@@ -1,13 +1,8 @@
 @import "../../styles/variables";
-@import "/src/styles/h1-html";
 
 .email-confirmation {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  h1 {
-    @extend .h1-header-html;
-  }
 }

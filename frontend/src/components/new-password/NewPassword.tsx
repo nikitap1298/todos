@@ -46,7 +46,7 @@ export default function NewPassword(): JSX.Element {
 
   return (
     <div className="new-password">
-      <h1>New Password</h1>
+      <h1 className="header">New Password</h1>
       <AlertsComponent />
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">

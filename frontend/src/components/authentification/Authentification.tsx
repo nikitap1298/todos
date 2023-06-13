@@ -72,7 +72,7 @@ export default function Authentification(): JSX.Element {
     <div className="authentification">
       {registerComponentIsActive ? (
         <>
-          <h1>Registration</h1>
+          <h1 className="header">Registration</h1>
           <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -105,7 +105,7 @@ export default function Authentification(): JSX.Element {
         </>
       ) : (
         <>
-          <h1>Log In</h1>
+          <h1 className="header">Log In</h1>
           <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -136,7 +136,11 @@ export default function Authentification(): JSX.Element {
                 Log In
               </Button>
               <div>
-                <Button className="confirm-no-bg" type="submit" onClick={handleDontHaveAccountClick}>
+                <Button
+                  className="confirm-no-bg"
+                  type="submit"
+                  onClick={handleDontHaveAccountClick}
+                >
                   Don't have an account?
                 </Button>
                 <Button className="confirm-no-bg" type="submit" onClick={handleForgotPasswordClick}>

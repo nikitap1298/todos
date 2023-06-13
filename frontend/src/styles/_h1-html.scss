@@ -3,10 +3,12 @@
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/variables";
 
-.h1-header-html {
-  font-family: $dongleRegular;
-  font-size: 4.5rem;
-  color: $colorBlue;
-  text-align: center;
-  cursor: default;
+h1 {
+  &.header {
+    font-family: $dongleRegular;
+    font-size: 4.5rem;
+    color: $colorBlue;
+    text-align: center;
+    cursor: default;
+  }
 }
