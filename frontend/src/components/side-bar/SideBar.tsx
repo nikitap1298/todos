@@ -54,7 +54,7 @@ export default function SideBar(): JSX.Element {
             <Form onSubmit={handleAddClick}>
               <Form.Label style={{ fontSize: "2rem" }}>Title</Form.Label>
               <Form.Control
-                style={{ fontSize: "1.5rem" }}
+                style={{ fontSize: "1.5rem", borderRadius: "15px" }}
                 maxLength={15}
                 type="text"
                 placeholder="Example list"
