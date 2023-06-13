@@ -27,21 +27,21 @@ export default function ModalDelete(props: ModalDeleteProps): JSX.Element {
     <div className="modal-content">
       <Modal show={modalIsDisplayed} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: "2.5rem" }}>Delete</Modal.Title>
+          <Modal.Title>Delete</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ fontSize: "2rem" }}>
+        <Modal.Body>
           <p>{modalBodyTitle}</p>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button className="confirm-no-bg" variant="secondary" onClick={handleClose}>
+          <Button className="confirm-no-bg" variant="light" onClick={handleClose}>
             Cancel
           </Button>
           <Button
-            className="confirm-no-bg"
+            className="confirm-no-bg f"
             style={{ color: "red" }}
-            variant="danger"
+            variant="light"
             onClick={handleDeleteClick}
           >
             Delete

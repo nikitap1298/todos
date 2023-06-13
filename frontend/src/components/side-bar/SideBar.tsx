@@ -48,13 +48,13 @@ export default function SideBar(): JSX.Element {
         <Lists />
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title style={{ fontSize: "2.5rem" }}>Add List</Modal.Title>
+            <Modal.Title>Add List</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleAddClick}>
-              <Form.Label style={{ fontSize: "2rem" }}>Title</Form.Label>
+              <Form.Label>Title</Form.Label>
               <Form.Control
-                style={{ fontSize: "1.5rem", borderRadius: "15px" }}
+                style={{ borderRadius: "15px" }}
                 maxLength={15}
                 type="text"
                 placeholder="Example list"
@@ -65,7 +65,7 @@ export default function SideBar(): JSX.Element {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              style={{ fontSize: "1.5rem", borderRadius: "15px", width: "100px" }}
+              style={{ borderRadius: "15px", width: "100px" }}
               variant="primary"
               onClick={handleAddClick}
             >

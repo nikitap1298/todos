@@ -6,13 +6,13 @@
 input {
   &.inline-edit {
     margin: 0;
-    padding: 2px;
-    font-family: $dongleLight;
-    font-size: 2.5rem;
+    font-family: $openSansRegular;
+    font-size: 1.5rem;
     background-color: transparent;
     border-style: none;
     border-left: 4px solid transparent;
-    max-height: 52px;
+    min-height: 30px;
+    width: auto;
 
     &::placeholder {
       color: $colorGray;

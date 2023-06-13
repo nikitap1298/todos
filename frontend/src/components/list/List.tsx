@@ -76,10 +76,10 @@ export default function List(props: ListProps): JSX.Element {
         />
       )}
       <div>
-        <Button className="edit-btn confirm-no-bg " onClick={handleEditClick}>
+        <Button className="edit-btn confirm-no-bg" variant="light" onClick={handleEditClick}>
           Edit
         </Button>
-        <Button className="delete-btn confirm-no-bg" onClick={handleDeleteClick}>
+        <Button className="delete-btn confirm-no-bg" variant="light" onClick={handleDeleteClick}>
           Delete
         </Button>
         <ModalDelete

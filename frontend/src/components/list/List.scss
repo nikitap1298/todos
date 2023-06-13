@@ -9,8 +9,8 @@
   h1 {
     margin: 0;
     padding-left: 6px;
-    font-family: $dongleLight;
-    font-size: 2.5rem;
+    font-family: $openSansRegular;
+    font-size: 1.5rem;
     background-color: transparent;
     color: $colorBlue;
     border-style: none;
@@ -22,7 +22,7 @@
 
   input {
     max-width: 40%;
-    max-height: 48px;
+    min-height: 30px;
   }
 
   button {
