@@ -46,11 +46,12 @@ export default function NewPassword(): JSX.Element {
 
   return (
     <div className="new-password">
-      <h1>New Password</h1>
+      <h1 className="header">New Password</h1>
       <AlertsComponent />
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
+            className="input"
             type="password"
             placeholder="New password"
             value={newPasswordValue}
@@ -59,18 +60,14 @@ export default function NewPassword(): JSX.Element {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control
+            className="input"
             type="password"
             placeholder="Confirm password"
             value={confirmPasswordValue}
             onChange={handleConfirmPasswordChange}
           />
         </Form.Group>
-        <Button
-          className="confirm-button"
-          variant="primary"
-          type="submit"
-          onClick={handleConfirmClick}
-        >
+        <Button className="confirm" type="submit" onClick={handleConfirmClick}>
           Confirm
         </Button>
       </Form>

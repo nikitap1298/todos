@@ -1,7 +1,17 @@
+$primary: #0078bc;
+$secondary: #495057;
+$success: #b1cd90;
+$danger: #f85638;
+$light: transparent;
+
 // For using Bootstrap inside components. Importing the Bootstrap CSS
 @import "~bootstrap/scss/bootstrap";
 
-@import "/src/styles/variables";
+@import "styles/variables";
+@import "styles/button-bootstrap";
+@import "styles/h1-html";
+@import "styles/input-bootstrap";
+@import "styles/input-html";
 
 .app {
   min-height: 100vh;

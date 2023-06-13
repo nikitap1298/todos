@@ -1,0 +1,29 @@
+// Bootstrap styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/variables";
+
+.btn {
+  &.confirm {
+    border: none;
+    border-radius: 15px;
+    font-family: $openSansRegular;
+    font-size: 1rem;
+    color: $colorVanilla;
+
+    &:hover {
+      background-color: $colorGray;
+    }
+  }
+
+  &.confirm-no-bg {
+    @extend .confirm;
+    text-align: right;
+    color: $colorBlue;
+
+    &:hover {
+      background-color: transparent;
+      color: $colorGray;
+    }
+  }
+}

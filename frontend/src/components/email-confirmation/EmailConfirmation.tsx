@@ -1,4 +1,5 @@
 import React from "react"
+import { Button } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { useParams } from "react-router-dom"
@@ -15,11 +16,11 @@ export default function EmailConfirmation(): JSX.Element {
   }
   return (
     <div className="email-confirmation">
-      <h1>Confirm your email</h1>
+      <h1 className="header">Confirm your email</h1>
       <AlertsComponent />
-      <button className="confirmation-button" type="submit" onClick={handleEmailConfirmClick}>
+      <Button className="confirm" variant="success" type="submit" onClick={handleEmailConfirmClick}>
         Press to confirm
-      </button>
+      </Button>
     </div>
   )
 }

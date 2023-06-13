@@ -72,12 +72,13 @@ export default function Authentification(): JSX.Element {
     <div className="authentification">
       {registerComponentIsActive ? (
         <>
-          <h1>Registration</h1>
+          <h1 className="header">Registration</h1>
           <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
+                className="input"
                 type="email"
                 placeholder={loginPlaceholder}
                 value={login}
@@ -87,6 +88,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="input"
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}
@@ -94,7 +96,7 @@ export default function Authentification(): JSX.Element {
               />
             </Form.Group>
             <Button
-              className="authentification-button"
+              className="authentification-button confirm"
               variant="primary"
               type="submit"
               onClick={handleRegisterClick}
@@ -105,12 +107,13 @@ export default function Authentification(): JSX.Element {
         </>
       ) : (
         <>
-          <h1>Log In</h1>
+          <h1 className="header">Log In</h1>
           <AlertsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
+                className="input"
                 type="email"
                 placeholder={loginPlaceholder}
                 value={login}
@@ -120,6 +123,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="input"
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}
@@ -128,7 +132,7 @@ export default function Authentification(): JSX.Element {
             </Form.Group>
             <div className="login-buttons">
               <Button
-                className="authentification-button"
+                className="authentification-button confirm"
                 variant="primary"
                 type="submit"
                 onClick={handleLogInClick}
@@ -136,12 +140,22 @@ export default function Authentification(): JSX.Element {
                 Log In
               </Button>
               <div>
-                <button type="submit" onClick={handleDontHaveAccountClick}>
+                <Button
+                  className="confirm-no-bg"
+                  variant="light"
+                  type="submit"
+                  onClick={handleDontHaveAccountClick}
+                >
                   Don't have an account?
-                </button>
-                <button type="submit" onClick={handleForgotPasswordClick}>
+                </Button>
+                <Button
+                  className="confirm-no-bg"
+                  variant="light"
+                  type="submit"
+                  onClick={handleForgotPasswordClick}
+                >
                   Forgot your password?
-                </button>
+                </Button>
               </div>
             </div>
           </Form>

@@ -1,4 +1,4 @@
-@import "/src/styles/variables";
+@import "../../styles/variables";
 
 .authentification {
   display: flex;
@@ -7,42 +7,20 @@
   align-items: center;
   width: 40%;
 
-  h1 {
-    font-family: $dongleRegular;
-    font-size: 4.5rem;
-    color: $colorBlue;
-    text-align: center;
-  }
-
   form {
     width: 100%;
   }
 
   .mb-3 {
     .form-label {
-      font-family: $dongleRegular;
-      font-size: 2.5rem;
+      font-family: $openSansRegular;
+      font-size: 1.5rem;
       color: $colorGray;
     }
   }
 
-  input {
-    font-family: $dongleRegular;
-    font-size: 1.5rem;
-  }
-
   .authentification-button {
-    border: none;
-    text-align: center;
-    border-radius: 6px;
     width: 100px;
-    background-color: $colorBlue;
-    font-family: $dongleRegular;
-    font-size: 1.5rem;
-
-    &:hover {
-      background-color: $colorBlue;
-    }
   }
 
   .login-buttons {
@@ -53,21 +31,6 @@
     div {
       display: flex;
       flex-direction: column;
-
-      button {
-        margin-bottom: 10px;
-        border: none;
-        text-align: center;
-        width: 200px;
-        background-color: transparent;
-        font-family: $dongleRegular;
-        font-size: 1.5rem;
-        color: $colorBlue;
-
-        &:hover {
-          color: $colorGray;
-        }
-      }
     }
   }
 }
