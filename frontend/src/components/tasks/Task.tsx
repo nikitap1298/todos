@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { TaskInterface } from "../../lib/interfaces/task.interface"
-import "./Task.scss"
 import dayjs from "dayjs"
+import "./Task.scss"
 
 interface TaskProps {
   className: string
