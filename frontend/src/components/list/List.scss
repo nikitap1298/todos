@@ -1,5 +1,4 @@
 @import "../../styles/variables";
-@import "/src/styles/input-html";
 
 .list {
   display: flex;
@@ -22,7 +21,6 @@
   }
 
   input {
-    @extend .input-html;
     max-width: 40%;
     max-height: 48px;
   }

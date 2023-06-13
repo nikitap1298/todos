@@ -1,5 +1,4 @@
 @import "../../styles/variables";
-@import "/src/styles/input-bootstrap";
 
 .authentification {
   display: flex;
@@ -18,10 +17,6 @@
       font-size: 2.5rem;
       color: $colorGray;
     }
-  }
-
-  input {
-    @extend .default-input-bootstrap;
   }
 
   .authentification-button {

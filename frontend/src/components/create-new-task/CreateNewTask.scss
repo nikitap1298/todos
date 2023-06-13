@@ -1,14 +1,9 @@
 @import "../../styles/variables";
-@import "/src/styles/input-bootstrap";
 
 .create-new-task {
   form {
     display: flex;
     flex-direction: row;
-  }
-
-  input {
-    @extend .default-input-bootstrap;
   }
 
   button {

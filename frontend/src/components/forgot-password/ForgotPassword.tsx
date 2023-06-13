@@ -27,6 +27,7 @@ export default function ForgotPassword(): JSX.Element {
       <Form>
         <Form.Group className="mb-3">
           <Form.Control
+            className="input"
             type="email"
             placeholder="Enter email"
             value={loginValue}

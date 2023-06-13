@@ -9,9 +9,7 @@ export default function CreateNewTask(): JSX.Element {
 
   const [newTaskTitle, setNewTask] = useState("")
 
-  const handleNewTaskInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleNewTaskInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setNewTask(event.target.value)
   }
 
@@ -28,6 +26,7 @@ export default function CreateNewTask(): JSX.Element {
     <div className="create-new-task">
       <Form onSubmit={handleAddClick}>
         <Form.Control
+          className="input"
           type="text"
           placeholder="Add some task"
           size="lg"

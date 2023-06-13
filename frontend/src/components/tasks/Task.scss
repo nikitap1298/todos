@@ -1,5 +1,4 @@
 @import "../../styles/variables";
-@import "/src/styles/input-html";
 
 .task {
   div {
@@ -21,10 +20,6 @@
     &:hover {
       border-left-color: $colorBlue;
     }
-  }
-
-  .task-editable-input {
-    @extend .input-html;
   }
 
   p {

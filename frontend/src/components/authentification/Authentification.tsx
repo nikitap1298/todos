@@ -78,6 +78,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
+                className="input"
                 type="email"
                 placeholder={loginPlaceholder}
                 value={login}
@@ -87,6 +88,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="input"
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}
@@ -111,6 +113,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
+                className="input"
                 type="email"
                 placeholder={loginPlaceholder}
                 value={login}
@@ -120,6 +123,7 @@ export default function Authentification(): JSX.Element {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="input"
                 type="password"
                 placeholder={passwordPlaceholder}
                 value={password}

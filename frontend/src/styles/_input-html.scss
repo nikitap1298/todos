@@ -3,17 +3,19 @@
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/variables";
 
-.input-html {
-  margin: 0;
-  padding: 2px;
-  font-family: $dongleLight;
-  font-size: 2.5rem;
-  background-color: transparent;
-  border-style: none;
-  border-left: 4px solid transparent;
-  max-height: 52px;
+input {
+  &.inline-edit {
+    margin: 0;
+    padding: 2px;
+    font-family: $dongleLight;
+    font-size: 2.5rem;
+    background-color: transparent;
+    border-style: none;
+    border-left: 4px solid transparent;
+    max-height: 52px;
 
-  &::placeholder {
-    color: $colorGray;
+    &::placeholder {
+      color: $colorGray;
+    }
   }
 }

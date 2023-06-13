@@ -65,7 +65,7 @@ export default function List(props: ListProps): JSX.Element {
         <h1 onClick={(): void => onSelect(listId as string)}>{list.title}</h1>
       ) : (
         <input
-          className="task-editable-input"
+          className="inline-edit"
           type="text"
           value={editedValue}
           placeholder={list.title}

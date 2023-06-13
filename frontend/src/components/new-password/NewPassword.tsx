@@ -51,6 +51,7 @@ export default function NewPassword(): JSX.Element {
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
+            className="input"
             type="password"
             placeholder="New password"
             value={newPasswordValue}
@@ -59,6 +60,7 @@ export default function NewPassword(): JSX.Element {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control
+            className="input"
             type="password"
             placeholder="Confirm password"
             value={confirmPasswordValue}
