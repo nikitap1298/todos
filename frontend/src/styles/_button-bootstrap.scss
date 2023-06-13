@@ -3,30 +3,30 @@
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/variables";
 
-.confirm-button-bootstrap {
-  border: none;
-  text-align: center;
-  border-radius: 15px;
-  font-family: $dongleRegular;
-  font-size: 1.5rem;
-  color: $colorVanilla;
-  width: 100px;
+.btn {
+  &.confirm {
+    border: none;
+    text-align: center;
+    border-radius: 15px;
+    font-family: $dongleRegular;
+    font-size: 1.5rem;
+    color: $colorVanilla;
 
-  &:hover {
-    background-color: $colorBlue;
-    color: $colorGray;
+    &:hover {
+      background-color: $colorGray;
+      color: $colorVanilla;
+    }
   }
-}
 
-.confirm-button-bootstrap-no-bg {
-  @extend .confirm-button-bootstrap;
-  text-align: right;
-  background-color: transparent;
-  color: $colorBlue;
-  width: 200px;
-
-  &:hover {
+  &.confirm-no-bg {
+    @extend .confirm;
+    text-align: right;
     background-color: transparent;
-    color: $colorGray;
+    color: $colorBlue;
+
+    &:hover {
+      background-color: transparent;
+      color: $colorGray;
+    }
   }
 }

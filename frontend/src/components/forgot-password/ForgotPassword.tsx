@@ -33,7 +33,7 @@ export default function ForgotPassword(): JSX.Element {
             onChange={handleLoginChange}
           />
         </Form.Group>
-        <Button type="submit" onClick={handleConfirmClick}>
+        <Button className="confirm" type="submit" onClick={handleConfirmClick}>
           Confirm
         </Button>
       </Form>

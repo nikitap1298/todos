@@ -1,5 +1,4 @@
-@import "/src/styles/variables";
-@import "/src/styles/button-bootstrap";
+@import "../../styles/variables";
 @import "/src/styles/input-html";
 
 .list {
@@ -29,12 +28,8 @@
   }
 
   button {
-    @extend .confirm-button-bootstrap;
-
     &.edit-btn {
-      @extend .confirm-button-bootstrap-no-bg;
       margin-top: 0;
-      width: auto;
 
       &:hover {
         color: $colorBlue;
@@ -42,10 +37,8 @@
     }
 
     &.delete-btn {
-      @extend .confirm-button-bootstrap-no-bg;
       margin: 0 0 0 15px;
       color: $colorRed;
-      width: auto;
 
       &:hover {
         color: $colorRed;

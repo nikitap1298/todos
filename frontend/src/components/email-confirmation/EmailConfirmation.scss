@@ -1,5 +1,4 @@
-@import "/src/styles/variables";
-@import "/src/styles/button-bootstrap";
+@import "../../styles/variables";
 @import "/src/styles/h1-html";
 
 .email-confirmation {
@@ -10,15 +9,5 @@
 
   h1 {
     @extend .h1-header-html;
-  }
-
-  button {
-    @extend .confirm-button-bootstrap;
-    width: auto;
-
-    &:hover {
-      background-color: $colorGray;
-      color: $colorVanilla;
-    }
   }
 }

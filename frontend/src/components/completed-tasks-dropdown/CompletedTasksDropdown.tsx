@@ -4,8 +4,7 @@ import { useTaskContext } from "../../context/TaskContext"
 import "./CompletedTasksDropdown.scss"
 
 export default function CompletedTasksDropdown(): JSX.Element {
-  const { showCompletedTasks, showOrHideCompletedTasks, deleteCompletedTasks } =
-    useTaskContext()
+  const { showCompletedTasks, showOrHideCompletedTasks, deleteCompletedTasks } = useTaskContext()
 
   return (
     <div className="completed-tasks-dropdown">

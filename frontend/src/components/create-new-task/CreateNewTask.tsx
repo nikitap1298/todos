@@ -34,7 +34,7 @@ export default function CreateNewTask(): JSX.Element {
           value={newTaskTitle}
           onChange={handleNewTaskInputChange}
         />
-        <Button variant="primary" size="lg" onClick={handleAddClick}>
+        <Button className="confirm" variant="primary" size="lg" onClick={handleAddClick}>
           Add
         </Button>
       </Form>

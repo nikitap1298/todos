@@ -94,7 +94,7 @@ export default function Authentification(): JSX.Element {
               />
             </Form.Group>
             <Button
-              className="authentification-button"
+              className="authentification-button confirm"
               variant="primary"
               type="submit"
               onClick={handleRegisterClick}
@@ -128,7 +128,7 @@ export default function Authentification(): JSX.Element {
             </Form.Group>
             <div className="login-buttons">
               <Button
-                className="authentification-button"
+                className="authentification-button confirm"
                 variant="primary"
                 type="submit"
                 onClick={handleLogInClick}
@@ -136,10 +136,10 @@ export default function Authentification(): JSX.Element {
                 Log In
               </Button>
               <div>
-                <Button type="submit" onClick={handleDontHaveAccountClick}>
+                <Button className="confirm-no-bg" type="submit" onClick={handleDontHaveAccountClick}>
                   Don't have an account?
                 </Button>
-                <Button type="submit" onClick={handleForgotPasswordClick}>
+                <Button className="confirm-no-bg" type="submit" onClick={handleForgotPasswordClick}>
                   Forgot your password?
                 </Button>
               </div>

@@ -35,10 +35,15 @@ export default function ModalDelete(props: ModalDeleteProps): JSX.Element {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button className="cancel-button" variant="secondary" onClick={handleClose}>
+          <Button className="confirm-no-bg" variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button className="delete-button" variant="danger" onClick={handleDeleteClick}>
+          <Button
+            className="confirm-no-bg"
+            style={{ color: "red" }}
+            variant="danger"
+            onClick={handleDeleteClick}
+          >
             Delete
           </Button>
         </Modal.Footer>

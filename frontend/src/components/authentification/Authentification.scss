@@ -1,5 +1,4 @@
-@import "/src/styles/variables";
-@import "/src/styles/button-bootstrap";
+@import "../../styles/variables";
 @import "/src/styles/h1-html";
 @import "/src/styles/input-bootstrap";
 
@@ -31,7 +30,7 @@
   }
 
   .authentification-button {
-    @extend .confirm-button-bootstrap;
+    width: 100px;
   }
 
   .login-buttons {
@@ -42,10 +41,6 @@
     div {
       display: flex;
       flex-direction: column;
-
-      button {
-        @extend .confirm-button-bootstrap-no-bg;
-      }
     }
   }
 }

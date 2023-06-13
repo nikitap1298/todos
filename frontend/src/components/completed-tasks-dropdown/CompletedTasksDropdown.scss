@@ -1,5 +1,5 @@
-@import "/src/styles/variables";
-@import "/src/styles/button-bootstrap";
+@import "../../styles/variables";
+@import "../../styles/button-bootstrap";
 
 .completed-tasks-dropdown {
   margin: 5px 0 20px 0; 
@@ -7,7 +7,7 @@
   justify-content: end;
 
   button {
-    @extend .confirm-button-bootstrap;
+    @extend .confirm;
     width: auto;
   }
 
