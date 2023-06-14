@@ -2,14 +2,15 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { useParams } from "react-router-dom"
-import AlertsComponent from "../alert/AlertsComponent"
+import ToastsComponent from "../toast/ToastsComponent"
 import { useUserContext } from "../../context/UserContext"
-import { useAlertContext } from "../../context/AlertContext"
+import { useToastContext } from "../../context/ToastContext"
 import "./NewPassword.scss"
 
 export default function NewPassword(): JSX.Element {
   const { resetPassword } = useUserContext()
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  // const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const { id, token } = useParams()
 
   const [newPasswordValue, setNewPasswordValue] = useState("")
@@ -27,18 +28,20 @@ export default function NewPassword(): JSX.Element {
     event.preventDefault()
 
     if (newPasswordValue.length < 6) {
-      addAlert({
-        title: "Password is not safe",
+      addToast({
+        variant: "warning",
         message: "Password must be longer than 6 characters",
+        isGlobal: false,
       })
     } else if (newPasswordValue !== confirmPasswordValue && newPasswordValue.length >= 6) {
-      addAlert({
-        title: "Error",
+      addToast({
+        variant: "warning",
         message: "Different passwords",
+        isGlobal: false,
       })
     } else if (newPasswordValue === confirmPasswordValue && newPasswordValue.length >= 6) {
       resetPassword(id as string, token as string, newPasswordValue)
-      deleteAllAlerts()
+      deleteAllToasts()
       setNewPasswordValue("")
       setConfirmPasswordValue("")
     }
@@ -47,7 +50,7 @@ export default function NewPassword(): JSX.Element {
   return (
     <div className="new-password">
       <h1 className="header">New Password</h1>
-      <AlertsComponent />
+      <ToastsComponent />
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control

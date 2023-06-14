@@ -8,8 +8,8 @@ import {
   localStorageSelectedListIdKey,
   localStorageUserInfoKey,
 } from "../constants/constants"
-import { useAlertContext } from "./AlertContext"
 import { useNavigate } from "react-router-dom"
+import { useToastContext } from "./ToastContext"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
@@ -34,7 +34,7 @@ const UserContext = React.createContext<UserContextInterface>({
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { toasts, addToast, deleteToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
   const [userHasAccess, setUserHasAccess] = useState(false)
 
@@ -55,9 +55,16 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         const accessToken = (jwt as { access_token: string }).access_token
         localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
         setUserHasAccess(true)
+        // deleteAllToasts()
       })
       .catch(() => {
         setUserHasAccess(false)
+        deleteAllToasts()
+        addToast({
+          variant: "danger",
+          message: "Can't log in. Try again",
+          isGlobal: true,
+        })
       })
   }
 
@@ -113,12 +120,17 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         )
         setCurrentUser(user)
         checkAccess(login, password)
-        deleteAllAlerts()
+        addToast({
+          variant: "success",
+          message: "Check your mailbox and confirm email.",
+          isGlobal: true,
+        })
       })
       .catch(() => {
-        addAlert({
-          title: "Error with registration",
+        addToast({
+          variant: "danger",
           message: "Can't register",
+          isGlobal: true,
         })
       })
   }
@@ -128,34 +140,53 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
     setUserHasAccess(false)
+    deleteAllToasts()
   }
 
   const confirmEmail = (userId: string, token: string): void => {
-    // localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     userService
       .verifyUser(userId, token)
       .then(() => {
-        deleteAllAlerts()
         logOut()
         navigate("/todos")
       })
       .catch(() => {
-        addAlert({
-          title: "Error with email confirmation",
-          message: "Can't verify",
+        addToast({
+          variant: "danger",
+          message: "Can't register",
+          isGlobal: true,
         })
       })
   }
 
   const sendResetPasswordMail = (login: string): void => {
     userService.sendResetPasswordMail(login)
+    addToast({
+      variant: "success",
+      message: "Check your mailbox where you'll find password reset link.",
+      isGlobal: true,
+    })
     navigate("/todos")
   }
 
   const resetPassword = (userId: string, token: string, newPassword: string): void => {
-    userService.resetPassword(userId, token, newPassword).then(() => {
-      navigate("/todos")
-    })
+    userService
+      .resetPassword(userId, token, newPassword)
+      .then(() => {
+        addToast({
+          variant: "success",
+          message: "Password successfully reset",
+          isGlobal: true,
+        })
+        navigate("/todos")
+      })
+      .catch(() => {
+        addToast({
+          variant: "danger",
+          message: "Can't reset the password",
+          isGlobal: false,
+        })
+      })
   }
 
   return (

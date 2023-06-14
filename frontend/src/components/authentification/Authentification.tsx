@@ -2,13 +2,13 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
-import AlertsComponent from "../alert/AlertsComponent"
-import { useAlertContext } from "../../context/AlertContext"
+import ToastsComponent from "../toast/ToastsComponent"
+import { useToastContext } from "../../context/ToastContext"
 import { useNavigate } from "react-router-dom"
 import "./Authentification.scss"
 
 export default function Authentification(): JSX.Element {
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const { logIn, registerUser } = useUserContext()
 
   const [login, setLogin] = useState("")
@@ -33,15 +33,16 @@ export default function Authentification(): JSX.Element {
 
     if (login.includes("@") && login.includes(".") && password !== "") {
       if (password.length < 6) {
-        addAlert({
-          title: "Password is not safe",
+        addToast({
+          variant: "warning",
           message: "Password must be longer than 6 characters",
+          isGlobal: false,
         })
       } else {
         registerUser(login, password)
         setLoginPlaceholder("Enter email")
         setPasswordPlaceholdert("Password")
-        deleteAllAlerts()
+        deleteAllToasts()
       }
     }
 
@@ -73,7 +74,7 @@ export default function Authentification(): JSX.Element {
       {registerComponentIsActive ? (
         <>
           <h1 className="header">Registration</h1>
-          <AlertsComponent />
+          <ToastsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
@@ -108,7 +109,7 @@ export default function Authentification(): JSX.Element {
       ) : (
         <>
           <h1 className="header">Log In</h1>
-          <AlertsComponent />
+          <ToastsComponent />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
