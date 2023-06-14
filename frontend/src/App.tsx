@@ -1,5 +1,5 @@
 import React from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { UserContextProvider } from "./context/UserContext"
 import Todos from "./components/todos/Todos"
 import { AlertContextProvider } from "./context/AlertContext"
@@ -14,6 +14,7 @@ export default function App(): JSX.Element {
       <AlertContextProvider>
         <UserContextProvider>
           <Routes>
+            <Route path="/" element={<Navigate to="/todos" replace />} />
             <Route path="/todos" element={<Todos />} />
             <Route path="/auth/confirm/:id/:token" element={<EmailConfirmation />} />
             <Route path="/password/reset" element={<ForgotPassword />} />
