@@ -11,6 +11,7 @@ import {
 } from "../constants/constants"
 import { useNavigate } from "react-router-dom"
 import { useToastContext } from "./ToastContext"
+import { useLocation } from "react-router-dom"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
@@ -35,15 +36,17 @@ const UserContext = React.createContext<UserContextInterface>({
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { addToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
-  const [loginIsTriggered, setLoginIsTriggered] = useState(false)
 
   const navigate = useNavigate()
+
+  // fetchCurrentUser every time user log in as another account
+  const location = useLocation()
 
   const userService = new UserService()
 
   useEffect(() => {
     fetchCurrentUser()
-  }, [])
+  }, [location])
 
   const checkAccess = (userLogin: string, userPassword: string): void => {
     userService
@@ -150,7 +153,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           message: "Check your mailbox where you'll find password reset link.",
           isGlobal: true,
         })
-        navigate("/todos")
+        navigate("/authentification")
       })
       .catch(() => {
         addToast({

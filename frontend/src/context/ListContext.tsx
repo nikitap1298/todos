@@ -9,7 +9,6 @@ import {
   localStorageSelectedListTitleKey,
 } from "../constants/constants"
 import { useUserContext } from "./UserContext"
-import { useToastContext } from "./ToastContext"
 
 interface ListContextInterface {
   lists: ListInterface[]
@@ -30,7 +29,6 @@ const ListContext = React.createContext<ListContextInterface>({
 })
 
 export const ListContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const { addToast } = useToastContext() 
   const { currentUser } = useUserContext()
   const [lists, setLists] = useState<ListInterface[]>([])
   const [selectedListId, setSelectedListId] = useState<string | undefined>("")

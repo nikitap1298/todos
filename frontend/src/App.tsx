@@ -9,6 +9,8 @@ import ForgotPassword from "./components/forgot-password/ForgotPassword"
 import NewPassword from "./components/new-password/NewPassword"
 import { ToastContextProvider } from "./context/ToastContext"
 import ProtectedRoute from "./utils/ProtectedRoute"
+import { Provider } from "react-redux"
+import store from "./redux/Store"
 import "./App.scss"
 
 export default function App(): JSX.Element {
@@ -17,14 +19,23 @@ export default function App(): JSX.Element {
       <ToastContextProvider>
         <AlertContextProvider>
           <UserContextProvider>
-            <Routes>
-              <Route path="/" element={<Navigate to="/todos" replace />} />
-              <Route path="/authentification" element={<Authentification />} />
-              <Route path="/todos" element={<ProtectedRoute><Todos /></ProtectedRoute>} />
-              <Route path="/auth/confirm/:id/:token" element={<EmailConfirmation />} />
-              <Route path="/password/reset" element={<ForgotPassword />} />
-              <Route path="/password/new/:id/:token" element={<NewPassword />} />
-            </Routes>
+            <Provider store={store}>
+              <Routes>
+                <Route path="/" element={<Navigate to="/todos" replace />} />
+                <Route path="/authentification" element={<Authentification />} />
+                <Route
+                  path="/todos"
+                  element={
+                    <ProtectedRoute>
+                      <Todos />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/auth/confirm/:id/:token" element={<EmailConfirmation />} />
+                <Route path="/password/reset" element={<ForgotPassword />} />
+                <Route path="/password/new/:id/:token" element={<NewPassword />} />
+              </Routes>
+            </Provider>
           </UserContextProvider>
         </AlertContextProvider>
       </ToastContextProvider>
