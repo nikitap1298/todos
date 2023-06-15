@@ -9,7 +9,6 @@ import "./NewPassword.scss"
 
 export default function NewPassword(): JSX.Element {
   const { resetPassword } = useUserContext()
-  // const { addAlert, deleteAllAlerts } = useAlertContext()
   const { addToast, deleteAllToasts } = useToastContext()
   const { id, token } = useParams()
 
