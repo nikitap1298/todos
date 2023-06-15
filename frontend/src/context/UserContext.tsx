@@ -13,7 +13,6 @@ import { useToastContext } from "./ToastContext"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
-  userHasAccess: boolean
   logIn: (login?: string, password?: string) => void
   registerUser: (login: string, password: string) => void
   logOut: () => void
@@ -24,7 +23,6 @@ interface UserContextInterface {
 
 const UserContext = React.createContext<UserContextInterface>({
   currentUser: { _id: "", login: "", password: "" },
-  userHasAccess: false,
   logIn: () => void {},
   registerUser: () => void {},
   logOut: () => void {},
@@ -36,7 +34,6 @@ const UserContext = React.createContext<UserContextInterface>({
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { addToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
-  const [userHasAccess, setUserHasAccess] = useState(false)
 
   const navigate = useNavigate()
 
@@ -46,7 +43,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   useEffect(() => {
     fetchCurrentUser()
     logIn()
-  }, [userHasAccess])
+  }, [])
 
   const checkAccess = (userLogin: string, userPassword: string): void => {
     userService
@@ -57,7 +54,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
         if (userVerified === true) {
           localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-          setUserHasAccess(true)
+          navigate("/todos")
           deleteAllToasts()
         } else {
           addToast({
@@ -68,7 +65,6 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         }
       })
       .catch(() => {
-        setUserHasAccess(false)
         deleteAllToasts()
         addToast({
           variant: "danger",
@@ -84,9 +80,9 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .then((user) => {
         setCurrentUser(user)
       })
-      .catch(() => {
-        logOut()
-      })
+      // .catch(() => {
+      //   logOut()
+      // })
   }
 
   const logIn = (login?: string, password?: string): void => {
@@ -114,7 +110,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin, userPassword })
         )
-        setUserHasAccess(true)
+        navigate("/todos")
       }
     }
   }
@@ -144,7 +140,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
-    setUserHasAccess(false)
+    navigate("/")
     deleteAllToasts()
   }
 
@@ -158,7 +154,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           message: "Email successfully confirmed.",
           isGlobal: true,
         })
-        navigate("/todos")
+        navigate("/authentification")
       })
       .catch(() => {
         addToast({
@@ -213,7 +209,6 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     <UserContext.Provider
       value={{
         currentUser,
-        userHasAccess,
         logIn,
         registerUser,
         logOut,
