@@ -7,6 +7,7 @@ import {
   localStorageAccessToken,
   localStorageSelectedListIdKey,
   localStorageUserInfoKey,
+  localStorageVerifiedKey,
 } from "../constants/constants"
 import { useNavigate } from "react-router-dom"
 import { useToastContext } from "./ToastContext"
@@ -34,15 +35,14 @@ const UserContext = React.createContext<UserContextInterface>({
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { addToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
+  const [loginIsTriggered, setLoginIsTriggered] = useState(false)
 
   const navigate = useNavigate()
 
   const userService = new UserService()
-  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
 
   useEffect(() => {
     fetchCurrentUser()
-    logIn()
   }, [])
 
   const checkAccess = (userLogin: string, userPassword: string): void => {
@@ -54,6 +54,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
         if (userVerified === true) {
           localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
+          localStorage.setItem(localStorageVerifiedKey, JSON.stringify(userVerified))
+
           navigate("/todos")
           deleteAllToasts()
         } else {
@@ -75,44 +77,17 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const fetchCurrentUser = (): void => {
-    userService
-      .readUser()
-      .then((user) => {
-        setCurrentUser(user)
-      })
-      // .catch(() => {
-      //   logOut()
-      // })
+    userService.readUser().then((user) => {
+      setCurrentUser(user)
+    })
   }
 
   const logIn = (login?: string, password?: string): void => {
-    const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
-    if (userInfoLocalStorage) {
-      let userId = JSON.parse(userInfoLocalStorage).userId
-      let userLogin = JSON.parse(userInfoLocalStorage).userLogin
-      let userPassword = JSON.parse(userInfoLocalStorage).userPassword
-
-      if (
-        typeof login === "string" &&
-        typeof password === "string" &&
-        (accessTokenLocalStorage?.length as number) <= 4
-      ) {
-        userId = currentUser?._id
-        userLogin = login
-        userPassword = password
-        localStorage.setItem(
-          localStorageUserInfoKey,
-          JSON.stringify({ userId, userLogin, userPassword })
-        )
-        checkAccess(userLogin, userPassword)
-      } else if ((accessTokenLocalStorage?.length as number) >= 5) {
-        localStorage.setItem(
-          localStorageUserInfoKey,
-          JSON.stringify({ userId, userLogin, userPassword })
-        )
-        navigate("/todos")
-      }
-    }
+    localStorage.setItem(
+      localStorageUserInfoKey,
+      JSON.stringify({ userLogin: login, userPassword: password })
+    )
+    checkAccess(login as string, password as string)
   }
 
   const registerUser = (login: string, password: string): void => {
@@ -139,8 +114,9 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const logOut = (): void => {
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
+    localStorage.setItem(localStorageVerifiedKey, JSON.stringify({}))
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
-    navigate("/")
+    navigate("/authentification")
     deleteAllToasts()
   }
 
