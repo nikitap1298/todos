@@ -170,13 +170,23 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const sendResetPasswordMail = (login: string): void => {
-    userService.sendResetPasswordMail(login)
-    addToast({
-      variant: "success",
-      message: "Check your mailbox where you'll find password reset link.",
-      isGlobal: true,
-    })
-    navigate("/todos")
+    userService
+      .sendResetPasswordMail(login)
+      .then(() => {
+        addToast({
+          variant: "success",
+          message: "Check your mailbox where you'll find password reset link.",
+          isGlobal: true,
+        })
+        navigate("/todos")
+      })
+      .catch(() => {
+        addToast({
+          variant: "danger",
+          message: "Can't send you a mail.",
+          isGlobal: false,
+        })
+      })
   }
 
   const resetPassword = (userId: string, token: string, newPassword: string): void => {
