@@ -34,7 +34,7 @@ const UserContext = React.createContext<UserContextInterface>({
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const { toasts, addToast, deleteToast, deleteAllToasts } = useToastContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
   const [userHasAccess, setUserHasAccess] = useState(false)
 
@@ -52,18 +52,28 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     userService
       .checkUserAccess({ login: userLogin, password: userPassword })
       .then((jwt) => {
-        const accessToken = (jwt as { access_token: string }).access_token
-        localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-        setUserHasAccess(true)
-        // deleteAllToasts()
+        const accessToken = (jwt as { access_token: string; verified: string }).access_token
+        const userVerified = (jwt as { access_token: string; verified: boolean }).verified
+
+        if (userVerified === true) {
+          localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
+          setUserHasAccess(true)
+          deleteAllToasts()
+        } else {
+          addToast({
+            variant: "success",
+            message: "Check your mailbox and confirm email.",
+            isGlobal: true,
+          })
+        }
       })
       .catch(() => {
         setUserHasAccess(false)
         deleteAllToasts()
         addToast({
           variant: "danger",
-          message: "Can't log in. Try again",
-          isGlobal: true,
+          message: "Can't log in. Try again.",
+          isGlobal: false,
         })
       })
   }
@@ -120,16 +130,11 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         )
         setCurrentUser(user)
         checkAccess(login, password)
-        addToast({
-          variant: "success",
-          message: "Check your mailbox and confirm email.",
-          isGlobal: true,
-        })
       })
       .catch(() => {
         addToast({
           variant: "danger",
-          message: "Can't register",
+          message: "Can't register. Try again.",
           isGlobal: true,
         })
       })
@@ -148,13 +153,18 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .verifyUser(userId, token)
       .then(() => {
         logOut()
+        addToast({
+          variant: "success",
+          message: "Email successfully confirmed.",
+          isGlobal: true,
+        })
         navigate("/todos")
       })
       .catch(() => {
         addToast({
           variant: "danger",
-          message: "Can't register",
-          isGlobal: true,
+          message: "Can't confirm your email.",
+          isGlobal: false,
         })
       })
   }
@@ -175,7 +185,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .then(() => {
         addToast({
           variant: "success",
-          message: "Password successfully reset",
+          message: "Password successfully changed.",
           isGlobal: true,
         })
         navigate("/todos")
@@ -183,7 +193,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       .catch(() => {
         addToast({
           variant: "danger",
-          message: "Can't reset the password",
+          message: "Can't reset the password. Try again.",
           isGlobal: false,
         })
       })

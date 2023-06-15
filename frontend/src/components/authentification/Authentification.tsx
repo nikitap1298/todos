@@ -39,6 +39,7 @@ export default function Authentification(): JSX.Element {
           isGlobal: false,
         })
       } else {
+        setRegisterComponentIsActive(false)
         registerUser(login, password)
         setLoginPlaceholder("Enter email")
         setPasswordPlaceholdert("Password")

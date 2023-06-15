@@ -30,13 +30,13 @@ export default function NewPassword(): JSX.Element {
     if (newPasswordValue.length < 6) {
       addToast({
         variant: "warning",
-        message: "Password must be longer than 6 characters",
+        message: "Password must be longer than 6 characters.",
         isGlobal: false,
       })
     } else if (newPasswordValue !== confirmPasswordValue && newPasswordValue.length >= 6) {
       addToast({
         variant: "warning",
-        message: "Different passwords",
+        message: "Different passwords.",
         isGlobal: false,
       })
     } else if (newPasswordValue === confirmPasswordValue && newPasswordValue.length >= 6) {
