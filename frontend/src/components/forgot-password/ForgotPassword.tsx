@@ -10,7 +10,7 @@ export default function ForgotPassword(): JSX.Element {
   const [loginValue, setLoginValue] = useState("")
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setLoginValue(event.target.value)
+    setLoginValue(event.target.value.toLowerCase())
   }
 
   const handleConfirmClick = (event: MouseFormEvent): void => {
