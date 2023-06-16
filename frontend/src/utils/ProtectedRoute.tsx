@@ -6,7 +6,7 @@ interface RootState {
   user: {
     user: {
       name: string
-      isAuthenticated: string
+      isAuthenticated: boolean
     }
   }
 }

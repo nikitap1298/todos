@@ -51,15 +51,18 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const checkAccess = (userLogin: string, userPassword: string): void => {
     userService
       .checkUserAccess({ login: userLogin, password: userPassword })
-      .then((jwt) => {
-        const accessToken = (jwt as { access_token: string; verified: string }).access_token
-        const userVerified = (jwt as { access_token: string; verified: boolean }).verified
+      .then((data) => {
+        const accessToken = (data as { access_token: string; verified: string }).access_token
+        const userVerified = (data as { access_token: string; verified: boolean }).verified
+
+        localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
+        localStorage.setItem(localStorageVerifiedKey, JSON.stringify(userVerified))
 
         if (userVerified === true) {
-          localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-          localStorage.setItem(localStorageVerifiedKey, JSON.stringify(userVerified))
-
           navigate("/todos")
+
+          // Reload the page for updating the verified value in UserSlice.tsx
+          window.location.reload()
           deleteAllToasts()
         } else {
           addToast({
