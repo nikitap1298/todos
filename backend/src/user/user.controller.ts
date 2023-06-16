@@ -10,7 +10,6 @@ import {
   Param,
   NotFoundException,
   UnauthorizedException,
-  ForbiddenException,
 } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { AuthGuard } from "../auth/auth.guard"
@@ -86,7 +85,6 @@ export class UserController {
   @ApiResponse({ status: 401, description: "You are not authorized to POST", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
   async sendResetPasswordMail(@Param("login") login: string): Promise<unknown> {
-    
     const user = await this.userService.getUser(login)
 
     if (!user) {
@@ -106,7 +104,7 @@ export class UserController {
       validUntil: validUntil,
     } as EmailTokenInterface)
     await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
-    return {user}
+    return { user }
   }
 
   @Put("/new-password")
