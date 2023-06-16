@@ -21,7 +21,7 @@ export default function Authentification(): JSX.Element {
   const navigate = useNavigate()
 
   const handleLoginInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setLogin(event.target.value)
+    setLogin(event.target.value.toLowerCase())
   }
 
   const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
