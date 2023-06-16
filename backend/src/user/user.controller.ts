@@ -10,6 +10,7 @@ import {
   Param,
   NotFoundException,
   UnauthorizedException,
+  ForbiddenException,
 } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { AuthGuard } from "../auth/auth.guard"
@@ -34,9 +35,16 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to GET", type: UserDTO })
   async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
     // req.user.userId comes from auth.service -> payload -> userId
-    return await this.userService.getUserById(req.user.userId)
+    
+    const user = await this.userService.getUserById(req.user.userId)
+
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+    return user
   }
 
   @Post("/:id")
