@@ -20,7 +20,7 @@ export default function Todos(): JSX.Element {
             <div style={{ width: "55%", marginBottom: "25px" }}>
               <Header />
               <TaskContextProvider>
-                <Toasts />
+                <Toasts global={false} />
                 <CompletedTasksDropdown />
                 <Tasks />
                 <CreateNewTask />

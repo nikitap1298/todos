@@ -86,7 +86,7 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       addToast({
         variant: "warning",
         message: "Select or add new list",
-        isGlobal: false,
+        autohide: true
       })
     }
   }

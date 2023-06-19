@@ -5,16 +5,17 @@ import "./Toast.scss"
 
 interface ToastProps {
   toast: ToastInterface
+  global: boolean
   onDelete: (index: number) => void
   toastIndex: number
 }
 
 export default function Toast(props: ToastProps): JSX.Element {
-  const { toast, onDelete, toastIndex } = props
+  const { toast, global, onDelete, toastIndex } = props
 
   return (
     <div className="toast-component">
-      {toast.isGlobal ? (
+      {global ? (
         <ToastContainer className="p-3" position="top-end">
           <RBToast show={true} onClose={(): void => onDelete(toastIndex)} bg={toast?.variant}>
             <RBToast.Header>
@@ -31,7 +32,7 @@ export default function Toast(props: ToastProps): JSX.Element {
           onClose={(): void => onDelete(toastIndex)}
           bg={toast?.variant}
           delay={2000}
-          autohide
+          autohide={toast.autohide ? true : false}
         >
           <RBToast.Header>
             <strong className="me-auto">Todos</strong>

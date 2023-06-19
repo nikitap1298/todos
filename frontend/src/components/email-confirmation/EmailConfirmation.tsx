@@ -17,7 +17,7 @@ export default function EmailConfirmation(): JSX.Element {
   return (
     <div className="email-confirmation">
       <h1 className="header">Confirm your email</h1>
-      <Toasts />
+      <Toasts global={true}/>
       <Button className="confirm" variant="success" type="submit" onClick={handleEmailConfirmClick}>
         Press to confirm
       </Button>

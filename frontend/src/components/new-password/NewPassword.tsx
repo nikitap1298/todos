@@ -30,13 +30,13 @@ export default function NewPassword(): JSX.Element {
       addToast({
         variant: "warning",
         message: "Password must be longer than 6 characters.",
-        isGlobal: false,
+        autohide: false
       })
     } else if (newPasswordValue !== confirmPasswordValue && newPasswordValue.length >= 6) {
       addToast({
         variant: "warning",
         message: "Different passwords.",
-        isGlobal: false,
+        autohide: false
       })
     } else if (newPasswordValue === confirmPasswordValue && newPasswordValue.length >= 6) {
       resetPassword(id as string, token as string, newPasswordValue)
@@ -49,7 +49,7 @@ export default function NewPassword(): JSX.Element {
   return (
     <div className="new-password">
       <h1 className="header">New Password</h1>
-      <Toasts />
+      <Toasts global={true}/>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control

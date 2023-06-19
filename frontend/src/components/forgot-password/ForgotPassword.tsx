@@ -25,7 +25,7 @@ export default function ForgotPassword(): JSX.Element {
   return (
     <div className="forgot-password">
       <h1 className="header">Forgot Password</h1>
-      <Toasts />
+      <Toasts global={true} />
       <Form>
         <Form.Group className="mb-3">
           <Form.Control

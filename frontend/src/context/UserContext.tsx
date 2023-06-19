@@ -68,7 +68,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           addToast({
             variant: "success",
             message: "Check your mailbox and confirm email.",
-            isGlobal: true,
+            autohide: false
           })
         }
       })
@@ -77,7 +77,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't log in. Try again.",
-          isGlobal: false,
+          autohide: false
         })
       })
   }
@@ -112,7 +112,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't register. Try again.",
-          isGlobal: true,
+          autohide: false
         })
       })
   }
@@ -134,7 +134,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Email successfully confirmed.",
-          isGlobal: true,
+          autohide: false
         })
         navigate("/authentification")
       })
@@ -142,7 +142,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't confirm your email.",
-          isGlobal: false,
+          autohide: false
         })
       })
   }
@@ -154,7 +154,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Check your mailbox where you'll find password reset link.",
-          isGlobal: true,
+          autohide: false
         })
         navigate("/authentification")
       })
@@ -162,7 +162,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't send you a mail.",
-          isGlobal: false,
+          autohide: false
         })
       })
   }
@@ -174,7 +174,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Password successfully changed.",
-          isGlobal: true,
+          autohide: false
         })
         navigate("/todos")
       })
@@ -182,7 +182,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't reset the password. Try again.",
-          isGlobal: false,
+          autohide: false
         })
       })
   }
