@@ -70,7 +70,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         deleteAllToasts()
         if (err.message.includes("403")) {
           addToast({
-            variant: "danger",
+            variant: "warning",
             message: "Check your mailbox and confirm email.",
             autohide: false,
           })
