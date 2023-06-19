@@ -1,31 +1,31 @@
 import React from "react"
-import { ToastContainer, Toast } from "react-bootstrap"
+import { ToastContainer, Toast as RBToast } from "react-bootstrap"
 import { ToastInterface } from "../../lib/interfaces/toast.interface"
-import "./ToastComponent.scss"
+import "./Toast.scss"
 
-interface ToastComponentProps {
+interface ToastProps {
   toast: ToastInterface
   onDelete: (index: number) => void
   toastIndex: number
 }
 
-export default function ToastComponent(props: ToastComponentProps): JSX.Element {
+export default function Toast(props: ToastProps): JSX.Element {
   const { toast, onDelete, toastIndex } = props
 
   return (
     <div className="toast-component">
       {toast.isGlobal ? (
         <ToastContainer className="p-3" position="top-end">
-          <Toast show={true} onClose={(): void => onDelete(toastIndex)} bg={toast?.variant}>
-            <Toast.Header>
+          <RBToast show={true} onClose={(): void => onDelete(toastIndex)} bg={toast?.variant}>
+            <RBToast.Header>
               <strong className="me-auto">Todos</strong>
               <small>now</small>
-            </Toast.Header>
-            <Toast.Body>{toast?.message}</Toast.Body>
-          </Toast>
+            </RBToast.Header>
+            <RBToast.Body>{toast?.message}</RBToast.Body>
+          </RBToast>
         </ToastContainer>
       ) : (
-        <Toast
+        <RBToast
           style={{ marginBottom: "10px" }}
           show={true}
           onClose={(): void => onDelete(toastIndex)}
@@ -33,12 +33,12 @@ export default function ToastComponent(props: ToastComponentProps): JSX.Element 
           delay={2000}
           autohide
         >
-          <Toast.Header>
+          <RBToast.Header>
             <strong className="me-auto">Todos</strong>
             <small>now</small>
-          </Toast.Header>
-          <Toast.Body>{toast?.message}</Toast.Body>
-        </Toast>
+          </RBToast.Header>
+          <RBToast.Body>{toast?.message}</RBToast.Body>
+        </RBToast>
       )}
     </div>
   )

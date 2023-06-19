@@ -2,7 +2,7 @@ import React from "react"
 import { ListContextProvider } from "../../context/ListContext"
 import SideBar from "../side-bar/SideBar"
 import Header from "../header/Header"
-import ToastsComponent from "../toast/ToastsComponent"
+import Toasts from "../toast/Toasts"
 import { TaskContextProvider } from "../../context/TaskContext"
 import CompletedTasksDropdown from "../completed-tasks-dropdown/CompletedTasksDropdown"
 import Tasks from "../tasks/Tasks"
@@ -20,7 +20,7 @@ export default function Todos(): JSX.Element {
             <div style={{ width: "55%", marginBottom: "25px" }}>
               <Header />
               <TaskContextProvider>
-                <ToastsComponent />
+                <Toasts />
                 <CompletedTasksDropdown />
                 <Tasks />
                 <CreateNewTask />

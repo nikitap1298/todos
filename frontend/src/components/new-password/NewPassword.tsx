@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { useParams } from "react-router-dom"
-import ToastsComponent from "../toast/ToastsComponent"
+import Toasts from "../toast/Toasts"
 import { useUserContext } from "../../context/UserContext"
 import { useToastContext } from "../../context/ToastContext"
 import "./NewPassword.scss"
@@ -49,7 +49,7 @@ export default function NewPassword(): JSX.Element {
   return (
     <div className="new-password">
       <h1 className="header">New Password</h1>
-      <ToastsComponent />
+      <Toasts />
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control

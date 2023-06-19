@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
-import ToastsComponent from "../toast/ToastsComponent"
+import Toasts from "../toast/Toasts"
 import "./ForgotPassword.scss"
 
 export default function ForgotPassword(): JSX.Element {
@@ -25,7 +25,7 @@ export default function ForgotPassword(): JSX.Element {
   return (
     <div className="forgot-password">
       <h1 className="header">Forgot Password</h1>
-      <ToastsComponent />
+      <Toasts />
       <Form>
         <Form.Group className="mb-3">
           <Form.Control
