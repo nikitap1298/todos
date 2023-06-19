@@ -18,24 +18,24 @@ export class APIService {
       const resultJSON = await response.json()
       return resultJSON
     } catch (error) {
-      throw new Error(`Error during GET method: ${error}`)
+      throw new Error(`Error during GET method. ${error}`)
     }
   }
 
   protected async methodPOST(path: string, data: unknown): Promise<unknown> {
+    const response = await fetch(backendServerURL + path, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    })
     try {
-      const response = await fetch(backendServerURL + path, {
-        method: "POST",
-        headers: this.headers,
-        body: JSON.stringify(data),
-      })
       if (response.status !== 200 && response.status !== 201) {
         throw new Error(`Error during POST method: ${response.statusText}`)
       }
       const resultJSON = await response.json()
       return resultJSON
     } catch (error) {
-      throw new Error(`Error during POST method: ${error}`)
+      throw new Error(`Error during POST method: ${error}. Code: ${response.status}`)
     }
   }
 
@@ -52,7 +52,7 @@ export class APIService {
       const resultJSON = await response.json()
       return resultJSON
     } catch (error) {
-      throw new Error(`Error during PUT method: ${error}`)
+      throw new Error(`Error during PUT method. ${error}`)
     }
   }
 
@@ -69,7 +69,7 @@ export class APIService {
       const resultJSON = await response.json()
       return resultJSON
     } catch (error) {
-      throw new Error(`Error during DELETE method: ${error}`)
+      throw new Error(`Error during DELETE method. ${error}`)
     }
   }
 }

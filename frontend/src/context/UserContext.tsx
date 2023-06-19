@@ -64,21 +64,23 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           // Reload the page for updating the verified value in UserSlice.tsx
           window.location.reload()
           deleteAllToasts()
-        } else {
-          addToast({
-            variant: "success",
-            message: "Check your mailbox and confirm email.",
-            autohide: false
-          })
         }
       })
-      .catch(() => {
+      .catch((err) => {
         deleteAllToasts()
-        addToast({
-          variant: "danger",
-          message: "Can't log in. Try again.",
-          autohide: false
-        })
+        if (err.message.includes("403")) {
+          addToast({
+            variant: "danger",
+            message: "Check your mailbox and confirm email.",
+            autohide: false,
+          })
+        } else if (err.message.includes("401")) {
+          addToast({
+            variant: "danger",
+            message: "Can't log in. Try again.",
+            autohide: false,
+          })
+        }
       })
   }
 
@@ -112,7 +114,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't register. Try again.",
-          autohide: false
+          autohide: false,
         })
       })
   }
@@ -134,7 +136,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Email successfully confirmed.",
-          autohide: false
+          autohide: false,
         })
         navigate("/authentification")
       })
@@ -142,7 +144,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't confirm your email.",
-          autohide: false
+          autohide: false,
         })
       })
   }
@@ -154,7 +156,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Check your mailbox where you'll find password reset link.",
-          autohide: false
+          autohide: false,
         })
         navigate("/authentification")
       })
@@ -162,7 +164,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't send you a mail.",
-          autohide: false
+          autohide: false,
         })
       })
   }
@@ -174,7 +176,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Password successfully changed.",
-          autohide: false
+          autohide: false,
         })
         navigate("/todos")
       })
@@ -182,7 +184,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't reset the password. Try again.",
-          autohide: false
+          autohide: false,
         })
       })
   }
