@@ -46,6 +46,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   useEffect(() => {
     fetchCurrentUser()
+    logIn()
   }, [location])
 
   const checkAccess = (userLogin: string, userPassword: string): void => {
@@ -58,13 +59,11 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
         localStorage.setItem(localStorageVerifiedKey, JSON.stringify(userVerified))
 
-        if (userVerified === true) {
-          navigate("/todos")
+        navigate("/todos")
 
-          // Reload the page for updating the verified value in UserSlice.tsx
-          window.location.reload()
-          deleteAllToasts()
-        }
+        // Reload the page for updating the verified value in UserSlice.tsx
+        // window.location.reload()
+        deleteAllToasts()
       })
       .catch((err) => {
         deleteAllToasts()
@@ -87,6 +86,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const fetchCurrentUser = (): void => {
     userService.readUser().then((user) => {
       setCurrentUser(user)
+      // navigate("/todos")
     })
   }
 
