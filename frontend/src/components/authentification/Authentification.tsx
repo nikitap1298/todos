@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
-import ToastsComponent from "../toast/ToastsComponent"
+import Toasts from "../toast/Toasts"
 import { useToastContext } from "../../context/ToastContext"
 import { useNavigate } from "react-router-dom"
 import "./Authentification.scss"
@@ -36,7 +36,7 @@ export default function Authentification(): JSX.Element {
         addToast({
           variant: "warning",
           message: "Password must be longer than 6 characters",
-          isGlobal: false,
+          autohide: false
         })
       } else {
         setRegisterComponentIsActive(false)
@@ -75,7 +75,7 @@ export default function Authentification(): JSX.Element {
       {registerComponentIsActive ? (
         <>
           <h1 className="header">Registration</h1>
-          <ToastsComponent />
+          <Toasts global={true} />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
@@ -110,7 +110,7 @@ export default function Authentification(): JSX.Element {
       ) : (
         <>
           <h1 className="header">Log In</h1>
-          <ToastsComponent />
+          <Toasts global={true} />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>

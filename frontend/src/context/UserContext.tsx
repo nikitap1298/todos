@@ -7,11 +7,9 @@ import {
   localStorageAccessToken,
   localStorageSelectedListIdKey,
   localStorageUserInfoKey,
-  localStorageVerifiedKey,
 } from "../constants/constants"
 import { useNavigate } from "react-router-dom"
 import { useToastContext } from "./ToastContext"
-import { useLocation } from "react-router-dom"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
@@ -39,46 +37,44 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
 
   const navigate = useNavigate()
 
-  // fetchCurrentUser every time user log in as another account
-  const location = useLocation()
-
   const userService = new UserService()
+  const accessTokenLocalStorage = localStorage.getItem(localStorageAccessToken)
 
   useEffect(() => {
     fetchCurrentUser()
-  }, [location])
+    logIn()
+  }, [])
 
-  const checkAccess = (userLogin: string, userPassword: string): void => {
+  const checkAccess = (userLogin: string, userPassword: string, refresh?: boolean): void => {
     userService
       .checkUserAccess({ login: userLogin, password: userPassword })
       .then((data) => {
         const accessToken = (data as { access_token: string; verified: string }).access_token
-        const userVerified = (data as { access_token: string; verified: boolean }).verified
 
         localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-        localStorage.setItem(localStorageVerifiedKey, JSON.stringify(userVerified))
 
-        if (userVerified === true) {
-          navigate("/todos")
+        navigate("/todos")
 
-          // Reload the page for updating the verified value in UserSlice.tsx
+        if (refresh) {
           window.location.reload()
-          deleteAllToasts()
+        }
+        deleteAllToasts()
+      })
+      .catch((err) => {
+        deleteAllToasts()
+        if (err.message.includes("403")) {
+          addToast({
+            variant: "warning",
+            message: "Check your mailbox and confirm email.",
+            autohide: false,
+          })
         } else {
           addToast({
-            variant: "success",
-            message: "Check your mailbox and confirm email.",
-            isGlobal: true,
+            variant: "danger",
+            message: "Can't log in. Try again.",
+            autohide: false,
           })
         }
-      })
-      .catch(() => {
-        deleteAllToasts()
-        addToast({
-          variant: "danger",
-          message: "Can't log in. Try again.",
-          isGlobal: false,
-        })
       })
   }
 
@@ -89,11 +85,39 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   }
 
   const logIn = (login?: string, password?: string): void => {
-    localStorage.setItem(
-      localStorageUserInfoKey,
-      JSON.stringify({ userLogin: login, userPassword: password })
-    )
-    checkAccess(login as string, password as string)
+    const userInfoLocalStorage = localStorage.getItem(localStorageUserInfoKey)
+    if (userInfoLocalStorage) {
+      let userId = JSON.parse(userInfoLocalStorage).userId
+      let userLogin = JSON.parse(userInfoLocalStorage).userLogin
+      let userPassword = JSON.parse(userInfoLocalStorage).userPassword
+
+      if (typeof login === "string" && typeof password === "string") {
+        userId = currentUser?._id
+        userLogin = login
+        userPassword = password
+        localStorage.setItem(
+          localStorageUserInfoKey,
+          JSON.stringify({ userId, userLogin, userPassword })
+        )
+
+        fetchCurrentUser()
+        checkAccess(userLogin, userPassword, true)
+      } else if ((accessTokenLocalStorage?.length as number) >= 5) {
+        localStorage.setItem(
+          localStorageUserInfoKey,
+          JSON.stringify({ userId, userLogin, userPassword })
+        )
+        fetchCurrentUser()
+        checkAccess(userLogin, userPassword)
+      }
+    } else {
+      localStorage.setItem(
+        localStorageUserInfoKey,
+        JSON.stringify({ currentUser, login, password })
+      )
+      fetchCurrentUser()
+      checkAccess(login as string, password as string, true)
+    }
   }
 
   const registerUser = (login: string, password: string): void => {
@@ -106,13 +130,13 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           JSON.stringify({ userId, userLogin: login, userPassword: password })
         )
         setCurrentUser(user)
-        checkAccess(login, password)
+        checkAccess(login, password, false)
       })
       .catch(() => {
         addToast({
           variant: "danger",
           message: "Can't register. Try again.",
-          isGlobal: true,
+          autohide: false,
         })
       })
   }
@@ -120,9 +144,8 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   const logOut = (): void => {
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
-    localStorage.setItem(localStorageVerifiedKey, JSON.stringify({}))
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
-    navigate("/authentification")
+    setCurrentUser({ login: "", password: "", verified: false })
     deleteAllToasts()
   }
 
@@ -134,7 +157,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Email successfully confirmed.",
-          isGlobal: true,
+          autohide: false,
         })
         navigate("/authentification")
       })
@@ -142,7 +165,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't confirm your email.",
-          isGlobal: false,
+          autohide: false,
         })
       })
   }
@@ -154,7 +177,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Check your mailbox where you'll find password reset link.",
-          isGlobal: true,
+          autohide: false,
         })
         navigate("/authentification")
       })
@@ -162,7 +185,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't send you a mail.",
-          isGlobal: false,
+          autohide: false,
         })
       })
   }
@@ -174,7 +197,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "success",
           message: "Password successfully changed.",
-          isGlobal: true,
+          autohide: false,
         })
         navigate("/todos")
       })
@@ -182,7 +205,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         addToast({
           variant: "danger",
           message: "Can't reset the password. Try again.",
-          isGlobal: false,
+          autohide: false,
         })
       })
   }
