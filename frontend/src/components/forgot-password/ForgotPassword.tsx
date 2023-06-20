@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { Button, Form } from "react-bootstrap"
 import { useUserContext } from "../../context/UserContext"
+import Toasts from "../toast/Toasts"
 import "./ForgotPassword.scss"
 
 export default function ForgotPassword(): JSX.Element {
@@ -9,7 +10,7 @@ export default function ForgotPassword(): JSX.Element {
   const [loginValue, setLoginValue] = useState("")
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setLoginValue(event.target.value)
+    setLoginValue(event.target.value.toLowerCase())
   }
 
   const handleConfirmClick = (event: MouseFormEvent): void => {
@@ -24,6 +25,7 @@ export default function ForgotPassword(): JSX.Element {
   return (
     <div className="forgot-password">
       <h1 className="header">Forgot Password</h1>
+      <Toasts global={true} />
       <Form>
         <Form.Group className="mb-3">
           <Form.Control

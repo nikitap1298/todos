@@ -8,12 +8,11 @@ import {
   localStorageSelectedListIdKey,
   localStorageUserInfoKey,
 } from "../constants/constants"
-import { useAlertContext } from "./AlertContext"
 import { useNavigate } from "react-router-dom"
+import { useToastContext } from "./ToastContext"
 
 interface UserContextInterface {
   currentUser: UserInterface | undefined
-  userHasAccess: boolean
   logIn: (login?: string, password?: string) => void
   registerUser: (login: string, password: string) => void
   logOut: () => void
@@ -24,7 +23,6 @@ interface UserContextInterface {
 
 const UserContext = React.createContext<UserContextInterface>({
   currentUser: { _id: "", login: "", password: "" },
-  userHasAccess: false,
   logIn: () => void {},
   registerUser: () => void {},
   logOut: () => void {},
@@ -34,9 +32,8 @@ const UserContext = React.createContext<UserContextInterface>({
 })
 
 export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const [currentUser, setCurrentUser] = useState<UserInterface>()
-  const [userHasAccess, setUserHasAccess] = useState(false)
 
   const navigate = useNavigate()
 
@@ -46,30 +43,45 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
   useEffect(() => {
     fetchCurrentUser()
     logIn()
-  }, [userHasAccess])
+  }, [])
 
-  const checkAccess = (userLogin: string, userPassword: string): void => {
+  const checkAccess = (userLogin: string, userPassword: string, refresh?: boolean): void => {
     userService
       .checkUserAccess({ login: userLogin, password: userPassword })
-      .then((jwt) => {
-        const accessToken = (jwt as { access_token: string }).access_token
+      .then((data) => {
+        const accessToken = (data as { access_token: string; verified: string }).access_token
+
         localStorage.setItem(localStorageAccessToken, JSON.stringify(accessToken))
-        setUserHasAccess(true)
+
+        navigate("/todos")
+
+        if (refresh) {
+          window.location.reload()
+        }
+        deleteAllToasts()
       })
-      .catch(() => {
-        setUserHasAccess(false)
+      .catch((err) => {
+        deleteAllToasts()
+        if (err.message.includes("403")) {
+          addToast({
+            variant: "warning",
+            message: "Check your mailbox and confirm email.",
+            autohide: false,
+          })
+        } else {
+          addToast({
+            variant: "danger",
+            message: "Can't log in. Try again.",
+            autohide: false,
+          })
+        }
       })
   }
 
   const fetchCurrentUser = (): void => {
-    userService
-      .readUser()
-      .then((user) => {
-        setCurrentUser(user)
-      })
-      .catch(() => {
-        logOut()
-      })
+    userService.readUser().then((user) => {
+      setCurrentUser(user)
+    })
   }
 
   const logIn = (login?: string, password?: string): void => {
@@ -79,11 +91,7 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
       let userLogin = JSON.parse(userInfoLocalStorage).userLogin
       let userPassword = JSON.parse(userInfoLocalStorage).userPassword
 
-      if (
-        typeof login === "string" &&
-        typeof password === "string" &&
-        (accessTokenLocalStorage?.length as number) <= 4
-      ) {
+      if (typeof login === "string" && typeof password === "string") {
         userId = currentUser?._id
         userLogin = login
         userPassword = password
@@ -91,14 +99,24 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin, userPassword })
         )
-        checkAccess(userLogin, userPassword)
+
+        fetchCurrentUser()
+        checkAccess(userLogin, userPassword, true)
       } else if ((accessTokenLocalStorage?.length as number) >= 5) {
         localStorage.setItem(
           localStorageUserInfoKey,
           JSON.stringify({ userId, userLogin, userPassword })
         )
-        setUserHasAccess(true)
+        fetchCurrentUser()
+        checkAccess(userLogin, userPassword)
       }
+    } else {
+      localStorage.setItem(
+        localStorageUserInfoKey,
+        JSON.stringify({ currentUser, login, password })
+      )
+      fetchCurrentUser()
+      checkAccess(login as string, password as string, true)
     }
   }
 
@@ -112,13 +130,13 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
           JSON.stringify({ userId, userLogin: login, userPassword: password })
         )
         setCurrentUser(user)
-        checkAccess(login, password)
-        deleteAllAlerts()
+        checkAccess(login, password, false)
       })
       .catch(() => {
-        addAlert({
-          title: "Error with registration",
-          message: "Can't register",
+        addToast({
+          variant: "danger",
+          message: "Can't register. Try again.",
+          autohide: false,
         })
       })
   }
@@ -127,42 +145,75 @@ export const UserContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     localStorage.setItem(localStorageUserInfoKey, JSON.stringify({}))
     localStorage.setItem(localStorageSelectedListIdKey, JSON.stringify(""))
-    setUserHasAccess(false)
+    setCurrentUser({ login: "", password: "", verified: false })
+    deleteAllToasts()
   }
 
   const confirmEmail = (userId: string, token: string): void => {
-    // localStorage.setItem(localStorageAccessToken, JSON.stringify({}))
     userService
       .verifyUser(userId, token)
       .then(() => {
-        deleteAllAlerts()
         logOut()
-        navigate("/todos")
+        addToast({
+          variant: "success",
+          message: "Email successfully confirmed.",
+          autohide: false,
+        })
+        navigate("/authentification")
       })
       .catch(() => {
-        addAlert({
-          title: "Error with email confirmation",
-          message: "Can't verify",
+        addToast({
+          variant: "danger",
+          message: "Can't confirm your email.",
+          autohide: false,
         })
       })
   }
 
   const sendResetPasswordMail = (login: string): void => {
-    userService.sendResetPasswordMail(login)
-    navigate("/todos")
+    userService
+      .sendResetPasswordMail(login)
+      .then(() => {
+        addToast({
+          variant: "success",
+          message: "Check your mailbox where you'll find password reset link.",
+          autohide: false,
+        })
+        navigate("/authentification")
+      })
+      .catch(() => {
+        addToast({
+          variant: "danger",
+          message: "Can't send you a mail.",
+          autohide: false,
+        })
+      })
   }
 
   const resetPassword = (userId: string, token: string, newPassword: string): void => {
-    userService.resetPassword(userId, token, newPassword).then(() => {
-      navigate("/todos")
-    })
+    userService
+      .resetPassword(userId, token, newPassword)
+      .then(() => {
+        addToast({
+          variant: "success",
+          message: "Password successfully changed.",
+          autohide: false,
+        })
+        navigate("/todos")
+      })
+      .catch(() => {
+        addToast({
+          variant: "danger",
+          message: "Can't reset the password. Try again.",
+          autohide: false,
+        })
+      })
   }
 
   return (
     <UserContext.Provider
       value={{
         currentUser,
-        userHasAccess,
         logIn,
         registerUser,
         logOut,

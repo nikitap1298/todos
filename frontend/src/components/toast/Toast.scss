@@ -1,0 +1,8 @@
+@import "../../styles/variables";
+
+.toast-component {
+  display: flex;
+  justify-content: center;
+  font-family: $openSansRegular;
+  color: $colorVanilla;
+}
