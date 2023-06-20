@@ -2,14 +2,14 @@ import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { MouseFormEvent } from "../../lib/custom-types/custom-types"
 import { useParams } from "react-router-dom"
-import AlertsComponent from "../alert/AlertsComponent"
+import Toasts from "../toast/Toasts"
 import { useUserContext } from "../../context/UserContext"
-import { useAlertContext } from "../../context/AlertContext"
+import { useToastContext } from "../../context/ToastContext"
 import "./NewPassword.scss"
 
 export default function NewPassword(): JSX.Element {
   const { resetPassword } = useUserContext()
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const { id, token } = useParams()
 
   const [newPasswordValue, setNewPasswordValue] = useState("")
@@ -27,18 +27,20 @@ export default function NewPassword(): JSX.Element {
     event.preventDefault()
 
     if (newPasswordValue.length < 6) {
-      addAlert({
-        title: "Password is not safe",
-        message: "Password must be longer than 6 characters",
+      addToast({
+        variant: "warning",
+        message: "Password must be longer than 6 characters.",
+        autohide: false
       })
     } else if (newPasswordValue !== confirmPasswordValue && newPasswordValue.length >= 6) {
-      addAlert({
-        title: "Error",
-        message: "Different passwords",
+      addToast({
+        variant: "warning",
+        message: "Different passwords.",
+        autohide: false
       })
     } else if (newPasswordValue === confirmPasswordValue && newPasswordValue.length >= 6) {
       resetPassword(id as string, token as string, newPasswordValue)
-      deleteAllAlerts()
+      deleteAllToasts()
       setNewPasswordValue("")
       setConfirmPasswordValue("")
     }
@@ -47,7 +49,7 @@ export default function NewPassword(): JSX.Element {
   return (
     <div className="new-password">
       <h1 className="header">New Password</h1>
-      <AlertsComponent />
+      <Toasts global={true}/>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control

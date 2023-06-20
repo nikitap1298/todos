@@ -2,12 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
 import { localStorageShowCompletedTasksKey } from "../constants/constants"
-import { useAlertContext } from "./AlertContext"
 import { TaskInterface } from "../lib/interfaces/task.interface"
 import { ContextProviderProps } from "../lib/custom-types/custom-types"
 import { TasksService } from "../services/tasks-service"
 import { useListContext } from "./ListContext"
 import { useUserContext } from "./UserContext"
+import { useToastContext } from "./ToastContext"
 
 interface TaskContextInterface {
   tasks: TaskInterface[]
@@ -31,7 +31,7 @@ const TaskContext = React.createContext<TaskContextInterface>({
 
 export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Element => {
   const { currentUser } = useUserContext()
-  const { addAlert, deleteAllAlerts } = useAlertContext()
+  const { addToast, deleteAllToasts } = useToastContext()
   const { lists, selectedListId } = useListContext()
   const [tasks, setTasks] = useState<TaskInterface[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(true)
@@ -77,15 +77,16 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
         })
         .then((newTask) => {
           setTasks((oldArray) => [...oldArray, newTask])
-          deleteAllAlerts()
+          deleteAllToasts()
         })
         .catch((error) => {
           throw new Error(error)
         })
     } else if (!selectedList) {
-      addAlert({
-        title: "List is not selected",
+      addToast({
+        variant: "warning",
         message: "Select or add new list",
+        autohide: true
       })
     }
   }
@@ -102,7 +103,6 @@ export const TaskContextProvider = ({ children }: ContextProviderProps): JSX.Ele
     tasksService
       .updateTask(updatedTask)
       .then(() => {
-        deleteAllAlerts()
         setTasks([...newTasks])
       })
       .catch((error) => {

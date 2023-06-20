@@ -34,9 +34,16 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({ status: 200, description: "Found user", type: UserDTO })
+  @ApiResponse({ status: 401, description: "You are not authorized to GET", type: UserDTO })
   async getUser(@Request() req: RequestWithUser): Promise<UserInterface> {
     // req.user.userId comes from auth.service -> payload -> userId
-    return await this.userService.getUserById(req.user.userId)
+    
+    const user = await this.userService.getUserById(req.user.userId)
+
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+    return user
   }
 
   @Post("/:id")
@@ -77,7 +84,7 @@ export class UserController {
   @ApiResponse({ status: 201, description: "Send reset password mail", type: UserDTO })
   @ApiResponse({ status: 401, description: "You are not authorized to POST", type: UserDTO })
   @ApiResponse({ status: 404, description: "User not found", type: UserDTO })
-  async sendResetPasswordMail(@Param("login") login: string): Promise<void> {
+  async sendResetPasswordMail(@Param("login") login: string): Promise<unknown> {
     const user = await this.userService.getUser(login)
 
     if (!user) {
@@ -97,6 +104,7 @@ export class UserController {
       validUntil: validUntil,
     } as EmailTokenInterface)
     await this.mailService.sendResetPassword(user, `${user.id}/${token}`)
+    return { user }
   }
 
   @Put("/new-password")
