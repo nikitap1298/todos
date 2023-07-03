@@ -14,5 +14,24 @@ services:
       - 8025:8025
       - 1025:1025
 
+  backend:
+    build: 
+      context: ./backend
+    ports: 
+      - 8000:8000
+    depends_on:
+      - frontend 
+    environment:
+      JWT_SHARED_SECRET: De0Rb6egCDqH64XHtuDDvtSe2EF1eG
+      CONFIRMATION_URL: http://localhost:3000/auth/confirm/
+      RESET_PASSWORD_URL: http://localhost:3000/password/new/
+      MONGODB: mongodb://mongo:27017/todos
+
+  frontend:
+    build: 
+      context: ./frontend
+    ports:
+      - 3000:3000   
+
 volumes:
   mongo-data:
